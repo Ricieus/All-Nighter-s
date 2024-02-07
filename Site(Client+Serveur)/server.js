@@ -3,7 +3,7 @@
 */
 import express from "express";
 import session from "express-session";
-import path from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import mysql from "mysql";
 import { body, validationResult } from "express-validator";
@@ -50,10 +50,10 @@ app.get("/", function (req, res) {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/index.ejs", {
-            siteTitle: "Application simple",
             pageTitle: "Dealership Rubious",
             items: result
         });
     });
 });
 
+app.use(express.static(path.join(__dirname, "images")));
