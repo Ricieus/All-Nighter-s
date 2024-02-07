@@ -3,7 +3,7 @@
 */
 import express from "express";
 import session from "express-session";
-import path from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import mysql from "mysql";
 import { body, validationResult } from "express-validator";
@@ -56,3 +56,4 @@ app.get("/", function (req, res) {
     });
 });
 
+app.use(express.static(path.join(__dirname, "images")));
