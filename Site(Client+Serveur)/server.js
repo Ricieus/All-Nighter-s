@@ -24,6 +24,10 @@ const server = app.listen(4000, function () {
 */
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+// Serve static files from the "images" folder
+app.use('/images', express.static(__dirname + '/xviews/images'));
+
 /*
     Importation de Bootstrap
 */
