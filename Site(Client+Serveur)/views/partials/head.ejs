@@ -9,20 +9,54 @@
     <script src="/js/bootstrap.min.js"></script>
 
     <style>
-        .topSection {
-            /* Ajouter une image de fond avec un flou */
-            width: 100vh;
+        .sectionHaut {
             height: 100vh;
-            background-size: fit-content;
-            filter: brightness(80%);
-            background-image: url("../images/image4.png");
+            background-size: cover;
+            filter: brightness(50%);
+            background-image: url("https://collectingcars.imgix.net/022036/DSC-76322.jpg?fit=clip&w=2000&auto=format,compress&cs=srgb&q=85");
+            vertical-align: middle;
+            align-items: center;
+            align-content: center;
+        }
+        .boiteMilieu {
+            height: 30%;
+            background-color: #ffffff;
+            width: 80%;
+            margin-top: 20%;
+            border-radius: 25px;
+        }
+        .testDiv{
+            height: 100vh;
         }
     </style>
 </head>
 
 <body>
-    <div class="topSection">
-        text
+    <div class="sectionHaut">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="boiteMilieu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            ONE
+                        </div>
+                        <div class="col-md-3">
+                            TWO
+                        </div>
+                        <div class="col-md-3">
+                            THREE   
+                        </div>
+                        <div class="col-md-3">
+                            FOUR   
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="testDiv">
+        
     </div>
 </body>
 
