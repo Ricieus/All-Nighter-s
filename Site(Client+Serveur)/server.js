@@ -24,6 +24,11 @@ const server = app.listen(4000, function () {
 */
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+// Utilisation des images statiques dans le fichier "images"
+// Référence : https://expressjs.com/en/starter/static-files.html
+app.use('/images', express.static(__dirname + '/views/images'));
+
 /*
     Importation de Bootstrap
 */
@@ -55,5 +60,3 @@ app.get("/", function (req, res) {
         });
     });
 });
-
-app.use(express.static(path.join(__dirname, "images")));
