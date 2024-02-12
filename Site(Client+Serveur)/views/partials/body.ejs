@@ -1,3 +1,39 @@
+<style>
+    .sectionHaut {
+        height: 100vh;
+        background-size: cover;
+        background-image: url("https://collectingcars.imgix.net/022036/DSC-76322.jpg?fit=clip&w=2000&auto=format,compress&cs=srgb&q=85");
+        vertical-align: middle;
+        align-items: center;
+        align-content: center;
+    }
+    .boiteMilieu {
+        height: 10%;
+        background-color: #fff;
+        width: 80%;
+        margin-top: 20%;
+        border-radius: 25px;
+    }
+    .testDiv{
+        height: 100vh;
+    }
+    .centreColonne {
+        position: relative;
+        vertical-align: middle;
+        align-items: center;
+        align-content: center;
+    }
+    .selectStyle {
+        width: 100%;
+        font-size: 1.15rem;
+        padding: 0.675em 6em 0.675em 1em;
+        background-color: #fff;
+        border: 1px solid lightgray;
+        border-radius: 15px;
+        color: #000;
+        cursor: pointer;
+    }
+</style>
 <body>
     <style>
         .sectionHaut {
@@ -42,16 +78,40 @@
                 <div class="container">
                     <div class="row" style="margin-top: 1%;">
                         <div class="col-md-3">
-                            ONE
+                            <div class="centreColonne">
+                                <select class="selectStyle" required>
+                                    <option value="" disabled selected hidden>Veuillez choisir</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            TWO
+                            <div class="centreColonne">
+                                <select class="selectStyle" required>
+                                    <option value="" disabled selected hidden>Veuillez choisir</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-3">
-                            THREE
+                            <div class="centreColonne">
+                                <select class="selectStyle" required>
+                                    <option value="" disabled selected hidden>Veuillez choisir</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                    <option value="">4</option>
+                                </select>
+                            </div>  
                         </div>
                         <div class="col-md-3">
-                            FOUR
+                            <button class="btn btn-primary" type="submit" style="width: 100%;">Rechercher</button>
                         </div>
                     </div>
                 </div>
