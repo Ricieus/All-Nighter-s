@@ -45,6 +45,8 @@ app.get('/pages/contact.ejs', (req, res) => {
 */
 app.use("/js", express.static(__dirname + "/node_modules/bootstrap/dist/js"));
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"));
+app.use("/js", express.static(__dirname + "/node_modules/bootstrap-select/dist/js"));
+app.use("/css", express.static(__dirname + "/node_modules/bootstrap-select/dist/css"));
 /*
     Connection au server MySQL
 */
