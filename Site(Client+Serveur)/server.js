@@ -29,6 +29,17 @@ app.set("view engine", "ejs");
 // Référence : https://expressjs.com/en/starter/static-files.html
 app.use('/images', express.static(__dirname + '/views/images'));
 
+app.get('/pages/contact.ejs', (req, res) => {
+    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+        if (err) throw err;
+        res.render("pages/contact.ejs", { 
+            pageTitle: "Dealership Rubious",
+            items: result
+        });
+    });
+  });
+
+
 /*
     Importation de Bootstrap
 */
