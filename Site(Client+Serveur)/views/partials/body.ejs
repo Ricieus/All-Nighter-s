@@ -7,6 +7,7 @@
         align-items: center;
         align-content: center;
     }
+
     .boiteMilieu {
         height: 10%;
         background-color: #fff;
@@ -14,15 +15,18 @@
         margin-top: 20%;
         border-radius: 50px;
     }
-    .testDiv{
+
+    .testDiv {
         height: 100vh;
     }
+
     .centreColonne {
         position: relative;
         vertical-align: middle;
         align-items: center;
         align-content: center;
     }
+
     .selectStyle {
         width: 100%;
         font-size: 1.15rem;
@@ -33,6 +37,7 @@
         color: #000;
         cursor: pointer;
     }
+
     .container .carousel {
         padding: 0;
         margin-top: 5%;
@@ -43,10 +48,12 @@
     }
 </style>
 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+
 <body>
     <div class="sectionHaut">
         <div class="h-100 d-flex align-items-center justify-content-center">
@@ -79,7 +86,7 @@
                                         <option data-tokens="mustard">Burger, Shake and a Smile</option>
                                         <option data-tokens="frosting">Sugar, Spice and all things nice</option>
                                     </select>
-                                </div>  
+                                </div>
                             </div>
                             <div class="col-md-3">
                                 <button class="btn btn-primary" type="submit" style="width: 100%;">Rechercher</button>
@@ -174,7 +181,7 @@
 
                 <div class="m-2">
                     <label>Raison de contact:</label>
-                    <select class="form-select">
+                    <select class="selectpicker" multiple data-max-options="1">
                         <option value="" hidden>-----Sélectionnez-----</option>
                         <option value="question">Je veux demander une question</option>
                         <option value="postuler">Je veux réserver un essai routier</option>
