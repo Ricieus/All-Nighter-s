@@ -186,13 +186,13 @@
             <div class="d-flex justify-content-center">
                 <div class="m-2">
                     <label>Courriel:</label>
-                    <input type="email" class="form-control">
+                    <input type="email" class="form-control" placeholder="exemple@bdeb.qc.ca">
+
                 </div>
 
                 <div class="m-2">
                     <label>Raison de contact:</label>
-                    <select class="selectpicker" multiple data-max-options="1">
-                        <option value="" hidden>-----Sélectionnez-----</option>
+                    <select class="selectpicker form-control" multiple data-max-options="1" title="Veuillez choisir la raison de contact">
                         <option value="question">Je veux demander une question</option>
                         <option value="postuler">Je veux réserver un essai routier</option>
                         <option value="plainte">Je veux me plaindre</option>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="m-2">
                     <label>Message supplémentaire:</label>
-                    <textarea id="msg" class="form-control" rows="5"></textarea>
+                    <textarea id="msg" class="form-control" rows="4"></textarea>
                 </div>
                 <div class="m-5">
                     <button class="btn btn-primary">
