@@ -1,3 +1,51 @@
-<html>
-    <h1>Formulaire d'inscription</h1>
-</html>
+<style>
+     #msg {
+        resize: none;
+        vertical-align: top;
+    }
+
+    /*Pour rendre le champ rouge si pas entrer correcctement*/
+    input:invalid {
+        border: 2px solid red;
+    }
+
+
+</style>
+
+
+
+<div class="container mt-5">
+    <br>
+    <h2>Nous contacter</h2>
+    <form class="form-vertical">
+        <div class="d-flex justify-content-center">
+            <div class="m-2">
+                <label>Courriel:</label>
+                <input type="email" class="form-control">
+            </div>
+
+            <div class="m-2">
+                <label>Raison de contact:</label>
+                <select class="selectpicker form-control" multiple data-max-options="1" title="Veuillez choisir la raison de contact">
+                    <option value="question">Je veux demander une question</option>
+                    <option value="postuler">Je veux réserver un essai routier</option>
+                    <option value="plainte">Je veux me plaindre</option>
+                    <option value="commentaire">Je veux laisser un commentaire</option>
+                </select>
+            </div>
+            <div class="m-2">
+                <label>Choisir un rendez-vous:</label>
+                <input type="date" class="form-control">
+            </div>
+            <div class="m-2">
+                <label>Message supplémentaire:</label>
+                <textarea id="msg" class="form-control" rows="5"></textarea>
+            </div>
+            <div class="m-5">
+                <button class="btn btn-primary">
+                    Envoyer
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
