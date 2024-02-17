@@ -1,3 +1,19 @@
+<style>
+     #msg {
+        resize: none;
+        vertical-align: top;
+    }
+
+    /*Pour rendre le champ rouge si pas entrer correcctement*/
+    input:invalid {
+        border: 2px solid red;
+    }
+
+
+</style>
+
+
+
 <div class="container mt-5">
     <br>
     <h2>Nous contacter</h2>
@@ -10,8 +26,7 @@
 
             <div class="m-2">
                 <label>Raison de contact:</label>
-                <select class="form-select">
-                    <option value="" hidden>-----Sélectionnez-----</option>
+                <select class="selectpicker form-control" multiple data-max-options="1" title="Veuillez choisir la raison de contact">
                     <option value="question">Je veux demander une question</option>
                     <option value="postuler">Je veux réserver un essai routier</option>
                     <option value="plainte">Je veux me plaindre</option>
@@ -24,7 +39,7 @@
             </div>
             <div class="m-2">
                 <label>Message supplémentaire:</label>
-                <textarea class="form-control"></textarea>
+                <textarea id="msg" class="form-control" rows="5"></textarea>
             </div>
             <div class="m-5">
                 <button class="btn btn-primary">
