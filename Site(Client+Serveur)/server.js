@@ -33,7 +33,7 @@ app.get('/pages/login.ejs', (req, res) => {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/login.ejs", {
-            pageTitle: "Dealership Rubious",
+            pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
@@ -42,7 +42,7 @@ app.get('/pages/contact.ejs', (req, res) => {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/contact.ejs", {
-            pageTitle: "Dealership Rubious",
+            pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
@@ -51,7 +51,7 @@ app.get('/pages/index.ejs', (req, res) => {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/index.ejs", {
-            pageTitle: "Dealership Rubious",
+            pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
@@ -60,7 +60,7 @@ app.get('/pages/catalogue.ejs', (req, res) => {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/catalogue.ejs", {
-            pageTitle: "Dealership Rubious",
+            pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
@@ -94,7 +94,7 @@ app.get("/", function (req, res) {
     con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
         if (err) throw err;
         res.render("pages/index.ejs", {
-            pageTitle: "Dealership Rubious",
+            pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
