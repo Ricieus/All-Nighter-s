@@ -11,28 +11,28 @@
 
     .containerContactInscrire {
         height: 62.5vh;
-        margin: 10%,0,10%,10%;
+        margin: 10%, 0, 10%, 10%;
     }
 
     .containerContactConnection {
         height: 62.5vh;
-        margin: 10%,0,10%,10%;
+        margin: 10%, 0, 10%, 10%;
     }
 
     /*Pour rendre le champ rouge si pas entrer correcctement*/
     input:invalid {
         border: 2px solid red;
     }
-    
-    .topContainerContact {
 
-    }
+    .topContainerContact {}
 </style>
 
 <div class="topContainerContact" style="margin-top: 5%;">
     <div class="d-flex align-items-center justify-content-center">
-        <button class="btn btn-primary" style="margin-right: 5%;" type="submit" style="width: 20%;" onclick="changerBoiteInscrire()">S'inscrire</button>
-        <button class="btn btn-primary" style="margin-left: 5%;" type="submit" style="width: 20%;" onclick="changerBoiteconnection()">Connexion</button>
+        <button class="btn btn-primary" style="margin-right: 5%;" type="submit" style="width: 20%;"
+            onclick="changerBoiteInscrire()">S'inscrire</button>
+        <button class="btn btn-primary" style="margin-left: 5%;" type="submit" style="width: 20%;"
+            onclick="changerBoiteconnection()">Connexion</button>
     </div>
 </div>
 <div class="containerContactInscrire" id="inscrire">
@@ -52,18 +52,18 @@
                 </div>
             </div>
             <div class="mt-2">
-                <button type="submit" class="btn btn-primary">S'inscrire</button>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
             </div>
         </form>
     </div>
 </div>
 
 
-<script> 
+<script>
     function changerBoiteInscrire() {
         let inscrire = document.getElementById("inscrire");
         let connection = document.getElementById("connection")
-        
+
         if (inscrire.style.display == "none") {
             inscrire.style.display = "";
             connection.style.display = "none";
@@ -73,7 +73,7 @@
     function changerBoiteconnection() {
         let inscrire = document.getElementById("inscrire");
         let connection = document.getElementById("connection")
-        
+
         if (connection.style.display == "none") {
             inscrire.style.display = "none";
             connection.style.display = "";
@@ -103,7 +103,7 @@
     }
 
     .containerContact {
-        height:36.4vh;
+        height: 36.4vh;
         margin: 10%;
     }
 
