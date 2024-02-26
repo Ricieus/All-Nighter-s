@@ -1,3 +1,6 @@
+CREATE DATABASE AllNighter;
+use AllNighter;
+-------------------------------------------
 CREATE TABLE commande ( 
     id_commande INT AUTO_INCREMENT PRIMARY KEY,
      dateLivraison DATE NOT NULL, 
