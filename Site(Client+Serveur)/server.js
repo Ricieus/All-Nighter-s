@@ -30,7 +30,7 @@ app.set("view engine", "ejs");
 app.use('/images', express.static(__dirname + '/views/images'));
 
 app.get('/pages/login.ejs', (req, res) => {
-    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/login.ejs", {
             pageTitle: "Concessionnaire Rubious",
@@ -39,7 +39,7 @@ app.get('/pages/login.ejs', (req, res) => {
     });
 });
 app.get('/pages/contact.ejs', (req, res) => {
-    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/contact.ejs", {
             pageTitle: "Concessionnaire Rubious",
@@ -48,7 +48,7 @@ app.get('/pages/contact.ejs', (req, res) => {
     });
 });
 app.get('/pages/index.ejs', (req, res) => {
-    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/index.ejs", {
             pageTitle: "Concessionnaire Rubious",
@@ -57,7 +57,7 @@ app.get('/pages/index.ejs', (req, res) => {
     });
 });
 app.get('/pages/catalogue.ejs', (req, res) => {
-    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/catalogue.ejs", {
             pageTitle: "Concessionnaire Rubious",
@@ -80,7 +80,7 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "scott",
     password: "oracle",
-    database: "mybd"
+    database: "AllNighter"
 });
 
 con.connect(function (err) {
@@ -91,7 +91,7 @@ con.connect(function (err) {
     Description des routes
 */
 app.get("/", function (req, res) {
-    con.query("SELECT * FROM e_events ORDER BY e_start_date DESC", function (err, result) {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/index.ejs", {
             pageTitle: "Concessionnaire Rubious",
