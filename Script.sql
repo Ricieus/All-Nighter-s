@@ -1,6 +1,7 @@
 CREATE DATABASE AllNighter;
 use AllNighter;
 -------------------------------------------
+-------------------------------------------
 CREATE TABLE utilisateurs (
     id_utilisateurs INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -40,8 +41,8 @@ CREATE TABLE contact (
 );
 INSERT INTO contact (dateRendezVous, raisonRendezVous, extra, utilisateurs_id_utilisateurs) VALUES
 
-     ('2024-02-22', 'Je veux me plaindre', 'Aucun respect dans votre service', 3),
-     ('2024-02-23', 'Je veux laisser un commentaire', 'Bon service tres accueillant', 4);
+     ('2024-02-22', 'Je veux me plaindre', 'Aucun respect dans votre service', 1),
+     ('2024-02-23', 'Je veux laisser un commentaire', 'Bon service tres accueillant', 2);
 
 ----------------------------------------------------------------------------------------------------------------------------------
  CREATE TABLE stock (
@@ -60,7 +61,7 @@ CREATE TABLE commande (
     id_commande INT AUTO_INCREMENT PRIMARY KEY,
      dateLivraison DATE NOT NULL, 
      voitures_id_voiture INT NOT NULL, 
-     paiement_id_paiement INT NOT NULL
+     paiement_id_paiement INT NOT NULL,
      FOREIGN KEY (voitures_id_voiture) REFERENCES voitures (id_voiture)
      );
 
@@ -75,12 +76,16 @@ CREATE TABLE paiement (
     commande_id_commande INT NOT NULL,
      typePaiement  VARCHAR(200) NOT NULL,
      typeFinancement VARCHAR(200) NOT NULL,
-    prixTotal INT NOT NULL,
+    prixTotal INT NOT NULL
      );
      INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (2, 'PayPal', 'Hebdomadaire', 125);
      INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (1, 'Visa', 'Mensuel', 825);
      INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (3, 'Mastercard', 'Bi-Hebdomadaire', 227);
 -----------------------------------------------------------------------------------------------------------------------------------------------------
-    FOREIGN KEY (paiement_id_paiement) REFERENCES paiement (id_paiement)
-    FOREIGN KEY (commande_id_commande) REFERENCES commande (id_commande)
-
+ALTER TABLE commande
+ADD CONSTRAINT fk_commande_paiement
+FOREIGN KEY (paiement_id_paiement) REFERENCES paiement(id_paiement);
+-----------------------------------------------------------------------------------------
+ALTER TABLE paiement
+ADD CONSTRAINT fk_paiement_commande
+FOREIGN KEY (commande_id_commande) REFERENCES commande(id_commande);
