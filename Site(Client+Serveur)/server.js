@@ -29,37 +29,68 @@ app.set("view engine", "ejs");
 // Référence : https://expressjs.com/en/starter/static-files.html
 app.use('/images', express.static(__dirname + '/views/images'));
 
-app.get('/pages/login.ejs', (req, res) => {
+app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
-        res.render("pages/login.ejs", {
+        res.render("pages/index", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
 });
-app.get('/pages/contact.ejs', (req, res) => {
+
+app.get('/pages/login', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
-        res.render("pages/contact.ejs", {
+        res.render("pages/login", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
 });
-app.get('/pages/index.ejs', (req, res) => {
+
+app.get('/pages/contact', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
-        res.render("pages/index.ejs", {
+        res.render("pages/contact", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+            
+        });
+    });
+});
+
+//INSERT pour la page de contact
+app.post('/contact/submit_contact', (req, res) => {
+    var dateRendezVous =  dateFormat(2024-9-11, "yyyy-mm-dd");
+    var raisonRendezVous = "Je veux poser une question";
+    var extra = "test";
+    var utilisateurs_id_utilisateurs = 1;
+
+    console.log("test")
+
+    var sql = "INSERT INTO contact (dateRendezVous, raisonRendezVous, extra, utilisateurs_id_utilisateurs) VALUES ('" + dateRendezVous + "','" + raisonRendezVous + "','" + extra + "','" + utilisateurs_id_utilisateurs + "')";
+
+    con.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("Insertion effectué");
+    });
+});
+
+app.get('/pages/index', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/index", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
 });
-app.get('/pages/catalogue.ejs', (req, res) => {
+
+app.get('/pages/catalogue', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
-        res.render("pages/catalogue.ejs", {
+        res.render("pages/catalogue", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
@@ -86,16 +117,4 @@ const con = mysql.createConnection({
 con.connect(function (err) {
     if (err) throw err;
     console.log("connected!");
-});
-/*
-    Description des routes
-*/
-app.get("/", function (req, res) {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/index.ejs", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
 });
