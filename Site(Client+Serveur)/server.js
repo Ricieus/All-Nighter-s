@@ -49,7 +49,7 @@ app.get('/pages/login', (req, res) => {
     });
 });
 
-app.get('/pages/contact', (req, res) => {
+app.get('/contact', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/contact", {
