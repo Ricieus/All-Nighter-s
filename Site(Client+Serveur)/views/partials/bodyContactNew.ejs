@@ -28,79 +28,81 @@
 </script>
 
 <div class="containerContact">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="prenom">Prénom</label>
-                <input type="text" class="form-control" id="prenom" placeholder="Prénom">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="nomFamille">Nom de Famille</label>
-                <input type="text" class="form-control" id="nomFamille" placeholder="Nom de Famille">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="courriel">Courriel</label>
-                <input type="email" class="form-control" id="courriel" placeholder="Courriel">
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="telephone">Numéro de téléphone</label>
-                <input type="tel" class="form-control" id="telephone" placeholder="Numéro de téléphone">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="m-2">
+    <form class="form-vertical" action="/contact/submit_contact" method="post">
+        <div class="row">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label for="daterendezvous">Date de rendez-vous</label>
-                    <input type="date" class="form-control" id="daterendezvous">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" class="form-control" id="prenom" placeholder="Prénom">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nomFamille">Nom de Famille</label>
+                    <input type="text" class="form-control" id="nomFamille" placeholder="Nom de Famille">
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="m-2">
-                <label>Raison de contact:</label>
-                <select class="selectpicker form-control" multiple data-max-options="1"
-                    title="Veuillez choisir la raison de contact">
-                    <option value="question">Je veux demander une question</option>
-                    <option value="postuler">Je veux réserver un essai routier</option>
-                    <option value="plainte">Je veux me plaindre</option>
-                    <option value="commentaire">Je veux laisser un commentaire</option>
-                </select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="courriel">Courriel</label>
+                    <input type="email" class="form-control" id="courriel" placeholder="Courriel">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="telephone">Numéro de téléphone</label>
+                    <input type="tel" class="form-control" id="telephone" placeholder="Numéro de téléphone">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Souhaitez-vous qu’un concessionnaire Rubious vous contacte pour discuter de votre prochain achat de
-            véhicule?</label><br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="contact" id="radioOui" value="oui">
-            <label class="form-check-label" for="ouiRadio">Oui</label>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="m-2">
+                    <div class="form-group">
+                        <label for="daterendezvous">Date de rendez-vous</label>
+                        <input type="date" class="form-control" id="daterendezvous">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="m-2">
+                    <label>Raison de contact:</label>
+                    <select class="selectpicker form-control" multiple data-max-options="1"
+                        title="Veuillez choisir la raison de contact">
+                        <option value="question">Je veux demander une question</option>
+                        <option value="postuler">Je veux réserver un essai routier</option>
+                        <option value="plainte">Je veux me plaindre</option>
+                        <option value="commentaire">Je veux laisser un commentaire</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="contact" id="radioNon" value="non">
-            <label class="form-check-label" for="nonRadio">Non</label>
+        <div class="form-group">
+            <label>Souhaitez-vous qu’un concessionnaire Rubious vous contacte pour discuter de votre prochain achat de
+                véhicule?</label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="contact" id="radioOui" value="oui">
+                <label class="form-check-label" for="ouiRadio">Oui</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="contact" id="radioNon" value="non">
+                <label class="form-check-label" for="nonRadio">Non</label>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkbox1" value="politique">
-            <label class="form-check-label" for="checkbox1">J'ai lu et accepté la politique de
-                confidentialité.</label>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="checkbox1" value="politique">
+                <label class="form-check-label" for="checkbox1">J'ai lu et accepté la politique de
+                    confidentialité.</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="checkbox2" value="informations">
+                <label class="form-check-label" for="checkbox2">Je confirme que les informations que j'ai saisies sont
+                    correctes.</label>
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkbox2" value="informations">
-            <label class="form-check-label" for="checkbox2">Je confirme que les informations que j'ai saisies sont
-                correctes.</label>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Envoyer</button>
+        <input type="submit" class="btn btn-primary" value="Envoyer"/>
+    </form>
 </div>
