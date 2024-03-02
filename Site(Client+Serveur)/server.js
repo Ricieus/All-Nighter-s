@@ -55,14 +55,13 @@ app.get('/pages/contact', (req, res) => {
         res.render("pages/contact", {
             pageTitle: "Concessionnaire Rubious",
             items: result
-            
         });
     });
 });
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
-    var dateRendezVous =  dateFormat(2024-9-11, "yyyy-mm-dd");
+    var dateRendezVous = dateFormat(2024 - 9 - 11, "yyyy-mm-dd");
     var raisonRendezVous = "Je veux poser une question";
     var extra = "test";
     var utilisateurs_id_utilisateurs = 1;
@@ -73,7 +72,7 @@ app.post('/contact/submit_contact', (req, res) => {
 
     con.query(sql, function (err, result) {
         if (err) throw err;
-        console.log("Insertion effectué");
+        console.log("Insertion effectuée");
     });
 });
 
