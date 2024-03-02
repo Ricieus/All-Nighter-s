@@ -8,40 +8,23 @@
     input:invalid {
         border: 2px solid red;
     }
+
+    .jumbotron {
+        background-color: #E9ECEF;
+    }
 </style>
 
 
 
 
-<div class="container mt-5">
-    <h2>Nous contacter</h2>
-    <form class="form-vertical" action="/contact/submit_contact" method="post">
-        <div class="d-flex justify-content-center">
-            <div class="m-2">
-                <label>Courriel:</label>
-                <input type="email" class="form-control" id="email" name="email">
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="d-flex justify-content-around align-items-center">
+            <div>
+                <h1 class="display-3">Des Questions?</h1>
+                <h1 class="display-5">Veuillez nous contacter ici</h1>
             </div>
-
-            <div class="m-2">
-                <label>Raison de contact:</label>
-                <select class="selectpicker form-control" multiple data-max-options="1" title="Veuillez choisir la raison de contact"  id="raison" name="raison">
-                    <option value="question">Je veux demander une question</option>
-                    <option value="postuler">Je veux réserver un essai routier</option>
-                    <option value="plainte">Je veux me plaindre</option>
-                    <option value="commentaire">Je veux laisser un commentaire</option>
-                </select>
-            </div>
-            <div class="m-2">
-                <label>Choisir un rendez-vous:</label>
-                <input type="date" class="form-control" id="date" name="date">
-            </div>
-            <div class="m-2">
-                <label>Message supplémentaire:</label>
-                <textarea id="msg" class="form-control" rows="5"></textarea id="extra" name="extra">
-            </div>
-            <div class="m-5">
-                <input type="submit" class="btn btn-primary" value="Envoyer">
-            </div>
+            <button class="btn btn-secondary">Nous Contacter</button>
         </div>
-    </form>
+    </div>
 </div>
