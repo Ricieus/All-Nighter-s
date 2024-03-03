@@ -2,32 +2,20 @@
     <div class="card rounded-3 shadow-sm mb-5 bg-body rounded">
         <div class="row">
             <div class="col-7 d-flex justify-content-center text-center">
-                <img src="../images/402436-2021-polestar-2.jpg" class="rounded-4 mt-2" style="width: 90%;">
+                <img src="../images/<%= voiture.image %>" class="rounded-4 mt-2" style="width: 90%;">
+
             </div>
             <div class="col-4 text-center"
                 style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-
-                <div>Toyota</div>
-                <div>Highlander</div>
-                <div>2023</div>
-
-            </div>
-
-
-        </div>
-        <div class="row row-cols-2">
-            <div class="col text-center vertical-align">
-                <p>Automatique</p>
-            </div>
-            <div class="col text-center vertical-align">
-                <p>50000$</p>
-            </div>
-            <div class="col text-center vertical-align">
-                <p>Essence</p>
+                <div class="row">
+                    <div class="col text-center vertical-align">
+                        <div><%= voiture.marque %></div>
+                        <div><%= voiture.modele %></div>
+                        <div><%= voiture.annee %></div>
+                        <div><%= voiture.prix %> $</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-
-
 </div>

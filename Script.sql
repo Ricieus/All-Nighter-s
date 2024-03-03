@@ -23,13 +23,31 @@ CREATE TABLE voitures (
     annee INT NOT NULL,
     prix DECIMAL(10, 2) NOT NULL,
     utilisateurs_id_utilisateurs INT NOT NULL,
+    image VARCHAR(255),
     FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
+
 INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs)
 VALUES 
-('Toyota', 'Corolla', 2021, 25000, 1),
-('Honda', 'Civic', 2022, 23000, 2),
-('Honda', 'CRV', 2023, 45000, 1);
+INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image)
+VALUES 
+('Toyota', 'Corolla', 2021, 25000, 1, 'toyota_corrola.jpg'),
+('Honda', 'Civic', 2022, 23000, 2, 'honda_civic.jpg'),
+('Honda', 'CRV', 2023, 45000, 1, 'honda_CRV.jpg'),
+('Tesla', 'Model S', 2021, 75000, 1, 'teslaS.jpg'),
+('Tesla', 'Model 3', 2022, 50000, 2, 'tesla3.jpg'),
+('Tesla', 'Model X', 2022, 90000, 2, 'teslaX.jpg'),
+('Tesla', 'Model Y', 2023, 55000, 1, 'teslaY.jpg'),
+('Chevrolet', 'Silverado', 2021, 30000, 1, 'chevSilver.jpg'),
+('Chevrolet', 'Tahoe', 2023, 55000, 2, 'tahoeChev.jpg'),
+('Ford', 'Mustang', 2021, 40000, 1, 'mustang.jpg'),
+('Ford', 'F150', 2023, 45000, 2, 'f150.jpg'),
+('Audi', 'A4', 2021, 35000, 1, 'a4.jpg'),
+('Audi', 'A7', 2022, 85000, 1, 'a7.jpg'),
+('BMW', '3-Series', 2021, 50000, 1, 'bmw3.jpg'),
+('BMW', '5-Series', 2023, 70000, 1, 'bmw5.jpg'),
+('Audi', 'A6', 2024, 60000, 3, 'a6.jpg');
+
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE contact (
     id_contact INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -81,55 +81,11 @@
 </div>
 
 <div class="container mt-5">
-
     <div class="row row-cols-4">
+        <% for (let i = 0; i < items.length; i++) { %>
         <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
+            <%- include ('../partials/containerVoiture.ejs', { voiture: items[i] }) %>
         </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
-        <div class="col">
-            <%- include ('../partials/containerVoiture.ejs') %>
-        </div>
+        <% } %>
     </div>
 </div>
