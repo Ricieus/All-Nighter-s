@@ -29,6 +29,10 @@ app.set("view engine", "ejs");
 // Référence : https://expressjs.com/en/starter/static-files.html
 app.use('/images', express.static(__dirname + '/views/images'));
 
+// Parse application/json et application/x-www-form-urlencoded
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
@@ -60,17 +64,32 @@ app.get('/pages/contact', (req, res) => {
 });
 
 //INSERT pour la page de contact
-app.post('/contact/submit_contact', (req, res) => {
-    var dateRendezVous = dateFormat("2024-9-11", "yyyy-mm-dd");
-    var raisonRendezVous = "Je veux poser une question";
-    var extra = "test";
-    var utilisateurs_id_utilisateurs = 1;
+app.post('/contact/submit_contact', [
+    body('prenom').notEmpty().withMessage('Prénom est requis'),
+    body('nomFamille').notEmpty().withMessage('Nom de Famille est requis'),
+    body('courriel').isEmail().withMessage('Invalide email'),
+    body('telephone').notEmpty().withMessage('Téléphone est requis'),
+    body('daterendezvous').notEmpty().withMessage('La date de rendez-vous est requis'),
+    body('raison').notEmpty().withMessage('Il faut selectionner une raison')
+], (req, res) => {
+    let prenom = req.body.prenom;
+    let nom = req.body.nomFamille;
+    let courriel = req.body.courriel;
+    let telephone = req.body.telephone;
+    let dateRendezVous = dateFormat(req.body.daterendezvous, "yyyy-mm-dd");
+    let raisonRendezVous = req.body.raison;
+    let utilisateurs_id_utilisateurs = 1;
 
-    var sql = "INSERT INTO contact (dateRendezVous, raisonRendezVous, extra, utilisateurs_id_utilisateurs) VALUES ('" + dateRendezVous + "','" + raisonRendezVous + "','" + extra + "','" + utilisateurs_id_utilisateurs + "')";
+
+    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "', '" + dateRendezVous + "','" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
 
     con.query(sql, function (err, result) {
-        if (err) throw err;
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
+        }
         console.log("Insertion effectuée");
+        res.redirect('/');
     });
 });
 
