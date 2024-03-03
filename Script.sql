@@ -33,16 +33,20 @@ VALUES
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE contact (
     id_contact INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prenom VARCHAR(100) NOT NULL,
+    nom VARCHAR(100) NOT NULL,
+    courriel VARCHAR(100) NOT NULL,
+    telephone VARCHAR(100) NOT NULL,
     dateRendezVous DATE NOT NULL,
     raisonRendezVous VARCHAR(100),
-    extra VARCHAR(1000),
     utilisateurs_id_utilisateurs INT NOT NULL,
     FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
-INSERT INTO contact (dateRendezVous, raisonRendezVous, extra, utilisateurs_id_utilisateurs) VALUES
+INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES
 
-     ('2024-02-22', 'Je veux me plaindre', 'Aucun respect dans votre service', 1),
-     ('2024-02-23', 'Je veux laisser un commentaire', 'Bon service tres accueillant', 2);
+     ('Jady','T. Tower','jadtwinningTower@gmail.com','911','2024-02-22', 'Je veux me plaindre', 1),
+     ('Manbir','Comprehension','mabirlovesmath@gmail.com','1234','2024-02-23', 'Je veux laisser un commentaire', 2),
+     ('Marky','Wakey','marcsalibaba@hotmail.com','07734','2024-02-22', 'Je veux me plaindre', 1);
 
 ----------------------------------------------------------------------------------------------------------------------------------
  CREATE TABLE stock (

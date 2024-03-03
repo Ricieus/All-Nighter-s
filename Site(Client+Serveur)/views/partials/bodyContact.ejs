@@ -34,13 +34,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="prenom">Prénom</label>
-                    <input type="text" class="form-control" id="prenom" placeholder="Prénom">
+                    <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="nomFamille">Nom de Famille</label>
-                    <input type="text" class="form-control" id="nomFamille" placeholder="Nom de Famille">
+                    <input type="text" class="form-control" id="nomFamille" name="nomFamille" placeholder="Nom de Famille">
                 </div>
             </div>
         </div>
@@ -48,13 +48,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="courriel">Courriel</label>
-                    <input type="email" class="form-control" id="courriel" placeholder="Courriel">
+                    <input type="email" class="form-control" id="courriel" name="courriel" placeholder="Courriel">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="telephone">Numéro de téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" placeholder="Numéro de téléphone">
+                    <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone">
                 </div>
             </div>
         </div>
@@ -63,19 +63,19 @@
                 <div class="m-2">
                     <div class="form-group">
                         <label for="daterendezvous">Date de rendez-vous</label>
-                        <input type="date" class="form-control" id="daterendezvous">
+                        <input type="date" class="form-control" id="daterendezvous" name="daterendezvous">
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="m-2">
                     <label>Raison de contact:</label>
-                    <select class="selectpicker form-control" multiple data-max-options="1"
+                    <select class="selectpicker form-control" multiple data-max-options="1" id="raison" name="raison"
                         title="Veuillez choisir la raison de contact">
-                        <option value="question">Je veux demander une question</option>
-                        <option value="postuler">Je veux réserver un essai routier</option>
-                        <option value="plainte">Je veux me plaindre</option>
-                        <option value="commentaire">Je veux laisser un commentaire</option>
+                        <option value="Je veux demander une question">Je veux demander une question</option>
+                        <option value="Je veux réserver un essai routier">Je veux réserver un essai routier</option>
+                        <option value="Je veux me plaindre">Je veux me plaindre</option>
+                        <option value="Je veux laisser un commentaire">Je veux laisser un commentaire</option>
                     </select>
                 </div>
             </div>
