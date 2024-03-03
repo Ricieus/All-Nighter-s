@@ -61,12 +61,10 @@ app.get('/pages/contact', (req, res) => {
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
-    var dateRendezVous = dateFormat(2024 - 9 - 11, "yyyy-mm-dd");
+    var dateRendezVous = dateFormat("2024-9-11", "yyyy-mm-dd");
     var raisonRendezVous = "Je veux poser une question";
     var extra = "test";
     var utilisateurs_id_utilisateurs = 1;
-
-    console.log("test")
 
     var sql = "INSERT INTO contact (dateRendezVous, raisonRendezVous, extra, utilisateurs_id_utilisateurs) VALUES ('" + dateRendezVous + "','" + raisonRendezVous + "','" + extra + "','" + utilisateurs_id_utilisateurs + "')";
 
