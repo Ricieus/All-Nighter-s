@@ -96,7 +96,7 @@ app.post('/contact/submit_contact', [
             return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
         }
         console.log("Insertion effectuée");
-        res.redirect('/');
+        res.redirect('/pages/contact');
     });
 });
 
