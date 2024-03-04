@@ -1,0 +1,106 @@
+<!--Code page connection-->
+
+<style>
+    .content {
+        padding-top: 15vh;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .containerContactInscrire {
+        height: 62.5vh;
+        margin: 10%, 0, 10%, 10%;
+    }
+
+    .containerContactConnexion {
+        height: 62.5vh;
+        margin: 10%, 0, 10%, 10%;
+    }
+
+    /*Pour rendre le champ rouge si pas entrer correcctement*/
+    input:invalid {
+        border: 2px solid red;
+    }
+
+
+</style>
+
+
+<style>
+    .content {
+        padding-top: 15vh;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .containerContact {
+        height: 36.4vh;
+        margin: 10%;
+    }
+</style>
+
+
+<div class="topContainerContact" style="margin-top: 5%;">
+    <div class="card rounded-5 shadow-sm mb-5 bg-body rounded" style="width: 35%; margin: auto;">
+    <div class="d-flex align-items-center justify-content-center" data-toggle="buttons">
+        <button class="btn btn-primary mt-5" style="margin-right: 5%;" type="submit" style="width: 20%;"
+            >Carte de crédit</button>
+        <button class="btn btn-primary mt-5" style="margin-left: 5%;" type="submit" style="width: 20%;"
+            >Paypal</button>
+    </div>
+
+
+
+    <div class="containerContactConnexion" id="carteCredit">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <form>
+                <div class="groupe-formulaire">
+                    <h1>Détail de paiement</h1>
+                    <label for="numeroCarte">Numéro de votre carte</label>
+                    <input type="number" class="form-control" id="numeroCarte" placeholder="Numéro de votre carte">
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <div class="groupe-formulaire">
+                            <label for="carteCvc">Carte CVC</label>
+                            <input type="number" class="form-control" id="carteCvc" placeholder="Numéro CVC">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="groupe-formulaire">
+                            <label for="annee">Année</label>
+                            <input type="number" class="form-control" id="annee" placeholder="Année">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="groupe-formulaire">
+                            <label for="mois">Mois</label>
+                            <input type="number" class="form-control" id="mois" placeholder="Mois">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="groupe-formulaire">
+                            <label for="jour">Jour</label>
+                            <input type="number" class="form-control" id="jour" placeholder="Jour">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary">Continuer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
