@@ -41,44 +41,47 @@
     <div class="boiteMilieu">
         <div class="d-flex align-items-center justify-content-center">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="centreColonne">
-                            <select class="form-control selectpicker" id="test" style="width: 125%;"
-                                data-live-search="true" title="Veuillez choisir la marque">
-                                <option data-tokens="toyota">Toyota</option>
-                                <option data-tokens="honda">Honda</option>
-                                <option data-tokens="audi">Audi</option>
-                            </select>
+                <form action="/pages/catalogue/submit_catalogue" method="post">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="centreColonne">
+                                <select class="form-control selectpicker" id="test" style="width: 125%;"
+                                    data-live-search="true" title="Veuillez choisir la marque" name="marque">
+                                    <option data-tokens="Toyota">Toyota</option>
+                                    <option data-tokens="honda">Honda</option>
+                                    <option data-tokens="audi">Audi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="centreColonne">
+                                <select class="selectpicker form-control" data-live-search="true"
+                                    title="Veuillez choisir le modèle" name="modele">
+                                    <option data-tokens="Corolla">Corolla</option>
+                                    <option data-tokens="modele2">Modele2</option>
+                                    <option data-tokens="modele3">Modele3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="centreColonne">
+                                <select class="selectpicker form-control" title="Veuillez choisir le prix" name="prix">
+                                    <option data-tokens="10000">10 000</option>
+                                    <option data-tokens="25000.00">25 000</option>
+                                    <option data-tokens="30000">30 000</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary" type="submit" style="width: 100%;">Rechercher</button>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="centreColonne">
-                            <select class="selectpicker form-control" data-live-search="true"
-                                title="Veuillez choisir le modèle">
-                                <option data-tokens="modele1">Modele1</option>
-                                <option data-tokens="modele2">Modele2</option>
-                                <option data-tokens="modele3">Modele3</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="centreColonne">
-                            <select class="selectpicker form-control" title="Veuillez choisir le prix">
-                                <option data-tokens="10000">10 000</option>
-                                <option data-tokens="20000">20 000</option>
-                                <option data-tokens="30000">30 000</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary" type="submit" style="width: 100%;">Rechercher</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <div class="container mt-5">
     <div class="row row-cols-4">

@@ -96,7 +96,7 @@ app.post('/contact/submit_contact', [
             return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
         }
         console.log("Insertion effectuée");
-        res.redirect('/');
+        res.redirect('/pages/contact');
     });
 });
 
@@ -119,6 +119,34 @@ app.get('/pages/catalogue', (req, res) => {
       });
     });
   });
+  app.post('/pages/catalogue/submit_catalogue', (req, res) => {
+    const { marque, modele, prix} = req.body;
+
+    // Construire votre requête SQL en fonction des valeurs reçues
+    let query = "SELECT * FROM voitures WHERE marque = 'Toyota' AND modele = 'Corolla' AND prix <= REPLACE('25000', '$', '') + 0 AND image = 'toyota_corrola.jpg'" ; // WHERE 1=1 pour éviter les cas où tous les filtres sont vides
+
+    if (marque) {
+        query += ` AND marque = '${marque}'`;
+    }
+
+    if (modele) {
+        query += ` AND modele = '${modele}'`;
+    }
+
+    if (prix) {
+        query += ` AND prix <= ${prix}`;
+    }
+    
+
+    con.query(query, (err, results) => {
+        if (err) throw err;
+        res.render("pages/catalogue", {
+            pageTitle: "Concessionnaire Rubious",
+            items: results
+        });
+    });
+});
+
 
 /*
     Importation de Bootstrap
