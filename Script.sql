@@ -27,8 +27,6 @@ CREATE TABLE voitures (
     FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
 
-INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs)
-VALUES 
 INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image)
 VALUES 
 ('Toyota', 'Corolla', 2021, 25000, 1, 'toyota_corrola.jpg'),
@@ -46,7 +44,7 @@ VALUES
 ('Audi', 'A7', 2022, 85000, 1, 'a7.jpg'),
 ('BMW', '3-Series', 2021, 50000, 1, 'bmw3.jpg'),
 ('BMW', '5-Series', 2023, 70000, 1, 'bmw5.jpg'),
-('Audi', 'A6', 2024, 60000, 3, 'a6.jpg');
+('Audi', 'A6', 2024, 60000, 2, 'a6.jpg');
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE contact (

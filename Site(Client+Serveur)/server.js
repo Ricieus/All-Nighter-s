@@ -100,6 +100,15 @@ app.post('/contact/submit_contact', [
     });
 });
 
+app.get('/pages/index', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/index", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
 
 app.get('/pages/catalogue', (req, res) => {
     con.query("SELECT * FROM voitures", (err, results) => {
@@ -110,8 +119,6 @@ app.get('/pages/catalogue', (req, res) => {
       });
     });
   });
-
-
 
 /*
     Importation de Bootstrap
