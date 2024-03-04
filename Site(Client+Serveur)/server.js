@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import mysql from "mysql";
 import { body, validationResult } from "express-validator";
 import dateFormat from "dateformat";
+import { uptime } from "process";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -76,10 +77,16 @@ app.post('/contact/submit_contact', [
     let nom = req.body.nomFamille;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
-    let dateRendezVous = dateFormat(req.body.daterendezvous, "yyyy-mm-dd");
+
+    let dateArray = req.body.daterendezvous.split("-");
+    let year = dateArray[0];
+    let month = parseInt(dateArray[1], 10) - 1;
+    let date = dateArray[2];
+    let _entryDate = new Date(year, month, date);
+
+    let dateRendezVous = dateFormat(_entryDate, "yyyy-mm-dd");
     let raisonRendezVous = req.body.raison;
     let utilisateurs_id_utilisateurs = 1;
-
 
     var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "', '" + dateRendezVous + "','" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
 
