@@ -9,12 +9,7 @@
         justify-content: center;
     }
 
-    .containerContactInscrire {
-        height: 62.5vh;
-        margin: 10%, 0, 10%, 10%;
-    }
-
-    .containerContactConnexion {
+    .containerPaiement {
         height: 62.5vh;
         margin: 10%, 0, 10%, 10%;
     }
@@ -43,23 +38,59 @@
     }
 </style>
 
-
-<div class="topContainerContact" style="margin-top: 5%;">
-    <div class="card rounded-5 shadow-sm mb-5 bg-body rounded" style="width: 35%; margin: auto;">
-    <div class="d-flex align-items-center justify-content-center" data-toggle="buttons">
-        <button class="btn btn-primary mt-5" style="margin-right: 5%;" type="submit" style="width: 20%;"
-            >Carte de crédit</button>
-        <button class="btn btn-primary mt-5" style="margin-left: 5%;" type="submit" style="width: 20%;"
-            >Paypal</button>
-    </div>
-
-
-
-    <div class="containerContactConnexion" id="carteCredit">
+    <div class="containerPaiement" id="carteCredit">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <form>
                 <div class="groupe-formulaire">
-                    <h1>Détail de paiement</h1>
+                    <h1>1. Addresse de livraison</h1>
+                    <label for="Addresse">Addresse de maison</label>
+                    <input type="text" class="form-control" id="Addresse" placeholder="Addresse">
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <div class="groupe-formulaire">
+                            <label for="ville">Ville</label>
+                            <input type="text" class="form-control" id="ville" placeholder="ville">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="groupe-formulaire">
+                            <label for="zip">Code Postal</label>
+                            <input type="text" class="form-control" id="zip" placeholder="Code Postal">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="containerPaiement" id="modePayment">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <form>
+                <div class="groupe-formulaire">
+                    <h1>2. Choisissez un mode de paiement</h1>
+                </div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="creditCard" autocomplete="off" checked> Carte de crédit
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="paypal" autocomplete="off"> PayPal
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="options" id="googlePay" autocomplete="off"> GooglePay
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="containerPaiement" id="carteCredit">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <form>
+                <div class="groupe-formulaire">
+                    <h1>3. Choisissez un moyen de paiement</h1>
                     <label for="numeroCarte">Numéro de votre carte</label>
                     <input type="number" class="form-control" id="numeroCarte" placeholder="Numéro de votre carte">
                 </div>
@@ -96,8 +127,6 @@
         </div>
     </div>
 </div>
-</div>
-
 
 
 
