@@ -120,7 +120,7 @@ app.get('/pages/catalogue', (req, res) => {
       });
     });
   });
-  app.post('/pages/catalogue/submit_catalogue', (req, res) => {
+  app.post('/catalogue/submit_catalogue', (req, res) => {
     const { marque, modele, prix } = req.body;
 
     // Initialiser la requête avec la sélection de base
