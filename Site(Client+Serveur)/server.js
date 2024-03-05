@@ -9,6 +9,7 @@ import mysql from "mysql";
 import { body, validationResult } from "express-validator";
 import dateFormat from "dateformat";
 import { uptime } from "process";
+import { count } from "console";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -117,6 +118,75 @@ app.get('/pages/catalogue', (req, res) => {
         pageTitle: "Concessionnaire Rubious",
         items: results
       });
+    });
+  });
+  app.post('/pages/catalogue/submit_catalogue', (req, res) => {
+    const { marque, modele, prix } = req.body;
+
+    // Initialiser la requête avec la sélection de base
+    let query = "SELECT * FROM voitures WHERE 1=1";
+
+    // Ajouter des conditions basées sur les valeurs sélectionnées
+    if (marque) {
+        query += ` AND marque = '${marque}'`;
+    }
+
+    if (modele) {
+        query += ` AND modele = '${modele}'`;
+    }
+
+    if (prix) {
+        query += ` AND prix <= ${prix}`;
+    }
+
+    // Exécuter la requête SQL
+    con.query(query, (err, results) => {
+        if (err) throw err;
+        res.render("pages/catalogue", {
+            pageTitle: "Concessionnaire Rubious",
+            items: results
+        });
+    });
+});
+
+app.get('/get_marques', (req, res) => {
+    con.query('SELECT DISTINCT marque FROM voitures', (err, rows) => {
+      if (err) {
+        console.error('Erreur lors de la récupération des marques :', err);
+        res.status(500).send('Erreur lors de la récupération des marques');
+        return;
+      }
+      const marques = rows.map(row => row.marque);
+      res.json(marques);
+    });
+  });
+  
+  // Route pour récupérer les modèles depuis la base de données
+  app.get('/get_modeles', (req, res) => {
+    const marque = req.query.marque; // Récupérer la marque sélectionnée depuis la requête
+    const query = `SELECT DISTINCT modele FROM voitures WHERE marque = '${marque}'`;
+    con.query(query, (err, rows) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des modèles :', err);
+            res.status(500).send('Erreur lors de la récupération des modèles');
+            return;
+        }
+        const modeles = rows.map(row => row.modele);
+        res.json(modeles);
+    });
+});
+
+  
+  // Route pour récupérer les prix depuis la base de données
+  app.get('/get_prix', (req, res) => {
+    con.query('SELECT DISTINCT prix FROM voitures', (err, rows) => {
+      if (err) {
+        console.error('Erreur lors de la récupération des prix :', err);
+        res.status(500).send('Erreur lors de la récupération des prix');
+        return;
+      }
+      const prix = rows.map(row => row.prix);
+      res.json(prix);
     });
   });
 
