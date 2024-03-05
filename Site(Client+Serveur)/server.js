@@ -190,6 +190,20 @@ app.get('/get_marques', (req, res) => {
     });
   });
 
+
+//Test pour page paiement:
+app.get('/pages/paiement', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/paiement", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+//End test
+
 /*
     Importation de Bootstrap
 */
