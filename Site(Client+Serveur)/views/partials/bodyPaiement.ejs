@@ -1,5 +1,3 @@
-<!--Code page connection-->
-
 <style>
     .content {
         padding-top: 15vh;
@@ -12,11 +10,6 @@
     .containerPaiement {
         height: 62.5vh;
         margin: 10%, 0, 10%, 10%;
-    }
-
-    /*Pour rendre le champ rouge si pas entrer correcctement*/
-    input:invalid {
-        border: 2px solid red;
     }
 
 
@@ -59,38 +52,26 @@
                             <input type="text" class="form-control" id="zip" placeholder="Code Postal">
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <div class="containerPaiement" id="modePayment">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <form>
-                <div class="groupe-formulaire">
-                    <h1>2. Choisissez un mode de paiement</h1>
+                    <div class="groupe-formulaire mt-5">
+                        <h1>2. Choisissez un mode de paiement</h1>
+                    </div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="creditCard" autocomplete="off" checked> Carte de crédit
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="paypal" autocomplete="off"> PayPal
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="googlePay" autocomplete="off"> GooglePay
+                        </label>
+                    </div>
                 </div>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                        <input type="radio" name="options" id="creditCard" autocomplete="off" checked> Carte de crédit
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="options" id="paypal" autocomplete="off"> PayPal
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="options" id="googlePay" autocomplete="off"> GooglePay
-                    </label>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    
-    <div class="containerPaiement" id="carteCredit">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <form>
                 <div class="groupe-formulaire">
-                    <h1>3. Choisissez un moyen de paiement</h1>
+                    <h1>3. Payer ici</h1>
+                </div>
+                <div class="groupe-formulaire">
                     <label for="numeroCarte">Numéro de votre carte</label>
                     <input type="number" class="form-control" id="numeroCarte" placeholder="Numéro de votre carte">
                 </div>
@@ -120,14 +101,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">Continuer</button>
-                </div>
             </form>
         </div>
     </div>
-</div>
-
 
 
 
