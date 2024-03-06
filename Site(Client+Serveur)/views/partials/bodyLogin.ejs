@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,8 @@
         }
 
         .card-container {
-            width: 75vh;
+            width: 90vh;
+            height: 75vh;
             margin: auto;
         }
 
@@ -58,6 +60,7 @@
         }
     </script>
 </head>
+
 <body>
     <div class="content">
         <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
@@ -65,11 +68,12 @@
                 <button class="btn btn-primary mt-3" onclick="toggleForms('inscrire', 'connection')">S'inscrire</button>
                 <button class="btn btn-primary mt-3" onclick="toggleForms('connection', 'inscrire')">Connexion</button>
             </div>
-            <div class="d-flex align-items-center justify-content-center mt-5">
+            <div class="d-flex align-items-center justify-content-center mt-3">
+
                 <div class="containerContactConnexion" id="inscrire">
-                    <form>
+                    <form action="/login/submit_login" method="post">
                         <div class="ligne-formulaire">
-                            <h1>Merci de vous inscrire!</h1>
+                            <h1 style="text-align: center;">Merci de vous inscrire!</h1>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="groupe-formulaire">
@@ -94,6 +98,10 @@
                             <input type="tel" class="form-control" id="telephone" placeholder="Téléphone">
                         </div>
                         <div class="groupe-formulaire">
+                            <label for="adresse">Adresse</label>
+                            <input type="text" class="form-control" id="adresse" placeholder="Adresse">
+                        </div>
+                        <div class="groupe-formulaire">
                             <label for="motdepasse">Mot de passe</label>
                             <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
                         </div>
@@ -107,7 +115,7 @@
                         </div>
                     </form>
                 </div>
-    
+
                 <div class="containerContactInscrire" id="connection" style="display: none;">
                     <form>
                         <div class="groupe-formulaire">
@@ -132,4 +140,5 @@
         </div>
     </div>
 </body>
+
 </html>

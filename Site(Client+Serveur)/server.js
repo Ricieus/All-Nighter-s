@@ -71,7 +71,20 @@ app.post('/login/submit_login', (req, res) => {
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
     let motdePasse = req.body.motdePasse;
+    let adresse = req.body.adresse;
+
+    var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + motdePasse + "','" + telephone + "','" + adresse + "')";
+
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
+        }
+        console.log("Insertion effectuée");
+        res.redirect('/pages/login');
+    });
 });
+
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', [
@@ -121,14 +134,14 @@ app.get('/pages/index', (req, res) => {
 
 app.get('/pages/catalogue', (req, res) => {
     con.query("SELECT * FROM voitures", (err, results) => {
-      if (err) throw err;
-      res.render("pages/catalogue", {
-        pageTitle: "Concessionnaire Rubious",
-        items: results
-      });
+        if (err) throw err;
+        res.render("pages/catalogue", {
+            pageTitle: "Concessionnaire Rubious",
+            items: results
+        });
     });
-  });
-  app.post('/catalogue/submit_catalogue', (req, res) => {
+});
+app.post('/catalogue/submit_catalogue', (req, res) => {
     const { marque, modele, prix } = req.body;
 
     // Initialiser la requête avec la sélection de base
@@ -159,18 +172,18 @@ app.get('/pages/catalogue', (req, res) => {
 
 app.get('/get_marques', (req, res) => {
     con.query('SELECT DISTINCT marque FROM voitures', (err, rows) => {
-      if (err) {
-        console.error('Erreur lors de la récupération des marques :', err);
-        res.status(500).send('Erreur lors de la récupération des marques');
-        return;
-      }
-      const marques = rows.map(row => row.marque);
-      res.json(marques);
+        if (err) {
+            console.error('Erreur lors de la récupération des marques :', err);
+            res.status(500).send('Erreur lors de la récupération des marques');
+            return;
+        }
+        const marques = rows.map(row => row.marque);
+        res.json(marques);
     });
-  });
-  
-  // Route pour récupérer les modèles depuis la base de données
-  app.get('/get_modeles', (req, res) => {
+});
+
+// Route pour récupérer les modèles depuis la base de données
+app.get('/get_modeles', (req, res) => {
     const marque = req.query.marque; // Récupérer la marque sélectionnée depuis la requête
     const query = `SELECT DISTINCT modele FROM voitures WHERE marque = '${marque}'`;
     con.query(query, (err, rows) => {
