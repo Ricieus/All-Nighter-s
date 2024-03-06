@@ -65,6 +65,14 @@ app.get('/pages/contact', (req, res) => {
     });
 });
 
+app.post('/login/submit_login', (req, res) => {
+    let prenom = req.body.prenom;
+    let nom = req.body.nomFamille;
+    let courriel = req.body.courriel;
+    let telephone = req.body.telephone;
+    let motdePasse = req.body.motdePasse;
+});
+
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', [
     body('prenom').notEmpty().withMessage('Prénom est requis'),
@@ -175,21 +183,6 @@ app.get('/get_marques', (req, res) => {
         res.json(modeles);
     });
 });
-
-  
-  // Route pour récupérer les prix depuis la base de données
-  app.get('/get_prix', (req, res) => {
-    con.query('SELECT DISTINCT prix FROM voitures', (err, rows) => {
-      if (err) {
-        console.error('Erreur lors de la récupération des prix :', err);
-        res.status(500).send('Erreur lors de la récupération des prix');
-        return;
-      }
-      const prix = rows.map(row => row.prix);
-      res.json(prix);
-    });
-  });
-
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {

@@ -1,165 +1,135 @@
-<!--Code page connection-->
-
-<style>
-    .content {
-        padding-top: 15vh;
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .containerContactInscrire {
-        height: 62.5vh;
-        margin: 10%, 0, 10%, 10%;
-    }
-
-    .containerContactConnexion {
-        height: 62.5vh;
-        margin: 10%, 0, 10%, 10%;
-    }
-
-    /*Pour rendre le champ rouge si pas entrer correcctement*/
-    input:invalid {
-        border: 2px solid red;
-    }
-
-
-</style>
-
-<script>
-    function changerBoiteInscrire() {
-        let inscrire = document.getElementById("inscrire");
-        let connection = document.getElementById("connection")
-
-        if (inscrire.style.display == "none") {
-            inscrire.style.display = "";
-            connection.style.display = "none";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
-    }
 
-    function changerBoiteconnexion() {
-        let inscrire = document.getElementById("inscrire");
-        let connection = document.getElementById("connection")
-
-        if (connection.style.display == "none") {
-            inscrire.style.display = "none";
-            connection.style.display = "";
+        .content {
+            padding-top: 15vh;
+            align-items: center;
+            justify-content: center;
         }
-    }
 
-    function afficherMotDePasse() {
-        var motDePasse = document.getElementById("motdepasse");
-        /*Source: Chatgpt*/
-        if (motDePasse.type === "password") {
-            motDePasse.type = "text";
-        } else {
-            motDePasse.type = "password";
+        .card-container {
+            width: 75vh;
+            margin: auto;
         }
-    }
-</script>
 
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+        }
 
+        .btn-primary {
+            width: 30%;
+            margin: 0 5%;
+        }
 
-<style>
-    .content {
-        padding-top: 15vh;
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .containerContactConnexion,
+        .containerContactInscrire {
+            height: 50vh;
+        }
 
-    .containerContact {
-        height: 36.4vh;
-        margin: 10%;
-    }
+        /* Pour rendre le champ rouge si pas entré correctement */
+        input:invalid {
+            border: 2px solid red;
+        }
+    </style>
+    <script>
+        function toggleForms(formToShow, formToHide) {
+            document.getElementById(formToShow).style.display = "";
+            document.getElementById(formToHide).style.display = "none";
+        }
 
-    /*Pour rendre le champ rouge si pas entrer correcctement*/
-    input:invalid {
-        border: 2px solid red;
-    }
-</style>
-
-
-<div class="topContainerContact" style="margin-top: 5%;">
-    <div class="card rounded-5 shadow-sm mb-5 bg-body rounded" style="width: 35%; margin: auto;">
-    <div class="d-flex align-items-center justify-content-center" data-toggle="buttons">
-        <button class="btn btn-primary mt-5" style="margin-right: 5%;" type="submit" style="width: 20%;"
-            onclick="changerBoiteconnexion()">S'inscrire</button>
-        <button class="btn btn-primary mt-5" style="margin-left: 5%;" type="submit" style="width: 20%;"
-            onclick="changerBoiteInscrire()">Connexion</button>
-    </div>
-
-
-
-    <div class="containerContactConnexion" id="inscrire">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <form>
-                <div class="groupe-formulaire">
-                    <h1>Content de vous revoir!</h1>
-                    <label for="courriel">Courriel</label>
-                    <input type="email" class="form-control" id="courriel" placeholder="Courriel">
-                </div>
-                <div class="groupe-formulaire mt-2">
-                    <label for="motdepasse">Mot de passe</label>
-                    <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
-                    <div class="checkbox">
-                        <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                        <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">Se connecter</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-    <div class="containerContactInscrire" id="connection" style="display: none;">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <form>
-                <div class="ligne-formulaire">
-                    <h1>Merci de vous inscrire!</h1>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="groupe-formulaire">
-                                <label for="prenom">Prénom</label>
-                                <input type="text" class="form-control" id="prenom" placeholder="Prénom">
+        function togglePasswordVisibility() {
+            // Source : ChatGPT
+            let passwordInput = document.getElementById("motdepasse");
+            if (motDePasse.type == "password") {
+                motDePasse.type = "text";
+            } else {
+                motDePasse.type = "password";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="content">
+        <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
+            <div class="d-flex align-items-center justify-content-center btn-group" data-toggle="buttons">
+                <button class="btn btn-primary mt-3" onclick="toggleForms('inscrire', 'connection')">S'inscrire</button>
+                <button class="btn btn-primary mt-3" onclick="toggleForms('connection', 'inscrire')">Connexion</button>
+            </div>
+            <div class="d-flex align-items-center justify-content-center mt-5">
+                <div class="containerContactConnexion" id="inscrire">
+                    <form>
+                        <div class="ligne-formulaire">
+                            <h1>Merci de vous inscrire!</h1>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="groupe-formulaire">
+                                        <label for="prenom">Prénom</label>
+                                        <input type="text" class="form-control" id="prenom" placeholder="Prénom">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="groupe-formulaire">
+                                        <label for="nom">Nom</label>
+                                        <input type="text" class="form-control" id="nom" placeholder="Nom">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="groupe-formulaire">
-                                <label for="nom">Nom</label>
-                                <input type="text" class="form-control" id="nom" placeholder="Nom">
+                        <div class="groupe-formulaire">
+                            <label for="courriel">Courriel</label>
+                            <input type="email" class="form-control" id="courriel" placeholder="Courriel">
+                        </div>
+                        <div class="groupe-formulaire">
+                            <label for="telephone">Téléphone</label>
+                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone">
+                        </div>
+                        <div class="groupe-formulaire">
+                            <label for="motdepasse">Mot de passe</label>
+                            <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
+                        </div>
+                        <div class="groupe-formulaire">
+                            <label for="confirmerMotPasse">Confirmer votre mot de passe</label>
+                            <input type="password" class="form-control" id="confirmerMotPasse"
+                                placeholder="Confirmer votre mot de passe">
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        </div>
+                    </form>
+                </div>
+    
+                <div class="containerContactInscrire" id="connection" style="display: none;">
+                    <form>
+                        <div class="groupe-formulaire">
+                            <h1>Content de vous revoir!</h1>
+                            <label for="courriel">Courriel</label>
+                            <input type="email" class="form-control" id="courriel" placeholder="Courriel">
+                        </div>
+                        <div class="groupe-formulaire mt-2">
+                            <label for="motdepasse">Mot de passe</label>
+                            <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
+                            <div class="checkbox">
+                                <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
+                                <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
                             </div>
                         </div>
-                    </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="groupe-formulaire">
-                    <label for="courriel">Courriel</label>
-                    <input type="email" class="form-control" id="courriel" placeholder="Courriel">
-                </div>
-                <div class="groupe-formulaire">
-                    <label for="telephone">Téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" placeholder="Téléphone">
-                </div>
-                <div class="groupe-formulaire">
-                    <label for="motdepasse">Mot de passe</label>
-                    <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
-                </div>
-                <div class="groupe-formulaire">
-                    <label for="confirmerMotPasse">Confirmer votre mot de passe</label>
-                    <input type="password" class="form-control" id="confirmerMotPasse"
-                        placeholder="Confirmer votre mot de passe">
-                </div>
-                <div class="mt-2">
-                    <button type="submit" class="btn btn-primary">S'inscrire</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-</div>
+</body>
+</html>
