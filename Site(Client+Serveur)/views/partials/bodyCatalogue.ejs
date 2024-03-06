@@ -52,15 +52,15 @@
                         </div>
                         <div class="col-md-3">
                             <div class="centreColonne">
-                                <select class="selectpicker form-control" data-live-search="true"
-                                    title="Veuillez choisir le modèle" name="modele" id="modele">
+                                <select selected="true" class="selectpicker form-control" data-live-search="true"
+                                    title="Veuillez choisir le modèle" name="modele" id="modele" disabled>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="centreColonne">
                                 <select class="selectpicker form-control" title="Veuillez choisir le prix" name="prix"
-                                    id="prix" style="width: 125%;" data-live-search="true" title="Veuillez choisir la marque" name="marque">
+                                    id="prix" style="width: 125%;" data-live-search="true" disabled>
                                 </select>
                             </div>
                         </div>
@@ -73,52 +73,72 @@
         </div>
     </div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    // Fonction pour récupérer les données depuis le serveur
-    function getData(url, selectId) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(function(item) {
-                    var option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    document.getElementById(selectId).appendChild(option);
-                });
-                // Rafraîchir le selectpicker une fois les options ajoutées
-                var selectpicker = document.getElementById(selectId);
-                if (selectpicker.classList.contains('selectpicker')) {
-                    $(`#${selectId}`).selectpicker('refresh');
+        // Fonction pour récupérer les données depuis le serveur
+        function getData(url, selectId) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(function(item) {
+                        var option = document.createElement('option');
+                        option.value = item;
+                        option.textContent = item;
+                        document.getElementById(selectId).appendChild(option);
+                    });
+                    // Rafraîchir le selectpicker une fois les options ajoutées
+                    var selectpicker = document.getElementById(selectId);
+                    if (selectpicker.classList.contains('selectpicker')) {
+                        $(`#${selectId}`).selectpicker('refresh');
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la récupération des données :', error));
+        }
+
+        // Charger les marques depuis la base de données
+        getData('/get_marques', 'marque');
+
+        // Écouter les changements de sélection de la marque
+        document.getElementById('marque').addEventListener('change', function() {
+            var marque = this.value;
+            if (marque) {
+                // Effacer complètement les anciennes options de modèle
+                var modeleSelect = document.getElementById('modele');
+                modeleSelect.enabled = true;
+                modeleSelect.innerHTML = '';
+
+                
+                // Charger les modèles de la marque sélectionnée depuis la base de données
+                getData(`/get_modeles?marque=${marque}`, 'modele');
+            } else {
+                var modeleSelect = document.getElementById('modele');
+            }
+        });
+        // Charger les prix depuis la base de données
+        getData('/get_prix', 'prix');
+
+        function enableSelect(currentSelectId, prochainSelectID) {
+            document.getElementById(currentSelectId).addEventListener('change', function () {
+                let currentValue = this.value;
+                let prochainSelect = document.getElementById(prochainSelectID);
+
+                prochainSelect.disabled = !currentValue;
+
+                prochainSelect.value = '';
+                if (prochainSelectID == 'modele' && prochainSelect.disabled) {
+                    document.getElementById('prix').disabled = true;
+                    document.getElementById('prix').value = '';
                 }
-            })
-            .catch(error => console.error('Erreur lors de la récupération des données :', error));
-    }
 
-    // Charger les marques depuis la base de données
-    getData('/get_marques', 'marque');
-
-    // Écouter les changements de sélection de la marque
-    // Écouter les changements de sélection de la marque
-document.getElementById('marque').addEventListener('change', function() {
-    var marque = this.value;
-    if (marque) {
-        // Effacer complètement les anciennes options de modèle
-        var modeleSelect = document.getElementById('modele');
-        modeleSelect.innerHTML = '';
-
-        
-        // Charger les modèles de la marque sélectionnée depuis la base de données
-        getData(`/get_modeles?marque=${marque}`, 'modele');
-    }
-});
-
-
-    // Charger les prix depuis la base de données
-    getData('/get_prix', 'prix');
-});
-
+                if (!prochainSelect.disabled) {
+                    var previousSelectValue = document.getElementById(currentSelectId).value;
+                    getData(`/get_${prochainSelectID}?${currentSelectId}=${previousSelectValue}`, prochainSelectID);
+                }
+            });
+        }
+        enableSelect('marque', 'modele');
+        enableSelect('modele', 'prix');
+    });
 </script>
 
 
