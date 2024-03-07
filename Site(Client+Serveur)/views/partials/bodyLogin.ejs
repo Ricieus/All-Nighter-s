@@ -159,7 +159,6 @@
         </div>
     </div>
     <script>
-           
         // JavaScript pour la validation côté client
         document.getElementById('inscriptionForm').addEventListener('submit', function (event) {
             const prenom = document.getElementById('prenom');
@@ -202,12 +201,17 @@
                 isValid = false;
             }
 
-            if (!telephone.value) {
-                document.getElementById('telephoneError').innerText = 'Téléphone est requis';
-                document.getElementById('telephoneError').style.display = 'block';
-                telephone.classList.add('error-border');
-                isValid = false;
-            }
+          
+         const numeroTelephone = telephone.value.replace(/[\s-]/g, ''); // Aide avec chatGPT
+
+         // Vérifier si la longueur du numéro de téléphone est exactement 10
+          if (!numeroTelephone || numeroTelephone.length !== 10) {
+         document.getElementById('telephoneError').innerText = 'Numéro invalide';
+         document.getElementById('telephoneError').style.display = 'block';
+         telephone.classList.add('error-border');
+         isValid = false;
+        }
+
 
             if (!adresse.value) {
                 document.getElementById('adresseError').innerText = 'Adresse est requise';
@@ -222,6 +226,8 @@
                 motdepasse.classList.add('error-border');
                 isValid = false;
             }
+            
+           
 
             if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
                 document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
