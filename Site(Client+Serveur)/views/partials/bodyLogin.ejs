@@ -136,7 +136,7 @@
                 </div>
 
                 <div class="containerContactInscrire" id="connection" style="display: none;">
-                    <form action="/login/submit_connexion">
+                    <form action="/login/submit_connexion" method="get">
                         <div class="groupe-formulaire">
                             <h1>Content de vous revoir!</h1>
                             <label for="courriel">Courriel</label>
@@ -250,7 +250,7 @@
         }
         //Fonction pour activer la visibilité du mot de passe.
         function afficherMotDePasse() {
-            var motDePasse = document.getElementById("motDepasse");
+            var motDePasse = document.getElementById("motDePasseConnexion");
             if (motDePasse.type === "password") {
                 motDePasse.type = "text";
             } else {
