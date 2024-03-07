@@ -8,7 +8,7 @@ CREATE TABLE utilisateurs (
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL,
     motdepasse VARCHAR(150) NOT NULL,
-    telephone INT NOT NULL,
+    telephone BIGINT NOT NULL,
     adresse VARCHAR(200) NOT NULL
 );
 INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse)
