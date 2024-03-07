@@ -66,14 +66,21 @@ app.get('/pages/contact', (req, res) => {
 });
 
 //Connexion:
-// app.get('/login/submit_connexion', (req, res) => {
-//     let courriel = req.body.courriel;
-//     let motdePasse = req.body.motDepasse;
+app.get('/login/submit_connexion', (req, res) => {
+    let courriel = req.body.courrielConnexion;
+    let motdePasse = req.body.motDePasseConnexion;
+    console.log(courriel, motdePasse);
 
-//     var sql = "SELECT "courriel" + ," "  , motdepasse FROM utilisateurs";
-// } ){
 
-// }
+    var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = " + courriel + " AND motdepasse = " + motdePasse + ";";
+
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+        };
+
+    })
+});
 
 
 app.post('/login/submit_login', (req, res) => {
