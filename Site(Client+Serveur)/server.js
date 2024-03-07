@@ -92,34 +92,29 @@ app.post('/contact/submit_contact', (req, res) => {
     let nom = req.body.nomFamille;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
+    let raisonRendezVous = req.body.raison;
+    let utilisateurs_id_utilisateurs = 1;
 
-    let dateArray = req.body.daterendezvous.split("-");
-    let year = dateArray[0];
-    let month = parseInt(dateArray[1], 10) - 1;
-    let date = dateArray[2];
-    let _entryDate = new Date(year, month, date);
+    // Date de rendez-vous
+    let dateRendezVous = req.body.daterendezvous ? "'" + req.body.daterendezvous + "'" : 'NULL';
 
-    // Vérifier si la date est valide
-    if (!isNaN(_entryDate.getTime())) {
-        let dateRendezVous = dateFormat(_entryDate, "yyyy-mm-dd");
-        let raisonRendezVous = req.body.raison;
-        let utilisateurs_id_utilisateurs = 1;
+    // Requête SQL d'insertion
+    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "'," + dateRendezVous + ",'" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
 
-        var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "', '" + dateRendezVous + "','" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
-
-        con.query(sql, function (err, result) {
-            if (err) {
-                console.log(err);
-                return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
-            }
-            console.log("Insertion effectuée");
-            res.redirect('/pages/contact');
-        });
-    } else {
-        // Si la date est invalide, gérer l'erreur ici
-       res.redirect('/pages/contact');
-    }
+    // Exécuter la requête d'insertion
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
+        }
+        console.log("Insertion effectuée");
+        res.redirect('/pages/contact');
+    });
 });
+
+
+
+
 
 app.get('/pages/index', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
