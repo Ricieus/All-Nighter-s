@@ -108,7 +108,7 @@
                         </div>
                         <div class="groupe-formulaire">
                             <label for="telephone">Téléphone</label>
-                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone"
+                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" maxlength="10" 
                                 name="telephone">
                             <div id="telephoneError" class="error-message"></div>
                         </div>
@@ -202,16 +202,15 @@
             }
 
           
-         const numeroTelephone = telephone.value.replace(/[\s-]/g, ''); // Aide avec chatGPT
+            const numeroTelephone = telephone.value.replace(/\D/g, '');
 
-         // Vérifier si la longueur du numéro de téléphone est exactement 10
-          if (!numeroTelephone || numeroTelephone.length !== 10) {
-         document.getElementById('telephoneError').innerText = 'Numéro invalide';
-         document.getElementById('telephoneError').style.display = 'block';
-         telephone.classList.add('error-border');
-         isValid = false;
-        }
-
+// Vérifier si la longueur du numéro de téléphone est exactement 10
+if (!numeroTelephone || numeroTelephone.length !== 10) {
+    document.getElementById('telephoneError').innerText = 'Numéro invalide';
+    document.getElementById('telephoneError').style.display = 'block';
+    telephone.classList.add('error-border');
+    isValid = false;
+}
 
             if (!adresse.value) {
                 document.getElementById('adresseError').innerText = 'Adresse est requise';
