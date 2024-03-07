@@ -67,10 +67,10 @@ app.get('/pages/contact', (req, res) => {
 
 app.post('/login/submit_login', (req, res) => {
     let prenom = req.body.prenom;
-    let nom = req.body.nomFamille;
+    let nom = req.body.nom;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
-    let motdePasse = req.body.motdePasse;
+    let motdePasse = req.body.confirmerMotPasse;
     let adresse = req.body.adresse;
 
     var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + motdePasse + "','" + telephone + "','" + adresse + "')";
@@ -81,7 +81,7 @@ app.post('/login/submit_login', (req, res) => {
             return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
         }
         console.log("Insertion effectuée");
-        res.redirect('/pages/login');
+        res.redirect('/');
     });
 });
 
