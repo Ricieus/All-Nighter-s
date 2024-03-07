@@ -65,6 +65,17 @@ app.get('/pages/contact', (req, res) => {
     });
 });
 
+//Connexion:
+// app.get('/login/submit_connexion', (req, res) => {
+//     let courriel = req.body.courriel;
+//     let motdePasse = req.body.motDepasse;
+
+//     var sql = "SELECT "courriel" + ," "  , motdepasse FROM utilisateurs";
+// } ){
+
+// }
+
+
 app.post('/login/submit_login', (req, res) => {
     let prenom = req.body.prenom;
     let nom = req.body.nom;
