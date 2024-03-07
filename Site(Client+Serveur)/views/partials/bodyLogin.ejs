@@ -44,12 +44,13 @@
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none; /* Les messages d'erreur sont cachés par défaut */
+            display: none;
+            /* Les messages d'erreur sont cachés par défaut */
         }
-        .error-border {
-    border: 2px solid red;
-}
 
+        .error-border {
+            border: 2px solid red;
+        }
     </style>
     <script>
         function toggleForms(formToShow, formToHide) {
@@ -85,7 +86,8 @@
                                 <div class="col-md-6">
                                     <div class="groupe-formulaire">
                                         <label for="prenom">Prénom</label>
-                                        <input type="text" class="form-control" id="prenom" placeholder="Prénom" name="prenom">
+                                        <input type="text" class="form-control" id="prenom" placeholder="Prénom"
+                                            name="prenom">
                                         <div id="prenomError" class="error-message"></div>
                                     </div>
                                 </div>
@@ -100,12 +102,14 @@
                         </div>
                         <div class="groupe-formulaire">
                             <label for="courriel">Courriel</label>
-                            <input type="email" class="form-control" id="courriel" placeholder="Courriel" name="courriel">
+                            <input type="email" class="form-control" id="courriel1" placeholder="Courriel"
+                                name="courriel">
                             <div id="courrielError" class="error-message"></div>
                         </div>
                         <div class="groupe-formulaire">
                             <label for="telephone">Téléphone</label>
-                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" name="telephone">
+                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone"
+                                name="telephone">
                             <div id="telephoneError" class="error-message"></div>
                         </div>
                         <div class="groupe-formulaire">
@@ -115,7 +119,8 @@
                         </div>
                         <div class="groupe-formulaire">
                             <label for="motdepasse">Mot de passe</label>
-                            <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe" name="motdepasse">
+                            <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe"
+                                name="motdepasse">
                             <div id="motdepasseError" class="error-message"></div>
                         </div>
                         <div class="groupe-formulaire">
@@ -139,9 +144,9 @@
                         </div>
                         <div class="groupe-formulaire mt-2">
                             <label for="motdepasse">Mot de passe</label>
-                            <input type="password" class="form-control" id="motdepasse" placeholder="Mot de passe">
+                            <input type="password" class="form-control" id="motDepasse" placeholder="Mot de passe">
                             <div class="checkbox">
-                                <input type="checkbox" id="showPasswordCheckbox" onchange="togglePasswordVisibility()">
+                                <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
                                 <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
                             </div>
                         </div>
@@ -154,16 +159,17 @@
         </div>
     </div>
     <script>
+           
         // JavaScript pour la validation côté client
         document.getElementById('inscriptionForm').addEventListener('submit', function (event) {
             const prenom = document.getElementById('prenom');
             const nom = document.getElementById('nom');
-            const courriel = document.getElementById('courriel');
+            const courriel = document.getElementById('courriel1');
             const telephone = document.getElementById('telephone');
             const adresse = document.getElementById('adresse');
             const motdepasse = document.getElementById('motdepasse');
             const confirmerMotPasse = document.getElementById('confirmerMotPasse');
-    
+
             // Réinitialiser les messages d'erreur et les bordures
             document.querySelectorAll('.error-message').forEach(function (element) {
                 element.style.display = 'none';
@@ -171,72 +177,80 @@
             document.querySelectorAll('.form-control').forEach(function (element) {
                 element.classList.remove('error-border');
             });
-    
+
             // Vérifier la validation
             let isValid = true;
-    
+
             if (!prenom.value) {
                 document.getElementById('prenomError').innerText = 'Prénom est requis';
                 document.getElementById('prenomError').style.display = 'block';
                 prenom.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!nom.value) {
                 document.getElementById('nomError').innerText = 'Nom de Famille est requis';
                 document.getElementById('nomError').style.display = 'block';
                 nom.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!courriel.value || !validateEmail(courriel.value)) {
                 document.getElementById('courrielError').innerText = 'Courriel invalide';
                 document.getElementById('courrielError').style.display = 'block';
                 courriel.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!telephone.value) {
                 document.getElementById('telephoneError').innerText = 'Téléphone est requis';
                 document.getElementById('telephoneError').style.display = 'block';
                 telephone.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!adresse.value) {
                 document.getElementById('adresseError').innerText = 'Adresse est requise';
                 document.getElementById('adresseError').style.display = 'block';
                 adresse.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!motdepasse.value || motdepasse.value.length < 8) {
                 document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
                 document.getElementById('motdepasseError').style.display = 'block';
                 motdepasse.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
                 document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
                 document.getElementById('confirmerMotPasseError').style.display = 'block';
                 confirmerMotPasse.classList.add('error-border');
                 isValid = false;
             }
-    
+
             if (!isValid) {
                 event.preventDefault(); // Empêcher la soumission du formulaire si la validation échoue
             }
         });
-    
-        // Fonction pour valider un courriel
+
+        //Fonction pour valider un courriel
         function validateEmail(email) {
             const re = /\S+@\S+\.\S+/;
             return re.test(email);
         }
+        //Fonction pour activer la visibilité du mot de passe.
+        function afficherMotDePasse() {
+        var motDePasse = document.getElementById("motDepasse");
+        if (motDePasse.type === "password") {
+            motDePasse.type = "text";
+        } else {
+            motDePasse.type = "password";
+        }
+    }
+
     </script>
-    
-    
 </body>
 
 </html>
