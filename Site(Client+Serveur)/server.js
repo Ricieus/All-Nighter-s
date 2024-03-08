@@ -83,17 +83,21 @@ app.get('/pages/contact', (req, res) => {
 
 //Connexion:
 app.post('/connexion/submit_connexion', (req, res) => {
-    let courriel = req.body.courrielConnexion;
-    let motdePasse = req.body.motDePasseConnexion;
+    let courriel = req.body.courriel;
+    let motDePasse = req.body.motDePasse;
 
     var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = ? AND motdepasse = ?";
 
-    con.query(sql, [courriel, motdePasse], function (err, result) {
-        if (err) throw err;
+    con.query(sql, [courriel, motDePasse], function (err, result) {
+        if (err) {
+            console.error('Erreur lors de la requête SQL:', err);
+            return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
+        }
+        
         if (result.length > 0) {
-            res.redirect("/pages/connexion");
+            res.json({ exists: true }); // Changer "success" en "exists"
         } else {
-            res.redirect("/pages/connexion?error=invalid");
+            res.json({ exists: false }); // Changer "success" en "exists"
         }
     });
 });
