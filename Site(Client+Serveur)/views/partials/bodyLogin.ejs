@@ -108,7 +108,7 @@
                         </div>
                         <div class="groupe-formulaire">
                             <label for="telephone">Téléphone</label>
-                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" maxlength="10" 
+                            <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" maxlength="10"
                                 name="telephone">
                             <div id="telephoneError" class="error-message"></div>
                         </div>
@@ -136,15 +136,17 @@
                 </div>
 
                 <div class="containerContactInscrire" id="connection" style="display: none;">
-                    <form>
+                    <form action="/login/submit_connexion" method="post">
                         <div class="groupe-formulaire">
                             <h1>Content de vous revoir!</h1>
                             <label for="courriel">Courriel</label>
-                            <input type="email" class="form-control" id="courriel" placeholder="Courriel">
+                            <input type="email" class="form-control" id="courrielConnexion" name="courrielConnexion"
+                                placeholder="Courriel">
                         </div>
                         <div class="groupe-formulaire mt-2">
                             <label for="motdepasse">Mot de passe</label>
-                            <input type="password" class="form-control" id="motDepasse" placeholder="Mot de passe">
+                            <input type="password" class="form-control" id="motDePasseConnexion"
+                                name="motDePasseConnexion" placeholder="Mot de passe">
                             <div class="checkbox">
                                 <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
                                 <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
@@ -201,16 +203,16 @@
                 isValid = false;
             }
 
-          
+
             const numeroTelephone = telephone.value.replace(/\D/g, '');
 
-// Vérifier si la longueur du numéro de téléphone est exactement 10
-if (!numeroTelephone || numeroTelephone.length !== 10) {
-    document.getElementById('telephoneError').innerText = 'Numéro invalide';
-    document.getElementById('telephoneError').style.display = 'block';
-    telephone.classList.add('error-border');
-    isValid = false;
-}
+            // Vérifier si la longueur du numéro de téléphone est exactement 10
+            if (!numeroTelephone || numeroTelephone.length !== 10) {
+                document.getElementById('telephoneError').innerText = 'Numéro invalide';
+                document.getElementById('telephoneError').style.display = 'block';
+                telephone.classList.add('error-border');
+                isValid = false;
+            }
 
             if (!adresse.value) {
                 document.getElementById('adresseError').innerText = 'Adresse est requise';
@@ -225,8 +227,8 @@ if (!numeroTelephone || numeroTelephone.length !== 10) {
                 motdepasse.classList.add('error-border');
                 isValid = false;
             }
-            
-           
+
+
 
             if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
                 document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
@@ -247,13 +249,13 @@ if (!numeroTelephone || numeroTelephone.length !== 10) {
         }
         //Fonction pour activer la visibilité du mot de passe.
         function afficherMotDePasse() {
-        var motDePasse = document.getElementById("motDepasse");
-        if (motDePasse.type === "password") {
-            motDePasse.type = "text";
-        } else {
-            motDePasse.type = "password";
+            var motDePasse = document.getElementById("motDePasseConnexion");
+            if (motDePasse.type === "password") {
+                motDePasse.type = "text";
+            } else {
+                motDePasse.type = "password";
+            }
         }
-    }
 
     </script>
 </body>
