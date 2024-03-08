@@ -58,12 +58,12 @@
     <div class="content">
         <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
             <div class="d-flex align-items-center justify-content-center btn-group" data-toggle="buttons">
-                <a href="/views/pages/inscription.ejs"><button class="btn btn-primary mt-3">S'inscrire</button></a>
-                <a href="/views/pages/connexion.ejs"><button class="btn btn-primary mt-3">Connexion</button></a>
+                <a href="/views/pages/inscription.ejs" class="btn btn-primary mt-3">S'inscrire</a>
+                <a href="/views/pages/connexion.ejs" class="btn btn-primary mt-3 disabled">Connexion</a>
             </div>
             <div class="d-flex align-items-center justify-content-center mt-3">
 
-                <div class="containerContactInscrire" id="connection" style="display: none;">
+                <div class="containerContactInscrire" id="connection">
                     <form action="/connexion/submit_connexion" method="post">
                         <div class="groupe-formulaire">
                             <h1>Content de vous revoir!</h1>
