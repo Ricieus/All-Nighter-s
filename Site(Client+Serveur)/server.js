@@ -85,15 +85,11 @@ app.get('/pages/contact', (req, res) => {
 app.post('/connexion/submit_connexion', (req, res) => {
     let courriel = req.body.courrielConnexion;
     let motdePasse = req.body.motDePasseConnexion;
-    console.log(courriel);
-    console.log(motdePasse);
 
     var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = ? AND motdepasse = ?";
 
     con.query(sql, [courriel, motdePasse], function (err, result) {
         if (err) throw err;
-        console.log(courriel);
-        console.log(motdePasse);
         if (result.length > 0) {
             res.redirect("/pages/connexion");
         } else {
