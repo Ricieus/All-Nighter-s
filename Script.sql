@@ -58,11 +58,11 @@ CREATE TABLE contact (
     utilisateurs_id_utilisateurs INT NOT NULL,
     FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
-INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES
+INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES 
+('Alice', 'Smith', 'alice.smith@example.com', '1234567891', '2024-03-01', 'Je veux me plaindre', 1),
+('Bob', 'Johnson', 'bob.johnson@example.com', '5149744492', '2024-03-02', 'Je veux réserver un essai routier', 2),
+('Charlie', 'Brown', 'charlie.brown@example.com', '4508901284', '2024-03-03', 'Je veux laisser un commentaire', 1);
 
-     ('Jady','T. Tower','jadtwinningTower@gmail.com','911','2024-02-22', 'Je veux me plaindre', 1),
-     ('Manbir','Comprehension','mabirlovesmath@gmail.com','1234','2024-02-23', 'Je veux laisser un commentaire', 2),
-     ('Marky','Wakey','marcsalibaba@hotmail.com','07734','2024-02-22', 'Je veux me plaindre', 1);
 
 ----------------------------------------------------------------------------------------------------------------------------------
  CREATE TABLE stock (
