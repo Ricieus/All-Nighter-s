@@ -66,22 +66,24 @@ app.get('/pages/contact', (req, res) => {
 });
 
 //Connexion:
-app.get('/login/submit_connexion', (req, res) => {
+app.post('/login/submit_connexion', (req, res) => {
     let courriel = req.body.courrielConnexion;
     let motdePasse = req.body.motDePasseConnexion;
     console.log(courriel);
     console.log(motdePasse);
 
-    var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = " + courriel + " AND motdepasse = " + motdePasse + ";";
+    var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = ? AND motdepasse = ?";
 
-    con.query(sql, function (err, result) {
+    con.query(sql, [courriel, motdePasse], function (err, result) {
         if (err) throw err;
-        res.render("pages/login/connexionReussi", {
-            pageTitle: "Concessionnaire Rubious",
-            items: results
-        });
-    })
+        if (result.length > 0) {
+            res.redirect("/pages/login");
+        }else{
+            res.redirect("/pages/index?error=invalid");
+        }
+    });
 });
+
 
 
 app.post('/login/submit_login', (req, res) => {
