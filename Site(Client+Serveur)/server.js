@@ -6,7 +6,7 @@ import session from "express-session";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import mysql from "mysql";
-import { body, validationResult } from "express-validator";
+import { check, validationResult } from "express-validator";
 import dateFormat from "dateformat";
 import { uptime } from "process";
 import { count } from "console";
@@ -45,15 +45,31 @@ app.get("/", function (req, res) {
     });
 });
 
-app.get('/pages/login', (req, res) => {
+app.get('/pages/connexion', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
-        res.render("pages/login", {
+        res.render("pages/connexion", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
 });
+
+app.get('/pages/inscription', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/inscription", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+})
+app.get('pages/inscription', (req, res) => {
+    res.redirect("pages/inscription");
+});
+app.get('pages/connexion', (req, res) => {
+    res.redirect("pages/connexion");
+})
 
 app.get('/pages/contact', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -65,7 +81,30 @@ app.get('/pages/contact', (req, res) => {
     });
 });
 
-app.post('/login/submit_login', (req, res) => {
+//Connexion:
+app.post('/connexion/submit_connexion', (req, res) => {
+    let courriel = req.body.courrielConnexion;
+    let motdePasse = req.body.motDePasseConnexion;
+    console.log(courriel);
+    console.log(motdePasse);
+
+    var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = ? AND motdepasse = ?";
+
+    con.query(sql, [courriel, motdePasse], function (err, result) {
+        if (err) throw err;
+        console.log(courriel);
+        console.log(motdePasse);
+        if (result.length > 0) {
+            res.redirect("/pages/connexion");
+        } else {
+            res.redirect("/pages/connexion?error=invalid");
+        }
+    });
+});
+
+
+
+app.post('/inscription/submit_inscription', (req, res) => {
     let prenom = req.body.prenom;
     let nom = req.body.nom;
     let courriel = req.body.courriel;
