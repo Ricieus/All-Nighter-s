@@ -121,8 +121,8 @@ app.post('/inscription/submit_inscription', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
         }
-        console.log("Insertion effectuée");
-        res.redirect('/');
+        setTimeout(function () { res.redirect('/'); }, 3000);
+
     });
 });
 
