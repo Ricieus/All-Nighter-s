@@ -12,7 +12,7 @@
 
     .card-container {
         width: 90vh;
-        height: 75vh;
+        height: 90vh;
         margin: auto;
     }
 
@@ -27,8 +27,7 @@
         margin: 0 5%;
     }
 
-    .containerContactConnexion,
-    .containerContactInscrire {
+    .containerInscription {
         height: 50vh;
     }
 
@@ -51,10 +50,10 @@
 <div class="content">
     <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
         <div class="d-flex align-items-center justify-content-center btn-group" data-toggle="buttons">
-            <a href="/views/pages/inscription.ejs"><button class="btn btn-primary mt-3">S'inscrire</button></a>
-            <a href="/views/pages/connexion.ejs"><button class="btn btn-primary mt-3">Connexion</button></a>
+            <a href="/pages/inscription" class="btn btn-primary mt-3 disabled">S'inscrire</a>
+            <a href="/pages/connexion" class="btn btn-primary mt-3">Connexion</a>
         </div>
-        <div class="containerContactConnexion" id="inscrire">
+        <div class="container" id="inscrire">
             <form action="/inscription/submit_inscription" method="post" id="inscriptionForm">
                 <div class="ligne-formulaire">
                     <h1 style="text-align: center;">Merci de vous inscrire!</h1>

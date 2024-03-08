@@ -1,194 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
+    .content {
+        padding-top: 15vh;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .content {
-            padding-top: 15vh;
-            align-items: center;
-            justify-content: center;
-        }
+    .card-container {
+        width: 90vh;
+        height: 75vh;
+        margin: auto;
+    }
 
-        .card-container {
-            width: 90vh;
-            height: 75vh;
-            margin: auto;
-        }
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        margin-top: 5%;
+    }
 
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            margin-top: 5%;
-        }
+    .btn-primary {
+        width: 30%;
+        margin: 0 5%;
+    }
 
-        .btn-primary {
-            width: 30%;
-            margin: 0 5%;
-        }
-
-        .containerContactConnexion,
-        .containerContactInscrire {
-            height: 50vh;
-        }
+    .containerContactConnexion,
+    .containerContactInscrire {
+        height: 50vh;
+    }
 
 
-        /* Style pour les messages d'erreur */
-        .error-message {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-            /* Les messages d'erreur sont cachés par défaut */
-        }
+    /* Style pour les messages d'erreur */
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+        /* Les messages d'erreur sont cachés par défaut */
+    }
 
-        .error-border {
-            border: 2px solid red;
-        }
-    </style>
-</head>
+    .error-border {
+        border: 2px solid red;
+    }
+</style>
 
-<body>
-    <div class="content">
-        <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
-            <div class="d-flex align-items-center justify-content-center btn-group" data-toggle="buttons">
-                    <a href="/pages/inscription" class="btn btn-primary mt-3">S'inscrire</a>
-                
-                <a href="/views/pages/connexion.ejs" class="btn btn-primary mt-3 disabled">Connexion</a>
-            </div>
-            <div class="d-flex align-items-center justify-content-center mt-3">
+<div class="content">
+    <div class="card rounded-5 shadow-sm mb-5 bg-body rounded card-container">
+        <div class="d-flex align-items-center justify-content-center btn-group" data-toggle="buttons">
+            <a href="/pages/inscription" class="btn btn-primary mt-3">S'inscrire</a>
+            <a href="/pages/connexion" class="btn btn-primary mt-3 disabled">Connexion</a>
+        </div>
+        <div class="d-flex align-items-center justify-content-center mt-3">
 
-                <div class="containerContactInscrire" id="connection">
-                    <form action="/connexion/submit_connexion" method="post">
-                        <div class="groupe-formulaire">
-                            <h1>Content de vous revoir!</h1>
-                            <label for="courriel">Courriel</label>
-                            <input type="email" class="form-control" id="courrielConnexion" name="courrielConnexion"
-                                placeholder="Courriel">
+            <div class="containerContactInscrire" id="connection">
+                <form action="/connexion/submit_connexion" method="post">
+                    <div class="groupe-formulaire">
+                        <h1>Content de vous revoir!</h1>
+                        <label for="courriel">Courriel</label>
+                        <input type="email" class="form-control" id="courrielConnexion" name="courrielConnexion"
+                            placeholder="Courriel">
+                    </div>
+                    <div class="groupe-formulaire mt-2">
+                        <label for="motdepasse">Mot de passe</label>
+                        <input type="password" class="form-control" id="motDePasseConnexion" name="motDePasseConnexion"
+                            placeholder="Mot de passe">
+                        <div class="checkbox">
+                            <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
+                            <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
                         </div>
-                        <div class="groupe-formulaire mt-2">
-                            <label for="motdepasse">Mot de passe</label>
-                            <input type="password" class="form-control" id="motDePasseConnexion"
-                                name="motDePasseConnexion" placeholder="Mot de passe">
-                            <div class="checkbox">
-                                <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                                <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
-                            </div>
-                        </div>
-                        <div class="mt-2">
-                            <button type="submit" class="btn btn-primary">Se connecter</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-primary">Se connecter</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <script>
-        // JavaScript pour la validation côté client
-        document.getElementById('inscriptionForm').addEventListener('submit', function (event) {
-            const prenom = document.getElementById('prenom');
-            const nom = document.getElementById('nom');
-            const courriel = document.getElementById('courriel1');
-            const telephone = document.getElementById('telephone');
-            const adresse = document.getElementById('adresse');
-            const motdepasse = document.getElementById('motdepasse');
-            const confirmerMotPasse = document.getElementById('confirmerMotPasse');
+</div>
+<script>
 
-            // Réinitialiser les messages d'erreur et les bordures
-            document.querySelectorAll('.error-message').forEach(function (element) {
-                element.style.display = 'none';
-            });
-            document.querySelectorAll('.form-control').forEach(function (element) {
-                element.classList.remove('error-border');
-            });
-
-            // Vérifier la validation
-            let isValid = true;
-
-            if (!prenom.value) {
-                document.getElementById('prenomError').innerText = 'Prénom est requis';
-                document.getElementById('prenomError').style.display = 'block';
-                prenom.classList.add('error-border');
-                isValid = false;
-            }
-
-            if (!nom.value) {
-                document.getElementById('nomError').innerText = 'Nom de Famille est requis';
-                document.getElementById('nomError').style.display = 'block';
-                nom.classList.add('error-border');
-                isValid = false;
-            }
-
-            if (!courriel.value || !validateEmail(courriel.value)) {
-                document.getElementById('courrielError').innerText = 'Courriel invalide';
-                document.getElementById('courrielError').style.display = 'block';
-                courriel.classList.add('error-border');
-                isValid = false;
-            }
-
-
-            const numeroTelephone = telephone.value.replace(/\D/g, '');
-
-            // Vérifier si la longueur du numéro de téléphone est exactement 10
-            if (!numeroTelephone || numeroTelephone.length !== 10) {
-                document.getElementById('telephoneError').innerText = 'Numéro invalide';
-                document.getElementById('telephoneError').style.display = 'block';
-                telephone.classList.add('error-border');
-                isValid = false;
-            }
-
-            if (!adresse.value) {
-                document.getElementById('adresseError').innerText = 'Adresse est requise';
-                document.getElementById('adresseError').style.display = 'block';
-                adresse.classList.add('error-border');
-                isValid = false;
-            }
-
-            if (!motdepasse.value || motdepasse.value.length < 8) {
-                document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
-                document.getElementById('motdepasseError').style.display = 'block';
-                motdepasse.classList.add('error-border');
-                isValid = false;
-            }
-
-
-
-            if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
-                document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
-                document.getElementById('confirmerMotPasseError').style.display = 'block';
-                confirmerMotPasse.classList.add('error-border');
-                isValid = false;
-            }
-
-            if (!isValid) {
-                event.preventDefault(); // Empêcher la soumission du formulaire si la validation échoue
-            }
-        });
-
-        //Fonction pour valider un courriel
-        function validateEmail(email) {
-            const re = /\S+@\S+\.\S+/;
-            return re.test(email);
+    //Fonction pour valider un courriel
+    function validateEmail(email) {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+    //Fonction pour activer la visibilité du mot de passe.
+    function afficherMotDePasse() {
+        var motDePasse = document.getElementById("motDePasseConnexion");
+        if (motDePasse.type === "password") {
+            motDePasse.type = "text";
+        } else {
+            motDePasse.type = "password";
         }
-        //Fonction pour activer la visibilité du mot de passe.
-        function afficherMotDePasse() {
-            var motDePasse = document.getElementById("motDePasseConnexion");
-            if (motDePasse.type === "password") {
-                motDePasse.type = "text";
-            } else {
-                motDePasse.type = "password";
-            }
-        }
+    }
 
 
 
-    </script>
-</body>
-
-</html>
+</script>

@@ -67,6 +67,9 @@ app.get('/pages/inscription', (req, res) => {
 app.get('pages/inscription', (req, res) => {
     res.redirect("pages/inscription");
 });
+app.get('pages/connexion', (req, res) => {
+    res.redirect("pages/connexion");
+})
 
 app.get('/pages/contact', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
