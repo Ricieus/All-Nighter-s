@@ -106,6 +106,7 @@
                     <button type="submit" class="btn btn-primary">S'inscrire</button>
                 </div>
             </form>
+            <p class="mt-5 text-success" id="texteSucces"></p>
         </div>
     </div>
 </div>
@@ -191,6 +192,8 @@
 
         if (!isValid) {
             event.preventDefault(); // Empêcher la soumission du formulaire si la validation échoue
+        } else {
+            document.getElementById("texteSucces").innerText = "Inscription réussie!";
         }
     });
 
