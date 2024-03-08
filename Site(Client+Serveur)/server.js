@@ -86,16 +86,18 @@ app.post('/connexion/submit_connexion', (req, res) => {
     let courriel = req.body.courriel;
     let motDePasse = req.body.motDePasse;
 
-    var sql = "SELECT email, motdepasse FROM utilisateurs WHERE email = ? AND motdepasse = ?";
+    var sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE email = ? AND motdepasse = ?";
 
     con.query(sql, [courriel, motDePasse], function (err, result) {
         if (err) {
             console.error('Erreur lors de la requête SQL:', err);
             return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
         }
-        
+
         if (result.length > 0) {
-            res.json({ exists: true }); // Changer "success" en "exists"
+            const nom = result[0].nom; //prendre le nom
+            const prenom = result[0].prenom; //prendre le prenom
+            res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
         } else {
             res.json({ exists: false }); // Changer "success" en "exists"
         }
@@ -119,8 +121,8 @@ app.post('/inscription/submit_inscription', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
         }
-        console.log("Insertion effectuée");
-        res.redirect('/');
+        setTimeout(function () { res.redirect('/'); }, 3000);
+
     });
 });
 

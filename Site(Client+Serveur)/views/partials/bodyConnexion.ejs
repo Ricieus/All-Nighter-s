@@ -78,6 +78,7 @@
                         <button type="submit" class="btn btn-primary">Se connecter</button>
                     </div>
                 </form>
+                <p class="mt-5 text-success" id="texteSucces"></p>
             </div>
         </div>
     </div>
@@ -107,6 +108,9 @@
         const courriel = document.getElementById("courrielConnexion").value;
         const motDePasse = document.getElementById("motDePasseConnexion").value;
 
+        //La réponse
+        const texteSucces = document.getElementById("texteSucces");
+
         // Réinitialiser les erreurs précédentes
         document.querySelectorAll('.error-message').forEach(function (element) {
             element.style.display = 'none';
@@ -132,18 +136,30 @@
         }
 
         // Effectuer une requête à la base de données pour vérifier l'existence du compte
+        // (Aide avec ChatGPT)
         fetch('/connexion/submit_connexion', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ courriel: courriel, motDePasse: motDePasse })
+            body: JSON.stringify({ courriel, motDePasse }),
         })
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => {
+                console.log(response);
+                if (response.ok) return response.json();
+                else {
+                    console.log(response);
+                }
+            })
+            .then((data) => {
                 if (data.exists) {
+                    let nom = data.nom;
+                    let prenom = data.prenom;
+
+                    console.log("nom et prénom : " + nom, prenom);
                     // Rediriger vers la page de connexion si le compte existe
-                    window.location.href = "/pages/connexion";
+                    //window.location.href = "/pages/connexion";
+                    texteSucces.innerText = "Bienvenue, " + prenom + " " + nom + "!";
                 } else {
                     // Afficher un message d'erreur si le compte n'existe pas
                     document.getElementById('courrielError').innerText = 'Le courriel ou le mot de passe est incorrect';
@@ -152,6 +168,7 @@
                     document.getElementById("courrielConnexion").classList.add('error-border');
                     document.getElementById("motDePasseConnexion").classList.add('error-border');
                 }
+
             })
             .catch(error => {
                 console.error('Error:', error);
