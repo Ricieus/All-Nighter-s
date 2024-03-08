@@ -55,18 +55,20 @@
         </div>
         <div class="d-flex align-items-center justify-content-center mt-3">
 
-            <div class="containerContactInscrire" id="connection">
-                <form action="/connexion/submit_connexion" method="post">
+            <div class="containerContactInscrire">
+                <form action="/connexion/submit_connexion" method="post" id="connectionForm">
                     <div class="groupe-formulaire">
                         <h1>Content de vous revoir!</h1>
                         <label for="courriel">Courriel</label>
                         <input type="email" class="form-control" id="courrielConnexion" name="courrielConnexion"
                             placeholder="Courriel">
+                        <div id="courrielError" class="error-message"></div>
                     </div>
                     <div class="groupe-formulaire mt-2">
                         <label for="motdepasse">Mot de passe</label>
                         <input type="password" class="form-control" id="motDePasseConnexion" name="motDePasseConnexion"
                             placeholder="Mot de passe">
+                        <div id="motdepasseError" class="error-message"></div>
                         <div class="checkbox">
                             <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
                             <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
@@ -96,6 +98,66 @@
             motDePasse.type = "password";
         }
     }
+
+    document.getElementById("connectionForm").addEventListener("submit", function (event) {
+        // Empêcher le formulaire de se soumettre par défaut
+        event.preventDefault();
+
+        // Récupérer les valeurs des champs du formulaire
+        const courriel = document.getElementById("courrielConnexion").value;
+        const motDePasse = document.getElementById("motDePasseConnexion").value;
+
+        // Réinitialiser les erreurs précédentes
+        document.querySelectorAll('.error-message').forEach(function (element) {
+            element.style.display = 'none';
+        });
+        document.querySelectorAll('.form-control').forEach(function (element) {
+            element.classList.remove('error-border');
+        });
+
+        // Validation du courriel
+        if (!courriel || !validateEmail(courriel)) {
+            document.getElementById('courrielError').innerText = 'Courriel invalide';
+            document.getElementById('courrielError').style.display = 'block';
+            document.getElementById("courrielConnexion").classList.add('error-border');
+
+        }
+
+        // Validation du mot de passe
+        if (!motDePasse || motDePasse.length < 8) {
+            document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
+            document.getElementById('motdepasseError').style.display = 'block';
+            document.getElementById("motDePasseConnexion").classList.add('error-border');
+            return;
+        }
+
+        // Effectuer une requête à la base de données pour vérifier l'existence du compte
+        fetch('/connexion/submit_connexion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ courriel: courriel, motDePasse: motDePasse })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    // Rediriger vers la page de connexion si le compte existe
+                    window.location.href = "/pages/connexion";
+                } else {
+                    // Afficher un message d'erreur si le compte n'existe pas
+                    document.getElementById('courrielError').innerText = 'Le courriel ou le mot de passe est incorrect';
+                    document.getElementById('courrielError').style.display = 'block';
+                    document.getElementById('motdepasseError').innerText = 'Le courriel ou le mot de passe est incorrect';
+                    document.getElementById("courrielConnexion").classList.add('error-border');
+                    document.getElementById("motDePasseConnexion").classList.add('error-border');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
 
 
 
