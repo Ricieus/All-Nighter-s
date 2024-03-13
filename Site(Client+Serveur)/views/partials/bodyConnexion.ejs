@@ -128,8 +128,8 @@
         }
 
         // Validation du mot de passe
-        if (!motDePasse || motDePasse.length < 8) {
-            document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
+        if (!motDePasse) {
+            document.getElementById('motdepasseError').innerText = 'Le mot de passe est incorrect';
             document.getElementById('motdepasseError').style.display = 'block';
             document.getElementById("motDePasseConnexion").classList.add('error-border');
             return;
