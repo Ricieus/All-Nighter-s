@@ -22,6 +22,9 @@
         justify-content: center;
         margin-top: 5%;
     }
+    label {
+        margin-bottom: 2%;
+    }
 </style>
 
 <body>
@@ -39,7 +42,7 @@
                             <div class="col-md-6">
                                 <div class="groupe-formulaire">
                                     <label for="ville">Ville</label>
-                                    <input type="text" class="form-control" id="ville" placeholder="ville">
+                                    <input type="text" class="form-control" id="ville" placeholder="Ville">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -55,7 +58,7 @@
                         <div class="groupe-formulaire mt-2">
                             <h1>2. Choisissez un mode de paiement</h1>
                         </div>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="selectionCredit">
                             <label class="btn btn-primary">
                                 <input type="radio" name="options" id="creditCard" autocomplete="off" checked> Carte de
                                 crédit
@@ -73,34 +76,28 @@
                         <div class="groupe-formulaire mt-3">
                             <h1>3. Payer ici</h1>
                         </div>
-                        <div class="groupe-formulaire">
-                            <label for="numeroCarte">Numéro de votre carte</label>
-                            <input type="number" class="form-control" id="numeroCarte"
-                                placeholder="Numéro de votre carte">
+                        <div class="groupe-formulaire" id="remplirCredit">
+                            <label for="nomCarte">Nom de la carte</label>
+                            <input type="text" class="form-control" id="nomCarte"
+                                placeholder="Entrez votre nom sur la carte">
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <div class="groupe-formulaire">
-                                    <label for="carteCvc">Carte CVC</label>
-                                    <input type="number" class="form-control" id="carteCvc" placeholder="Numéro CVC">
+                                    <label for="carteCvc">Numéro de la carte</label>
+                                    <input type="text" class="form-control" id="numeroCarte" placeholder="Numéro de la carte">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="groupe-formulaire">
-                                    <label for="annee">Année</label>
-                                    <input type="number" class="form-control" id="annee" placeholder="Année">
+                                    <label for="annee">Date d'expiration</label>
+                                    <input type="text" class="form-control" id="dateExpiration" placeholder="Date d'expiration">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="groupe-formulaire">
-                                    <label for="mois">Mois</label>
-                                    <input type="number" class="form-control" id="mois" placeholder="Mois">
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="groupe-formulaire">
-                                    <label for="jour">Jour</label>
-                                    <input type="number" class="form-control" id="jour" placeholder="Jour">
+                                    <label for="mois">CVV</label>
+                                    <input type="text" class="form-control" id="CVV" placeholder="CVV">
                                 </div>
                             </div>
                         </div>
@@ -109,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4 ms-5 me-5">
+            <div class="col-md-4 ms-5 me-5" style="margin-top: -17.5%;">
                 <div class="bg-light rounded d-flex flex-column">
                     <div class="p-2 ml-3">
                         <h4><b>Résumé de commande</b></h4>
@@ -144,3 +141,6 @@
         </div>
     </div>
 </body>
+<script>
+    
+</script>
