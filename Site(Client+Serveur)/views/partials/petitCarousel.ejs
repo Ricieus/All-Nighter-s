@@ -1,0 +1,115 @@
+<style>
+    .card-wrapper {
+        display: flex;
+    }
+    .card {
+        cursor: pointer;
+        margin: 2%;
+        box-shadow: 1px 3px 4px 0 rgba(22, 22, 26, 0.18);
+    }
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        height: 5vh;
+        width: 5vh;
+        border-radius: 50%;
+    }
+    .carousel-control-prev-icon {
+        background-image: url("../images/arrow-left.svg");
+    }
+
+    .carousel-control-next-icon {
+        background-image: url("../images/arrow-right.svg");
+    }
+</style>
+<div class="container">
+    <h1 style="margin-bottom: -5%;">Voiture populaire</h1>
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="card-wrapper">
+                <!-- onclick, on doit l'enlever plus tard (va utiliser action) -->
+                <div class="card" style="width: 18rem;" onclick="goDetailVoiture()">
+                    <img src="../images/a4.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A4</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="card-wrapper">
+                <div class="card" style="width: 18rem;">
+                        <img src="../images/a4.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Audi A4</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="../images/a6.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Audi A6</h5>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis vestibulum massa, rhoncus mollis velit.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    function goDetailVoiture() {
+        window.location.href="../pages/detailee";
+    }
+</script>
