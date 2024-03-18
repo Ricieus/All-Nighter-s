@@ -64,6 +64,7 @@ app.get('/pages/inscription', (req, res) => {
         });
     });
 })
+
 app.get('pages/inscription', (req, res) => {
     res.redirect("pages/inscription");
 });
@@ -153,10 +154,6 @@ app.post('/contact/submit_contact', (req, res) => {
     });
 });
 
-
-
-
-
 app.get('/pages/index', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
@@ -176,6 +173,7 @@ app.get('/pages/catalogue', (req, res) => {
         });
     });
 });
+
 app.post('/catalogue/submit_catalogue', (req, res) => {
     const { marque, modele, prix } = req.body;
 
@@ -237,6 +235,16 @@ app.get('/pages/paiement', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
         res.render("pages/paiement", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+app.get('/pages/detailee', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/detailee", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
