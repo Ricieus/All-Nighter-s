@@ -11,6 +11,12 @@ import dateFormat from "dateformat";
 import { uptime } from "process";
 import { count } from "console";
 
+import { executeOperations } from "./CrudMongoDB.js";
+import { config } from "dotenv";
+config();
+
+await executeOperations();
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +27,7 @@ const __dirname = path.dirname(__filename);
 const server = app.listen(4000, function () {
     console.log("serveur fonctionne sur 4000... ! ");
 });
+
 /*
     Configuration de EJS
 */
