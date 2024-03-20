@@ -14,7 +14,7 @@
         <div class="container">
             <div class="jumbotron p-5">
                 <div class="mb-5">
-                    <% items.forEach(car => { %>
+                    <% itemsMongo.forEach(car => { %>
                     <div class="row">
                         <div class="col">
                             <img class="imgIcons" src="../images/car-silhouette.svg" alt="" > <%= car.corps %>  
@@ -50,27 +50,34 @@
         <div class="col-md-4">
             <div class="bg-light rounded d-flex flex-column">
                 <div class="p-2 ml-3">
-                    <h4><b>Résumé de commande</b></h4>
+                    <h4><b>Achat de voiture</b></h4>
                 </div>
-                <div class="p-2 d-flex">
-                    <div class="col-8">Voiture:</div>
-                    <div class="ml-auto">XXXXXX</div>
-                </div>
-                <div class="border-top px-4 mx-3"></div>
-                <div class="p-2 d-flex">
-                    <div class="col-8">Taux d'interet:</div>
-                    <div class="ml-auto"><%= car.tauxInteret %>%</div>
-                </div>
-                <div class="border-top px-4 mx-3">
-                </div>
-                <div class="p-2 d-flex">
-                    <div class="col-8">Prix sans taxes:</div>
-                    <div class="ml-auto"><b><%= car.prix_sans_taxes %>$</b></div>
-                </div>
-
+                <% if (itemsMySQL && itemsMongo && itemsMySQL.length > 0) { %>
+                    <% const car1 = itemsMySQL[0]; %> 
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Voiture:</div>
+                        <div class="ml-auto"><%= car1.marque %> <%= car1.modele %> <%= car1.annee %> </div> <!-- Displaying the car name from MySQL -->
+                    </div>
+                    <div class="border-top px-4 mx-3"></div>
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Taux d'interet:</div>
+                        <div class="ml-auto"><%= car.tauxInteret %>%</div>
+                    </div>
+                    <div class="border-top px-4 mx-3"></div>
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Prix sans taxes:</div>
+                        <div class="ml-auto"><b><%= car.prix_sans_taxes %>$</b></div>
+                    </div>
+                <% } else { %>
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Voiture:</div>
+                        <div class="ml-auto">N/A</div> <!-- Display N/A if no car data is available -->
+                    </div>
+                <% } %>
+        
                 <button class="btn btn-primary">Payer</button>
             </div>
-        </div>   
-    </div>
+        </div>
+        
     <% }) %>
 </div>
