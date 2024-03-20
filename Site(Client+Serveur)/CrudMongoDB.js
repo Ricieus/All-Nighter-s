@@ -1,3 +1,5 @@
+// Dans le fichier "CrudMongoDB.js"
+
 import { MongoClient } from "mongodb";
 
 /*
@@ -27,8 +29,31 @@ export async function executeOperations() {
     let mongoClient;
 
     try {
-        mongoClient = await connectToMongo(uri);
+        if (!mongoClient) {
+            console.log(uri); // Log the URI only if mongoClient is not already initialized
+            mongoClient = await connectToMongo(uri);
+        }
+        
+        const database = mongoClient.db('AllNighter');
+        const collection = database.collection('voitureDetaille');
+        
+        const newCar = {
+            "corps": "Berline",
+            "transmission": "Automatique",
+            "moteur": "6 cylindres",
+            "prix_sans_taxes": 30000,
+            "annee": 2023,
+            "carburant": "Essence",
+            "description": "Une berline élégante et performante avec des caractéristiques avancées.",
+            "pneus_bougent": "AWD",
+            "tauxInteret": 6.99
+        };
+
+        let result = await collection.deleteMany(newCar);
+        result = await collection.insertOne(newCar);
+        console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
-        await mongoClient.close();
+        // Do not close the connection here to maintain it for subsequent executions
     }
 }
+
