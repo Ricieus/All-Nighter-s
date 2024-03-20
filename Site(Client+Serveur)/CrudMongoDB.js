@@ -29,11 +29,14 @@ export async function executeOperations() {
     let mongoClient;
 
     try {
-        console.log(uri);
-        mongoClient = await connectToMongo(uri);
-        const database = mongoClient.db('AllNighter'); // Corrected database name
-        const collection = database.collection('voitureDetaille'); // Corrected collection name
-
+        if (!mongoClient) {
+            console.log(uri); // Log the URI only if mongoClient is not already initialized
+            mongoClient = await connectToMongo(uri);
+        }
+        
+        const database = mongoClient.db('AllNighter');
+        const collection = database.collection('voitureDetaille');
+        
         const newCar = {
             "corps": "Berline",
             "transmission": "Automatique",
@@ -45,9 +48,12 @@ export async function executeOperations() {
             "pneus_bougent": "AWD",
             "tauxInteret": 6.99
         };
-        const result = await collection.insertOne(newCar);
+
+        let result = await collection.deleteMany(newCar);
+        result = await collection.insertOne(newCar);
         console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
-        await mongoClient.close();
+        // Do not close the connection here to maintain it for subsequent executions
     }
 }
+
