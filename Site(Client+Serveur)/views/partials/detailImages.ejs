@@ -31,7 +31,7 @@
                         <img src="/images/<%= car.images[3] %>" class="card-img-top" id="thumbImg<%= index + 3 %>"
                             onclick="changeImage('/images/<%= car.images[3] %>')">
                     </div>
-                    <% }); %>
+
             </div>
 
         </div>
@@ -45,8 +45,18 @@
             <h1>
                 Prix de base: <%= car1.prix.toLocaleString() %>$
             </h1>
-            <% } %>
 </div>
+<div class="d-flex justify-content-center">
+
+    <p>
+        <%= car.description %>
+    </p>
+    <% } %>
+        <% }); %>
+</div>
+
+
+
 <%- include ('../partials/detailInformations.ejs') %>
 
     <script>
