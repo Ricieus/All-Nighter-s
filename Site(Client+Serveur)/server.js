@@ -49,40 +49,28 @@ app.use(express.urlencoded({ extended: true }));
 // Définition de la route pour récupérer les données de MongoDB et les afficher
 app.get('/pages/detailee', async (req, res) => {
     try {
-        // MongoDB Operations
+        // Connect to MongoDB
         const client = await MongoClient.connect(uri);
         const database = client.db('AllNighter');
         const collection = database.collection('voitureDetaille');
-        const allCarsMongo = await collection.find({}).toArray();
-        await client.close();
 
-        // MySQL Operations
-        con.query("SELECT * FROM voitures", function (err, result) {
-            if (err) {
-                console.error('Error retrieving data from MySQL:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
+        // Find all cars
+        const allCars = await collection.find({}).toArray();
+        console.log(allCars);
 
-            // Add brand information to each car from MySQL
-            const allCarsMySQL = result.map(car => {
-                car.brand = "marque"; // Replace "YourBrand" with the actual brand field from MySQL
-                return car;
-            });
-
-            // Render the page with combined data from MongoDB and MySQL
-            res.render("pages/detailee", {
-                pageTitle: "Concessionnaire Rubious",
-                itemsMongo: allCarsMongo,
-                itemsMySQL: allCarsMySQL
-            });
+        // Render the page with the retrieved cars
+        res.render("pages/detailee", {
+            pageTitle: "Concessionnaire Rubious",
+            items: allCars
         });
+
+        // Close the MongoDB connection
+        await client.close();
     } catch (error) {
         console.error('Error retrieving data from MongoDB:', error);
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 
 app.get("/", function (req, res) {
@@ -253,6 +241,28 @@ app.post('/catalogue/submit_catalogue', (req, res) => {
     });
 });
 
+//Test pour page paiement:
+app.get('/pages/paiement', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/paiement", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+//Test pour page paiement:
+app.get('/pages/commande', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/commande", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
 app.get('/get_marques', (req, res) => {
     con.query('SELECT DISTINCT marque FROM voitures', (err, rows) => {
         if (err) {
@@ -277,17 +287,6 @@ app.get('/get_modeles', (req, res) => {
         }
         const modeles = rows.map(row => row.modele);
         res.json(modeles);
-    });
-});
-
-//Test pour page paiement:
-app.get('/pages/paiement', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/paiement", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
     });
 });
 
