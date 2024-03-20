@@ -1,42 +1,47 @@
 <div class="container mb-5">
-    <div style="width: 40rem; float: left;">
-        <% itemsMongo.forEach(car=> { %>
-            <img src="/images/<%= car.images[0] %>" class="card-img-top">
-            <% }); %>
+    <div style="width: 100%; float: left;">
+        <% itemsMongo.forEach((car, index) => { %>
+            <img src="/images/<%= car.images[0] %>" class="card-img-top" id="img<%= index %>" onclick="changeImage('<%= car.images[0] %>')">
+        <% }); %>
     </div>
     <div style="width: 40rem; float: right; justify-content: center;">
         <div>
             <div class="row">
-                <% itemsMongo.forEach(car=> { %>
+                <% itemsMongo.forEach((car, index) => { %>
                     <div class="col-md-5 m-3">
-                        <img src="/images/<%= car.images[0] %>" class="card-img-top">
+                        <img src="/images/<%= car.images[0] %>" class="card-img-top" id="thumbImg<%= index %>" onclick="changeImage('/images/<%= car.images[0] %>')">
                     </div>
                     <div class="col-md-5 m-3">
-                        <img src="/images/<%= car.images[1] %>" class="card-img-top">
+                        <img src="/images/<%= car.images[1] %>" class="card-img-top" id="thumbImg<%= index + 1 %>" onclick="changeImage('/images/<%= car.images[1] %>')">
                     </div>
-                    <% }); %>
+                <% }); %>
             </div>
         </div>
         <div>
             <div class="row">
-                <% itemsMongo.forEach(car=> { %>
+                <% itemsMongo.forEach((car, index) => { %>
                     <div class="col-md-5 m-3">
-                        <img src="/images/<%= car.images[2] %>" class="card-img-top">
+                        <img src="/images/<%= car.images[2] %>" class="card-img-top" id="thumbImg<%= index + 2 %>" onclick="changeImage('/images/<%= car.images[2] %>')">
                     </div>
                     <div class="col-md-5 m-3">
-                        <img src="/images/<%= car.images[3] %>" class="card-img-top">
+                        <img src="/images/<%= car.images[3] %>" class="card-img-top" id="thumbImg<%= index + 3 %>" onclick="changeImage('/images/<%= car.images[3] %>')">
                     </div>
-                    <% }); %>
+                <% }); %>
             </div>
         </div>
     </div>
 </div>
 <div class="container mt-5">
-    <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-        <% const car1=itemsMySQL[0]; %>
-            <h1>
-                <%= car1.prix %>$
-            </h1>
-
-            <% }; %>
+    <% if (itemsMySQL && itemsMongo && itemsMySQL.length > 0) { %>
+        <% const car1 = itemsMySQL[0]; %>
+        <h1>
+            <%= car1.prix.toLocaleString() %>$
+        </h1>
+    <% } %>
 </div>
+
+<script>
+    function changeImage(imageUrl) {
+        document.getElementById('img0').src = imageUrl;
+    }
+</script>
