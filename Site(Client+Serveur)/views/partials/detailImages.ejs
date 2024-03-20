@@ -1,35 +1,38 @@
-<div class="d-flex justify-content-around align-items-center">
-    <div class="container mb-5">
-        <div style="width: 40rem; float: left;">
-            <img src="../images/a6.jpg" class="card-img-top">
-        </div>
-
-        <div style="width: 40rem; float: right; justify-content: center;">
-            <div>
-                <div class="row">
+<div class="container mb-5">
+    <div style="width: 40rem; float: left;">
+        <% itemsMongo.forEach(car => { %>
+            <img src="/images/<%= car.images[0] %>" class="card-img-top">
+        <% }); %>
+    </div>
+    <div style="width: 40rem; float: right; justify-content: center;">
+        <div>
+            <div class="row">
+                <% itemsMongo.forEach(car => { %>
                     <div class="col-md-5 m-3">
-                        <img src="../images/a6.jpg" class="card-img-top">
+                        <img src="/images/<%= car.images[0] %>" class="card-img-top">
                     </div>
                     <div class="col-md-5 m-3">
-                        <img src="../images/a6.jpg" class="card-img-top">
+                        <img src="/images/<%= car.images[1] %>" class="card-img-top">
                     </div>
-                </div>
+                <% }); %>
             </div>
-            <div>
-                <div class="row">
+        </div>
+        <div>
+            <div class="row">
+                <% itemsMongo.forEach(car => { %>
                     <div class="col-md-5 m-3">
-                        <img src="../images/a6.jpg" class="card-img-top">
+                        <img src="/images/<%= car.images[2] %>" class="card-img-top">
                     </div>
                     <div class="col-md-5 m-3">
-                        <img src="../images/a6.jpg" class="card-img-top">
+                        <img src="/images/<%= car.images[3] %>" class="card-img-top">
                     </div>
-                </div>
+                <% }); %>
             </div>
         </div>
     </div>
 </div>
-<div class="container mt-5" style="margin-left: 60%;" >
-    <% items.forEach(car => { %>
-    <h1><%= car.prix_sans_taxes %>$ </h1> 
-    <% }) %>
+<div class="container mt-5">
+    <% itemsMongo.forEach(car => { %>
+        <h1><%= car.prix_sans_taxes %>$ </h1> 
+    <% }); %>
 </div>
