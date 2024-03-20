@@ -10,14 +10,7 @@
         margin-right: 5%;
     }
 </style>
-<!-- <div class="container mt-5">
-    <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-        <% const car1=itemsMySQL[0]; %>
-            <h1>
-                <%= car1.prix.toLocaleString() %>$
-            </h1>
-            <% } %>
-</div> -->
+
 <div class="content">
     <div class="d-flex align-items-center justify-content-center mt-5">
         <div class="container">
@@ -55,9 +48,7 @@
                             </div>
                         </div>
                 </div>
-                <p>
-                    <%= car.description %>
-                </p>
+
             </div>
 
         </div>
@@ -68,7 +59,7 @@
                     <h4><b>Achat de voiture</b></h4>
                 </div>
                 <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-                    <% const car1=itemsMySQL[0]; %>
+                    <% const car1=itemsMySQL[1]; %>
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
                             <div class="ml-auto">
@@ -88,7 +79,7 @@
                         <div class="p-2 d-flex">
                             <div class="col-8">Prix sans taxes:</div>
                             <div class="ml-auto"><b>
-                                    <%= car1.prix %>$
+                                    <%= car1.prix.toLocaleString() %>$
                                 </b></div>
                         </div>
                         <% } else { %>

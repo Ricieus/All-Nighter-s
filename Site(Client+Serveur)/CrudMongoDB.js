@@ -30,7 +30,7 @@ export async function executeOperations() {
 
     try {
         if (!mongoClient) {
-            console.log(uri); 
+            console.log(uri);
             mongoClient = await connectToMongo(uri);
         }
 
@@ -38,6 +38,7 @@ export async function executeOperations() {
         const collection = database.collection('voitureDetaille');
 
         const toyota = {
+            "_id": 1,
             "corps": "Sedan",
             "transmission": "Automatique",
             "moteur": "4 cylindres",
