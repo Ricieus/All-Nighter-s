@@ -3,12 +3,14 @@
         height: 75vh;
         width: 60vh;
     }
+
     .imgIcons {
         width: 30px;
         height: 30px;
         margin-right: 5%;
     }
 </style>
+
 <div class="content">
     <div class="d-flex align-items-center justify-content-center mt-5">
         <div class="container">
@@ -22,7 +24,7 @@
                         <div class="col">
                             <img class="imgIcons" src="../images/odometer.svg" alt=""> <%= car.moteur %>  
                         </div>
-                      </div>
+                    </div>4
                     <div class="row">
                         <div class="col">
                             <img class="imgIcons" src="../images/fuel.svg" alt=""> <%= car.carburant %>  
@@ -47,7 +49,12 @@
          
         </div>
 
-        <div class="col-md-4">
+
+        <div class="col-md-4 ms-5 me-5">
+            <!-- <div class="" style="margin-left: 23%;">
+                <img class="imageEquipe" src="../images/TeamMember.png"></img>
+            </div> -->
+
             <div class="bg-light rounded d-flex flex-column">
                 <div class="p-2 ml-3">
                     <h4><b>Résumé de commande</b></h4>
@@ -70,7 +77,7 @@
 
                 <button class="btn btn-primary">Payer</button>
             </div>
-        </div>   
+        </div>
     </div>
     <% }) %>
 </div>
