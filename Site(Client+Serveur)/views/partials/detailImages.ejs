@@ -26,5 +26,7 @@
     </div>
 </div>
 <div class="container mt-5" >
-    <h1>XXXXXXX$</h1>
+    <% items.forEach(car => { %>
+    <h1><%= car.prix_sans_taxes %>$ </h1> 
+    <% }) %>
 </div>
