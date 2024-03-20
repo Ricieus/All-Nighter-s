@@ -1,3 +1,5 @@
+// Dans le fichier "CrudMongoDB.js"
+
 import { MongoClient } from "mongodb";
 
 /*
@@ -27,7 +29,24 @@ export async function executeOperations() {
     let mongoClient;
 
     try {
+        console.log(uri);
         mongoClient = await connectToMongo(uri);
+        const database = mongoClient.db('AllNighter'); // Corrected database name
+        const collection = database.collection('voitureDetaille'); // Corrected collection name
+
+        const newCar = {
+            "corps": "Berline",
+            "transmission": "Automatique",
+            "moteur": "6 cylindres",
+            "prix_sans_taxes": 30000,
+            "annee": 2023,
+            "carburant": "Essence",
+            "description": "Une berline élégante et performante avec des caractéristiques avancées.",
+            "pneus_bougent": "AWD",
+            "tauxInteret": 6.99
+        };
+        const result = await collection.insertOne(newCar);
+        console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
         await mongoClient.close();
     }
