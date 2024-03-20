@@ -30,7 +30,7 @@ export async function executeOperations() {
 
     try {
         if (!mongoClient) {
-            console.log(uri); // Log the URI only if mongoClient is not already initialized
+            console.log(uri); 
             mongoClient = await connectToMongo(uri);
         }
 
@@ -59,7 +59,6 @@ export async function executeOperations() {
         result = await collection.insertOne(toyota);
         console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
-        // Do not close the connection here to maintain it for subsequent executions
     }
 }
 
