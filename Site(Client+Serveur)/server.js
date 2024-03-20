@@ -16,10 +16,13 @@ import { config } from "dotenv";
 config();
 
 await executeOperations();
+import { MongoClient } from 'mongodb';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const uri = process.env.DB_URI;
+const client = new MongoClient(uri);
 
 /*
     Connect to server
@@ -41,6 +44,34 @@ app.use('/images', express.static(__dirname + '/views/images'));
 // Parse application/json et application/x-www-form-urlencoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+// Définition de la route pour récupérer les données de MongoDB et les afficher
+app.get('/pages/detailee', async (req, res) => {
+    try {
+        // Connect to MongoDB
+        const client = await MongoClient.connect(uri);
+        const database = client.db('AllNighter');
+        const collection = database.collection('voitureDetaille');
+
+        // Find all cars
+        const allCars = await collection.find({}).toArray();
+        console.log(allCars);
+
+        // Render the page with the retrieved cars
+        res.render("pages/detailee", {
+            pageTitle: "Concessionnaire Rubious",
+            items: allCars
+        });
+
+        // Close the MongoDB connection
+        await client.close();
+    } catch (error) {
+        console.error('Error retrieving data from MongoDB:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -248,15 +279,7 @@ app.get('/pages/paiement', (req, res) => {
     });
 });
 
-app.get('/pages/detailee', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/detailee", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
+
 
 //End test
 

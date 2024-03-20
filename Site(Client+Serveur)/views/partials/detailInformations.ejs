@@ -14,37 +14,37 @@
         <div class="container">
             <div class="jumbotron p-5">
                 <div class="mb-5">
+                    <% items.forEach(car => { %>
                     <div class="row">
                         <div class="col">
-                            <img class="imgIcons" src="../images/car-silhouette.svg" alt=""> Sedan
+                            <img class="imgIcons" src="../images/car-silhouette.svg" alt="" > <%= car.corps %>  
                         </div>
                         <div class="col">
-                            <img class="imgIcons" src="../images/odometer.svg" alt=""> 0 KM
+                            <img class="imgIcons" src="../images/odometer.svg" alt=""> <%= car.moteur %>  
                         </div>
                       </div>
                     <div class="row">
                         <div class="col">
-                            <img class="imgIcons" src="../images/fuel.svg" alt=""> Gasoline
+                            <img class="imgIcons" src="../images/fuel.svg" alt=""> <%= car.carburant %>  
                         </div>
                         <div class="col">
-                            <img class="imgIcons" src="../images/calendar.svg" alt=""> 2020
+                            <img class="imgIcons" src="../images/calendar.svg" alt=""> <%= car.annee %>  
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <img class="imgIcons" src="../images/transmission.svg" alt=""> Automatique
+                            <img class="imgIcons" src="../images/transmission.svg" alt=""> <%= car.transmission %>  
                         </div>
                         <div class="col">
-                            <img class="imgIcons" src="../images/steering-wheel.svg" alt=""> FWD
+                            <img class="imgIcons" src="../images/steering-wheel.svg" alt=""> <%= car.pneus_bougent %>  
                         </div>
                     </div>
                 </div>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit mauris metus, eget eleifend massa pellentesque ut. Sed scelerisque eleifend tincidunt. Suspendisse fermentum mauris a elit fermentum, ut suscipit nulla tempus. Nullam et lorem ut enim pretium ultrices efficitur ac nibh. Cras fringilla porttitor orci, id porta odio feugiat vitae. Ut sed molestie sem. Morbi a libero eu nisi convallis placerat eget nec ante. Quisque lobortis diam arcu, ut vehicula purus tincidunt sit amet. Mauris iaculis nibh justo, ac vehicula massa porta vel.
-                    <br><br>
-                    Duis tincidunt mattis pretium. Nullam eget orci sed nunc lobortis lacinia id et dui. Duis sed suscipit justo. Etiam ullamcorper molestie nisl eget viverra. Nulla cursus odio vitae nulla cursus vulputate. Aenean ut lectus quam. Mauris scelerisque turpis id lacinia tempus. Donec volutpat sollicitudin velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed non neque ac leo ullamcorper facilisis. Aliquam lacinia tortor ac massa porttitor, vel aliquet elit eleifend.
+                    <%= car.description %>  
                 </p>
             </div>
+         
         </div>
 
         <div class="col-md-4">
@@ -53,31 +53,24 @@
                     <h4><b>Résumé de commande</b></h4>
                 </div>
                 <div class="p-2 d-flex">
-                    <div class="col-8">Voiture choisi:</div>
+                    <div class="col-8">Voiture:</div>
                     <div class="ml-auto">XXXXXX</div>
-                </div>
-                <div class="p-2 d-flex">
-                    <div class="col-8">Prix sans taxes:</div>
-                    <div class="ml-auto"><b>XXXXXX$</b></div>
                 </div>
                 <div class="border-top px-4 mx-3"></div>
                 <div class="p-2 d-flex">
-                    <div class="col-8">TPS/TVH estimée:</div>
-                    <div class="ml-auto">XX%</div>
-                </div>
-                <div class="p-2 d-flex">
-                    <div class="col-8">TVP/TVD/TVQ estimée:</div>
-                    <div class="ml-auto">XX%</div>
+                    <div class="col-8">Taux d'interet:</div>
+                    <div class="ml-auto"><%= car.tauxInteret %>%</div>
                 </div>
                 <div class="border-top px-4 mx-3">
                 </div>
-                <div class="p-2 d-flex pt-3">
-                    <div class="col-8"><b>Prix total:</b></div>
-                    <div class="ml-auto"><b>XXXXXX$</b></div>
+                <div class="p-2 d-flex">
+                    <div class="col-8">Prix sans taxes:</div>
+                    <div class="ml-auto"><b><%= car.prix_sans_taxes %>$</b></div>
                 </div>
 
                 <button class="btn btn-primary">Payer</button>
             </div>
         </div>   
     </div>
+    <% }) %>
 </div>
