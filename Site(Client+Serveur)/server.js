@@ -49,28 +49,40 @@ app.use(express.urlencoded({ extended: true }));
 // Définition de la route pour récupérer les données de MongoDB et les afficher
 app.get('/pages/detailee', async (req, res) => {
     try {
-        // Connect to MongoDB
+        // MongoDB Operations
         const client = await MongoClient.connect(uri);
         const database = client.db('AllNighter');
         const collection = database.collection('voitureDetaille');
-
-        // Find all cars
-        const allCars = await collection.find({}).toArray();
-        console.log(allCars);
-
-        // Render the page with the retrieved cars
-        res.render("pages/detailee", {
-            pageTitle: "Concessionnaire Rubious",
-            items: allCars
-        });
-
-        // Close the MongoDB connection
+        const allCarsMongo = await collection.find({}).toArray();
         await client.close();
+
+        // MySQL Operations
+        con.query("SELECT * FROM voitures", function (err, result) {
+            if (err) {
+                console.error('Error retrieving data from MySQL:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            // Add brand information to each car from MySQL
+            const allCarsMySQL = result.map(car => {
+                car.brand = "marque"; // Replace "YourBrand" with the actual brand field from MySQL
+                return car;
+            });
+
+            // Render the page with combined data from MongoDB and MySQL
+            res.render("pages/detailee", {
+                pageTitle: "Concessionnaire Rubious",
+                itemsMongo: allCarsMongo,
+                itemsMySQL: allCarsMySQL
+            });
+        });
     } catch (error) {
         console.error('Error retrieving data from MongoDB:', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 app.get("/", function (req, res) {

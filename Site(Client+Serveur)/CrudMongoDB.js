@@ -37,20 +37,27 @@ export async function executeOperations() {
         const database = mongoClient.db('AllNighter');
         const collection = database.collection('voitureDetaille');
         
-        const newCar = {
-            "corps": "Berline",
+        const toyota = {
+            "corps": "Sedan",
             "transmission": "Automatique",
-            "moteur": "6 cylindres",
+            "moteur": "4 cylindres",
             "prix_sans_taxes": 30000,
-            "annee": 2023,
+            "annee": 2021,
             "carburant": "Essence",
-            "description": "Une berline élégante et performante avec des caractéristiques avancées.",
-            "pneus_bougent": "AWD",
-            "tauxInteret": 6.99
+            "description": "Une sedan élégante et performante avec des caractéristiques avancées.",
+            "pneus_bougent": "FWD",
+            "tauxInteret": 6.99,
+            "images": [
+                "toyota_corrola.jpg",
+                "toyota_corolla_2021_ext-cote.png",
+                "toyota_corolla_2021_ext-der.png",
+                "toyota_corolla_2021_int.jpg"
+                
+            ],
         };
 
-        let result = await collection.deleteMany(newCar);
-        result = await collection.insertOne(newCar);
+        let result = await collection.deleteMany(toyota);
+        result = await collection.insertOne(toyota);
         console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
         // Do not close the connection here to maintain it for subsequent executions
