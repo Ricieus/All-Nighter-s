@@ -3,48 +3,54 @@
         height: 75vh;
         width: 60vh;
     }
+
     .imgIcons {
         width: 30px;
         height: 30px;
         margin-right: 5%;
     }
 </style>
+
 <div class="content">
     <div class="d-flex align-items-center justify-content-center mt-5">
         <div class="container">
             <div class="jumbotron p-5">
                 <div class="mb-5">
-                    <% itemsMongo.forEach(car => { %>
-                    <div class="row">
-                        <div class="col">
-                            <img class="imgIcons" src="../images/car-silhouette.svg" alt="" > <%= car.corps %>  
+                    <% itemsMongo.forEach(car=> { %>
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
+                                <%= car.corps %>
+                            </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/odometer.svg" alt="">
+                                <%= car.moteur %>
+                            </div>
                         </div>
-                        <div class="col">
-                            <img class="imgIcons" src="../images/odometer.svg" alt=""> <%= car.moteur %>  
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/fuel.svg" alt="">
+                                <%= car.carburant %>
+                            </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/calendar.svg" alt="">
+                                <%= car.annee %>
+                            </div>
                         </div>
-                      </div>
-                    <div class="row">
-                        <div class="col">
-                            <img class="imgIcons" src="../images/fuel.svg" alt=""> <%= car.carburant %>  
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/transmission.svg" alt="">
+                                <%= car.transmission %>
+                            </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
+                                <%= car.pneus_bougent %>
+                            </div>
                         </div>
-                        <div class="col">
-                            <img class="imgIcons" src="../images/calendar.svg" alt=""> <%= car.annee %>  
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <img class="imgIcons" src="../images/transmission.svg" alt=""> <%= car.transmission %>  
-                        </div>
-                        <div class="col">
-                            <img class="imgIcons" src="../images/steering-wheel.svg" alt=""> <%= car.pneus_bougent %>  
-                        </div>
-                    </div>
                 </div>
-                <p>
-                    <%= car.description %>  
-                </p>
+
             </div>
-         
+
         </div>
 
         <div class="col-md-4">
@@ -52,32 +58,40 @@
                 <div class="p-2 ml-3">
                     <h4><b>Achat de voiture</b></h4>
                 </div>
-                <% if (itemsMySQL && itemsMongo && itemsMySQL.length > 0) { %>
-                    <% const car1 = itemsMySQL[0]; %> 
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Voiture:</div>
-                        <div class="ml-auto"><%= car1.marque %> <%= car1.modele %> <%= car1.annee %> </div> <!-- Displaying the car name from MySQL -->
-                    </div>
-                    <div class="border-top px-4 mx-3"></div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Taux d'interet:</div>
-                        <div class="ml-auto"><%= car.tauxInteret %>%</div>
-                    </div>
-                    <div class="border-top px-4 mx-3"></div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Prix sans taxes:</div>
-                        <div class="ml-auto"><b><%= car.prix_sans_taxes %>$</b></div>
-                    </div>
-                <% } else { %>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Voiture:</div>
-                        <div class="ml-auto">N/A</div> <!-- Display N/A if no car data is available -->
-                    </div>
-                <% } %>
-        
-                <button class="btn btn-primary">Payer</button>
+                <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
+                    <% const car1=itemsMySQL[1]; %>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Voiture:</div>
+                            <div class="ml-auto">
+                                <%= car1.marque %>
+                                    <%= car1.modele %>
+                                        <%= car1.annee %>
+                            </div> <!-- Displaying the car name from MySQL -->
+                        </div>
+                        <div class="border-top px-4 mx-3"></div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Taux d'interet:</div>
+                            <div class="ml-auto">
+                                <%= car.tauxInteret %>%
+                            </div>
+                        </div>
+                        <div class="border-top px-4 mx-3"></div>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Prix sans taxes:</div>
+                            <div class="ml-auto"><b>
+                                    <%= car1.prix.toLocaleString() %>$
+                                </b></div>
+                        </div>
+                        <% } else { %>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Voiture:</div>
+                                <div class="ml-auto">N/A</div> <!-- Display N/A if no car data is available -->
+                            </div>
+                            <% } %>
+
+                                <button class="btn btn-primary">Payer</button>
             </div>
         </div>
-        
-    <% }) %>
-</div>
+
+        <% }) %>
+    </div>

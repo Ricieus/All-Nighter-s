@@ -30,18 +30,18 @@ export async function executeOperations() {
 
     try {
         if (!mongoClient) {
-            console.log(uri); // Log the URI only if mongoClient is not already initialized
+            console.log(uri);
             mongoClient = await connectToMongo(uri);
         }
-        
+
         const database = mongoClient.db('AllNighter');
         const collection = database.collection('voitureDetaille');
-        
+
         const toyota = {
+            "_id": 1,
             "corps": "Sedan",
             "transmission": "Automatique",
             "moteur": "4 cylindres",
-            "prix_sans_taxes": 30000,
             "annee": 2021,
             "carburant": "Essence",
             "description": "Une sedan élégante et performante avec des caractéristiques avancées.",
@@ -52,7 +52,7 @@ export async function executeOperations() {
                 "toyota_corolla_2021_ext-cote.png",
                 "toyota_corolla_2021_ext-der.png",
                 "toyota_corolla_2021_int.jpg"
-                
+
             ],
         };
 
@@ -60,7 +60,6 @@ export async function executeOperations() {
         result = await collection.insertOne(toyota);
         console.log(`Nouvelle voiture insérée avec l'ID : ${result.insertedId}`);
     } finally {
-        // Do not close the connection here to maintain it for subsequent executions
     }
 }
 
