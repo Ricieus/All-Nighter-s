@@ -13,10 +13,12 @@ import { count } from "console";
 
 import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
+import {loadStripe} from '@stripe/stripe-js';
 config();
 
 await executeOperations();
 import { MongoClient } from 'mongodb';
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -45,45 +47,46 @@ app.use('/images', express.static(__dirname + '/views/images'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// MongoDB Connection
+const mongoUrl = 'mongodb://localhost:27017';
+const dbName = 'AllNighter';
 
-// Définition de la route pour récupérer les données de MongoDB et les afficher
-app.get('/pages/detailee', async (req, res) => {
-    try {
-        // MongoDB Operations
-        const client = await MongoClient.connect(uri);
-        const database = client.db('AllNighter');
-        const collection = database.collection('voitureDetaille');
-        const allCarsMongo = await collection.find({}).toArray();
-        await client.close();
+MongoClient.connect(mongoUrl, (err, client) => {
+  assert.equal(null, err);
+  console.log('Connected successfully to MongoDB server');
 
-        // MySQL Operations
-        con.query("SELECT * FROM voitures", function (err, result) {
-            if (err) {
-                console.error('Error retrieving data from MySQL:', err);
-                res.status(500).send('Internal Server Error');
-                return;
-            }
+  const db = client.db(dbName);
 
-            // Add brand information to each car from MySQL
-            const allCarsMySQL = result.map(car => {
-                car.brand = "marque"; // Replace "YourBrand" with the actual brand field from MySQL
-                return car;
-            });
-
-            // Render the page with combined data from MongoDB and MySQL
-            res.render("pages/detailee", {
-                pageTitle: "Concessionnaire Rubious",
-                itemsMongo: allCarsMongo,
-                itemsMySQL: allCarsMySQL
-            });
-        });
-    } catch (error) {
-        console.error('Error retrieving data from MongoDB:', error);
-        res.status(500).send('Internal Server Error');
-    }
+  app.locals.db = db;
 });
 
-
+// Définition de la route pour récupérer les données de MongoDB et les afficher
+app.get('/voiture/:id_voiture', (req, res) => {
+    const carId = req.params.id_voiture;
+  
+    // Fetch basic car information from MySQL
+    const sql = `SELECT * FROM voitures WHERE id_voiture = ${carId}`;
+    con.query(sql, (err, rows) => {
+      if (err) {
+        console.error('Error fetching car from MySQL:', err);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+      const carInfo = rows[0]; // Assuming only one row is returned
+  
+      // Fetch additional car information from MongoDB
+      const db = req.app.locals.db;
+      const collection = db.collection('voitureDetaille');
+      collection.findOne({ _id: carId }, (err, result) => {
+        if (err) {
+          console.error('Error fetching car details from MongoDB:', err);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
+        res.render('pages/detailee', { carInfo, carDetails: result });
+      });
+    });
+  });
 
 app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -294,6 +297,36 @@ app.get('/pages/paiement', (req, res) => {
 
 
 //End test
+
+//Paiement lors de l'achat de la voiture
+const stripe = await loadStripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
+app.post('/purchase', async (req, res) => {
+    const { carId, stripeTokenId } = req.body;
+  
+    // Retrieve car data
+    const carData = itemsJson.voiture.find(item => item.id === carId);
+  
+    if (!carData) {
+      return res.status(404).json({ error: 'Car not found' });
+    }
+  
+    try {
+      // Create Stripe charge
+      const charge = await stripeInstance.charges.create({
+        amount: carData.prix * 100, // Convert to cents
+        currency: 'usd',
+        source: stripeTokenId,
+        description: `Purchase of ${carData.marque} ${carData.modele}`,
+      });
+  
+      // Payment successful
+      res.json({ message: 'Payment successful', charge });
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      res.status(500).json({ error: 'Payment failed' });
+    }
+  });
+
 
 /*
     Importation de Bootstrap

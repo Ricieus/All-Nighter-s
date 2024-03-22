@@ -59,27 +59,27 @@
                     <h4><b>Achat de voiture</b></h4>
                 </div>
                 <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-                    <% const car1=itemsMySQL[1]; %>
+                    <% const carInfo=itemsMySQL[1]; %>
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
                             <div class="ml-auto">
-                                <%= car1.marque %>
-                                    <%= car1.modele %>
-                                        <%= car1.annee %>
+                                <%= carInfo.marque %>
+                                    <%= carInfo.modele %>
+                                        <%= carInfo.annee %>
                             </div> <!-- Displaying the car name from MySQL -->
                         </div>
                         <div class="border-top px-4 mx-3"></div>
                         <div class="p-2 d-flex">
                             <div class="col-8">Taux d'interet:</div>
                             <div class="ml-auto">
-                                <%= car.tauxInteret %>%
+                                <%= carDetails.tauxInteret %>%
                             </div>
                         </div>
                         <div class="border-top px-4 mx-3"></div>
                         <div class="p-2 d-flex">
                             <div class="col-8">Prix sans taxes:</div>
                             <div class="ml-auto"><b>
-                                    <%= car1.prix.toLocaleString() %>$
+                                    <%= carDetails.prix.toLocaleString() %>$
                                 </b></div>
                         </div>
                         <% } else { %>

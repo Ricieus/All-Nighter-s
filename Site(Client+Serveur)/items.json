@@ -1,0 +1,12 @@
+{
+    "voiture": [
+        {
+            "id": 1,
+            "marque": "Toyota",
+            "modele": "Corrola",
+            "annee": "2021",
+            "prix": "25000",
+            "image": "toyota_corrola.jpg"
+        }
+    ]
+}
