@@ -48,6 +48,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB Connection
+//Aide avec ChatGPT pour troubleshoot les erreurs de connection entre MongoDB et MySQL à HTML(ejs)
 const mongoUrl = 'mongodb://localhost:27017';
 const dbName = 'AllNighter';
 let db; // Declare db variable outside of MongoClient.connect
@@ -81,17 +82,17 @@ app.get('/voiture/:id_voiture', async (req, res) => {
 
         // Fetch additional car information from MongoDB using the db variable
         if (!db) {
-            console.error('MongoDB connection not established');
-            res.status(500).send('Internal Server Error');
+            console.error('Connection de MongoDB nest pas complete');
+            res.status(500).send('Erreur interne dans le serveur');
             return;
         }
         const collection = db.collection('voitureDetaille');
-        const result = await collection.findOne({ _id: carId });
+        const result = [await collection.findOne({ _id: parseInt(carId) })];
 
         // Check if car details are found
         if (!result) {
-            console.error('Car details not found in MongoDB');
-            res.status(404).send('Car details not found');
+            console.error('Les details des voitures nest pas present dans MongoDB');
+            res.status(404).send('Details de la voiture nont trouve');
             return;
         }
 
@@ -99,7 +100,7 @@ app.get('/voiture/:id_voiture', async (req, res) => {
         res.render('pages/detailee', { carInfo, carDetails: result });
     } catch (err) {
         console.error('Error:', err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Erreur interne dans le serveur');
     }
 });
 app.get("/", function (req, res) {

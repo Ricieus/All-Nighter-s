@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-center">
         <div style="width: 80rem; height: 35rem;">
 
-            <% itemsMongo.forEach((car, index)=> { %>
+            <% carDetails.forEach((car, index)=> { %>
                 <img src="/images/<%= car.images[0] %>" class="card-img-top h-100" id="img<%= index %>"
                     style="object-fit: cover;">
                 <% }); %>
@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-center" style="width: 40rem;">
 
             <div class="row">
-                <% itemsMongo.forEach((car, index)=> { %>
+                <% carDetails.forEach((car, index)=> { %>
                     <div class="col m-3">
                         <img src="/images/<%= car.images[0] %>" class="card-img-top" id="thumbImg<%= index %>"
                             onclick="changeImage('/images/<%= car.images[0] %>')">
@@ -40,8 +40,8 @@
 
 </div>
 <div class="container mt-5 d-flex justify-content-center">
-    <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-        <% const car1=itemsMySQL[0]; %>
+    <% if (carInfo && carDetails && carInfo.length> 0) { %>
+        <% const car1=carInfo[0]; %>
             <h1>
                 Prix de base: <%= car1.prix.toLocaleString() %>$
             </h1>

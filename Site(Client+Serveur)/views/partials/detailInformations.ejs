@@ -10,13 +10,15 @@
         margin-right: 5%;
     }
 </style>
-
+<script>
+    console.log(carInfo)
+</script>
 <div class="content">
     <div class="d-flex align-items-center justify-content-center mt-5">
         <div class="container">
             <div class="jumbotron p-5">
                 <div class="mb-5">
-                    <% itemsMongo.forEach(car=> { %>
+                    <% carDetails.forEach(car=> { %>
                         <div class="row">
                             <div class="col">
                                 <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
@@ -58,14 +60,14 @@
                 <div class="p-2 ml-3">
                     <h4><b>Achat de voiture</b></h4>
                 </div>
-                <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-                    <% const carInfo=itemsMySQL[1]; %>
+                <% if (carInfo && carDetails && carInfo.length> 0) { %>
+                    <% const info=carInfo[1]; %>
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
                             <div class="ml-auto">
-                                <%= carInfo.marque %>
-                                    <%= carInfo.modele %>
-                                        <%= carInfo.annee %>
+                                <%= info.marque %>
+                                    <%= info.modele %>
+                                        <%= info.annee %>
                             </div> <!-- Displaying the car name from MySQL -->
                         </div>
                         <div class="border-top px-4 mx-3"></div>
