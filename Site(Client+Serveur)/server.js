@@ -50,44 +50,58 @@ app.use(express.urlencoded({ extended: true }));
 // MongoDB Connection
 const mongoUrl = 'mongodb://localhost:27017';
 const dbName = 'AllNighter';
+let db; // Declare db variable outside of MongoClient.connect
 
-MongoClient.connect(mongoUrl, (err, client) => {
-  assert.equal(null, err);
-  console.log('Connected successfully to MongoDB server');
+(async () => {
+    try {
+        const client = await MongoClient.connect(mongoUrl);
+        console.log('Connected to MongoDB');
+        db = client.db(dbName); // Assign the MongoDB client to the db variable
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+        // Handle error
+    }
+})();
 
-  const db = client.db(dbName);
-
-  app.locals.db = db;
-});
-
-// Définition de la route pour récupérer les données de MongoDB et les afficher
-app.get('/voiture/:id_voiture', (req, res) => {
+// Define the route for fetching car information from MySQL and MongoDB
+app.get('/voiture/:id_voiture', async (req, res) => {
     const carId = req.params.id_voiture;
-  
-    // Fetch basic car information from MySQL
-    const sql = `SELECT * FROM voitures WHERE id_voiture = ${carId}`;
-    con.query(sql, (err, rows) => {
-      if (err) {
-        console.error('Error fetching car from MySQL:', err);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-      const carInfo = rows[0]; // Assuming only one row is returned
-  
-      // Fetch additional car information from MongoDB
-      const db = req.app.locals.db;
-      const collection = db.collection('voitureDetaille');
-      collection.findOne({ _id: carId }, (err, result) => {
-        if (err) {
-          console.error('Error fetching car details from MongoDB:', err);
-          res.status(500).send('Internal Server Error');
-          return;
-        }
-        res.render('pages/detailee', { carInfo, carDetails: result });
-      });
-    });
-  });
 
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures WHERE id_voiture = ${carId}`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        const carInfo = rows[0]; // Assuming only one row is returned
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection not established');
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        const collection = db.collection('voitureDetaille');
+        const result = await collection.findOne({ _id: carId });
+
+        // Check if car details are found
+        if (!result) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+
+        // Render the detailee page with car information
+        res.render('pages/detailee', { carInfo, carDetails: result });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
