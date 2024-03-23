@@ -60,40 +60,39 @@
                 <div class="p-2 ml-3">
                     <h4><b>Achat de voiture</b></h4>
                 </div>
-                <% if (carInfo && carDetails && carInfo.length> 0) { %>
-                    <% const info=carInfo[1]; %>
+                <% if (carDetails && carInfo.length > 0) { %>
+                    <% const info = carInfo[i]; %>
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
                             <div class="ml-auto">
                                 <%= info.marque %>
-                                    <%= info.modele %>
-                                        <%= info.annee %>
-                            </div> <!-- Displaying the car name from MySQL -->
-                        </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Taux d'interet:</div>
-                            <div class="ml-auto">
-                                <%= carDetails.tauxInteret %>%
+                                <%= info.modele %>
+                                <%= info.annee %>
                             </div>
                         </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Prix sans taxes:</div>
-                            <div class="ml-auto"><b>
-                                    <%= carDetails.prix.toLocaleString() %>$
-                                </b></div>
+            </div>
+                <div class="border-top px-4 mx-3"></div>
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Taux d'interet:</div>
+                        <div class="ml-auto">
+                            <%= carDetails.tauxInteret %>%
                         </div>
-                        <% } else { %>
-                            <div class="p-2 d-flex">
-                                <div class="col-8">Voiture:</div>
-                                <div class="ml-auto">N/A</div> <!-- Display N/A if no car data is available -->
-                            </div>
-                            <% } %>
-
-                                <button class="btn btn-primary">Payer</button>
+                    </div>
+                    <div class="border-top px-4 mx-3"></div>
+                    <div class="p-2 d-flex">
+                        <div class="col-8">Prix sans taxes:</div>
+                        <div class="ml-auto"><b>
+                                <%= carDetails.prix.toLocaleString() %>$
+                            </b></div>
+                    </div>
+                    <% } else { %>
+                        <div class="p-2 d-flex">
+                            <div class="col-8">Voiture:</div>
+                            <div class="ml-auto">N/A</div>
+                        </div>
+                    <% } %>
+                <button class="btn btn-primary">Payer</button>
             </div>
         </div>
-
         <% }) %>
     </div>
