@@ -48,6 +48,7 @@
                                     <%= car.pneus_bougent %>
                                 </div>
                             </div>
+                          
                     </div>
                 </div>
             </div>
@@ -57,33 +58,32 @@
                         <h4><b>Achat de voiture</b></h4>
                     </div>
                     
-                    <% console.log(carDetails);  console.log(carInfo); if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
-                        
-                        <% const info = carInfo; console.log(info) %>  <!-- Check if carDetails and carInfo are available -->
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Voiture:</div>
-                            <div class="ml-auto">
-                                <%= info.marque %> <%= info.modele %> <%= info.annee %>
+                    <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
+                        <% carInfo.forEach(info => { %> <!-- Check if carDetails and carInfo are available -->
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Voiture:</div>
+                                <div class="ml-auto">
+                                    <%= info.marque %> <%= info.modele %> <%= info.annee %>
+                                </div>
                             </div>
-                        </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Taux d'interet:</div>
-                            <div class="ml-auto"><%= car.tauxInteret %>%</div>
-                        </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Prix sans taxes:</div>
-                            <div class="ml-auto"><b><%= info.prix.toLocaleString()%>$</b></div>
-                        </div>
-                        
-                    <% } else { %> <!-- If carDetails or carInfo is not available -->
+                            <div class="border-top px-4 mx-3"></div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Taux d'interet:</div>
+                                <div class="ml-auto"><%= car.tauxInteret %>%</div> <!-- Assuming you want to use car.tauxInteret -->
+                            </div>
+                            <div class="border-top px-4 mx-3"></div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Prix sans taxes:</div>
+                                <div class="ml-auto"><b><%= info.prix.toLocaleString()%>$</b></div>
+                            </div>
+                            <% }); %>
+                            
+                        <!-- End of forEach loop -->
+                    <%  }else { %> <!-- If carDetails or carInfo is not available -->
                         <!-- Assuming you want the first item in carInfo -->
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
-                            <div class="ml-auto">
-                               N/A
-                            </div>
+                            <div class="ml-auto">N/A</div>
                         </div>
                         <div class="border-top px-4 mx-3"></div>
                         <div class="p-2 d-flex">
@@ -95,9 +95,8 @@
                             <div class="col-8">Prix sans taxes:</div>
                             <div class="ml-auto"><b>N/A</b></div>
                         </div>
-                    <% } %>
-                    <% }); %>
-
+                    <% } %> <!-- End of if-else block -->
+                    <% }); %> 
                     <button class="btn btn-primary">Payer</button>
                 </div>
             </div>

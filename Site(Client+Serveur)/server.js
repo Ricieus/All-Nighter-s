@@ -84,7 +84,7 @@ app.get('/detailee/:id_voiture', async (req, res) => {
             return;
         }
 
-        const carInfo = rows[0]; // Assuming only one row is returned
+        const carInfo = rows; // Assuming only one row is returned
 
         // Fetch additional car information from MongoDB using the db variable
         if (!db) {
