@@ -13,18 +13,20 @@
         justify-content: center;
     }
 
-    .centrerText{
+    .centrerText {
         text-align: center;
     }
 
 
     .horizontalLine .items {
         border-top: 3px solid #000000;
+        position: relative;
     }
 
     .horizontalLine .items .items-list {
         position: relative;
         margin-right: 0;
+        
     }
 
     .horizontalLine .items .items-list::before {
@@ -35,7 +37,7 @@
         border-radius: 50%;
         background-color: #ddd;
         top: 0;
-        margin-top:-10px;
+        margin-top: -10px;
     }
 
     /* .horizontalLine .items .items-list::after {
@@ -53,8 +55,12 @@
         padding-top: 15px;
     }
 
-    
+    .items-list.blue::before {
+        background-color: blue !important;
+    }
 </style>
+
+
 
 <body>
     <div class="content">
@@ -83,7 +89,7 @@
                                 <ul class="list-inline items d-flex justify-content-between">
                                     <li class="list-inline-item items-list">
                                         <p class="py-1 px-2 rounded text-white" style="background-color: #427ef6;">
-                                            Commande passée</p> 
+                                            Commande passée</p>
                                     </li>
                                     <li class="list-inline-item items-list">
                                         <p class="py-1 px-2 rounded text-black">
@@ -94,7 +100,7 @@
                                         </p>
                                     </li>
                                     <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
-                                        <p class="py-1 px-2 rounded text-black" >Achat complété
+                                        <p class="py-1 px-2 rounded text-black">Achat complété
                                         </p>
                                     </li>
                                 </ul>
@@ -108,3 +114,26 @@
         </div>
     </div>
 </body>
+
+<script>
+    function changeColor() {
+        const line = document.querySelector('.horizontalLine');
+        const items = document.querySelectorAll('.horizontalLine .items-list');
+        const texte = document.querySelectorAll('list-inline-item items-list');
+        
+        line.classList.add('blue');
+        items.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('blue');
+            }, index * 1000);
+        });
+        items.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.color = ''; 
+                item.style.backgroundColor = '#427ef6';
+            }, index * 1000);
+        });
+        
+    }
+    setTimeout(changeColor, 5000);
+</script>
