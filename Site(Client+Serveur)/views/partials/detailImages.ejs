@@ -40,18 +40,18 @@
 
 </div>
 <div class="container mt-5 d-flex justify-content-center">
-    <% if (carInfo && carDetails && carInfo.length> 0) { %>
-        <% const car1=carInfo[0]; %>
+    
+    <% if (typeof car !== undefined && typeof carInfo !== undefined) { %>
+        <% const car1=carInfo; %>
             <h1>
                 Prix de base: <%= car1.prix.toLocaleString() %>$
             </h1>
 </div>
 <div class="d-flex justify-content-center">
-
+    <% } %>
     <p>
         <%= car.description %>
     </p>
-    <% } %>
         <% }); %>
 </div>
 
