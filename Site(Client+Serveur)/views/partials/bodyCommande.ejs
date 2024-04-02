@@ -113,9 +113,23 @@
             </div>
         </div>
     </div>
+    <%- include('../partials/sectionContact.ejs') %>
 </body>
 
 <script>
+    function changerDeCouleur(){
+        const items = document.querySelectorAll('.horizontalLine .items-list p');
+        items.forEach((items, index) =>{
+            setTimeout(() => {
+                items.style.backgroundColor = '#427ef6';
+            }, index * 5000 );
+        });
+    }
+    setTimeout(changerDeCouleur, 7000);
+</script>
+
+
+<!-- <script>
     function changeColor() {
         const line = document.querySelector('.horizontalLine');
         const items = document.querySelectorAll('.horizontalLine .items-list');
@@ -136,4 +150,4 @@
         
     }
     setTimeout(changeColor, 5000);
-</script>
+</script> -->
