@@ -88,18 +88,18 @@
 
                                 <ul class="list-inline items d-flex justify-content-between">
                                     <li class="list-inline-item items-list">
-                                        <p class="py-1 px-2 rounded text-white" style="background-color: #427ef6;">
+                                        <p class="py-1 px-2 rounded text-black" style="background-color: #427ef6; font-weight: bold;">
                                             Commande passée</p>
                                     </li>
                                     <li class="list-inline-item items-list">
-                                        <p class="py-1 px-2 rounded text-black">
+                                        <p class="py-1 px-2 rounded text-black" style="font-weight: bold;">
                                             En processus</p>
                                     </li>
                                     <li class="list-inline-item items-list">
-                                        <p class="py-1 px-2 rounded text-black">Expédié
+                                        <p class="py-1 px-2 rounded text-black" style="font-weight: bold;">Expédié
                                         </p>
                                     </li>
-                                    <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
+                                    <li class="list-inline-item items-list text-end" style=" font-weight: bold;">
                                         <p class="py-1 px-2 rounded text-black">Achat complété
                                         </p>
                                     </li>
@@ -122,32 +122,8 @@
         items.forEach((items, index) =>{
             setTimeout(() => {
                 items.style.backgroundColor = '#427ef6';
-            }, index * 5000 );
+            }, index * 7000 );
         });
     }
     setTimeout(changerDeCouleur, 7000);
 </script>
-
-
-<!-- <script>
-    function changeColor() {
-        const line = document.querySelector('.horizontalLine');
-        const items = document.querySelectorAll('.horizontalLine .items-list');
-        const texte = document.querySelectorAll('list-inline-item items-list');
-        
-        line.classList.add('blue');
-        items.forEach((item, index) => {
-            setTimeout(() => {
-                item.classList.add('blue');
-            }, index * 1000);
-        });
-        items.forEach((item, index) => {
-            setTimeout(() => {
-                item.style.color = ''; 
-                item.style.backgroundColor = '#427ef6';
-            }, index * 1000);
-        });
-        
-    }
-    setTimeout(changeColor, 5000);
-</script> -->
