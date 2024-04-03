@@ -174,8 +174,7 @@ export async function executeOperations() {
                     "chevrolet_silverado_2021_ext-der.avif",
                     "chevrolet_silverado_2021_int.avif"
                 ]
-            },
-
+            }
         ];
 
         for (const voiture of voitures) {
