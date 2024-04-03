@@ -1,97 +1,106 @@
-<style>
-    .boiteInformation {
-        height: 75vh;
-        width: 60vh;
-    }
 
-    .imgIcons {
-        width: 30px;
-        height: 30px;
-        margin-right: 5%;
-    }
-</style>
+    <style>
+        .boiteInformation {
+            height: 75vh;
+            width: 60vh;
+        }
 
-<div class="content">
-    <div class="d-flex align-items-center justify-content-center mt-5">
-        <div class="container">
-            <div class="jumbotron p-5">
-                <div class="mb-5">
-                    <% itemsMongo.forEach(car=> { %>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
-                                <%= car.corps %>
+        .imgIcons {
+            width: 30px;
+            height: 30px;
+            margin-right: 5%;
+        }
+    </style>
+
+    <div class="content">
+        <div class="d-flex align-items-center justify-content-center mt-5">
+            <div class="container">
+                <div class="jumbotron p-5">
+                    <div class="mb-5">
+                        <% carDetails.forEach(car => { %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
+                                    <%= car.corps %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/odometer.svg" alt="">
+                                    <%= car.moteur %>
+                                </div>
                             </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/odometer.svg" alt="">
-                                <%= car.moteur %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/fuel.svg" alt="">
+                                    <%= car.carburant %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/calendar.svg" alt="">
+                                    <%= car.annee %>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/fuel.svg" alt="">
-                                <%= car.carburant %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/transmission.svg" alt="">
+                                    <%= car.transmission %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
+                                    <%= car.pneus_bougent %>
+                                </div>
                             </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/calendar.svg" alt="">
-                                <%= car.annee %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/transmission.svg" alt="">
-                                <%= car.transmission %>
-                            </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
-                                <%= car.pneus_bougent %>
-                            </div>
-                        </div>
+                          
+                    </div>
                 </div>
-
             </div>
-
-        </div>
-
-        <div class="col-md-4">
-            <div class="bg-light rounded d-flex flex-column">
-                <div class="p-2 ml-3">
-                    <h4><b>Achat de voiture</b></h4>
-                </div>
-                <% if (itemsMySQL && itemsMongo && itemsMySQL.length> 0) { %>
-                    <% const car1=itemsMySQL[1]; %>
+            <div class="col-md-4">
+                <div class="bg-light rounded d-flex flex-column">
+                    <div class="p-2 ml-3">
+                        <h4><b>Achat de voiture</b></h4>
+                    </div>
+                    
+                    <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
+                        <% carInfo.forEach(info => { %> <!-- Check if carDetails and carInfo are available -->
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Voiture:</div>
+                                <div class="ml-auto">
+                                    <%= info.marque %> <%= info.modele %> <%= info.annee %>
+                                </div>
+                            </div>
+                            <div class="border-top px-4 mx-3"></div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Taux d'interet:</div>
+                                <div class="ml-auto"><%= car.tauxInteret %>%</div> <!-- Assuming you want to use car.tauxInteret -->
+                            </div>
+                            <div class="border-top px-4 mx-3"></div>
+                            <div class="p-2 d-flex">
+                                <div class="col-8">Prix sans taxes:</div>
+                                <div class="ml-auto"><b><%= info.prix.toLocaleString()%>$</b></div>
+                            </div>
+                            <% }); %>
+                            
+                        <!-- End of forEach loop -->
+                    <%  }else { %> <!-- If carDetails or carInfo is not available -->
+                        <!-- Assuming you want the first item in carInfo -->
                         <div class="p-2 d-flex">
                             <div class="col-8">Voiture:</div>
-                            <div class="ml-auto">
-                                <%= car1.marque %>
-                                    <%= car1.modele %>
-                                        <%= car1.annee %>
-                            </div> <!-- Displaying the car name from MySQL -->
+                            <div class="ml-auto">N/A</div>
                         </div>
                         <div class="border-top px-4 mx-3"></div>
                         <div class="p-2 d-flex">
                             <div class="col-8">Taux d'interet:</div>
-                            <div class="ml-auto">
-                                <%= car.tauxInteret %>%
-                            </div>
+                            <div class="ml-auto">N/A</div>
                         </div>
                         <div class="border-top px-4 mx-3"></div>
                         <div class="p-2 d-flex">
                             <div class="col-8">Prix sans taxes:</div>
-                            <div class="ml-auto"><b>
-                                    <%= car1.prix.toLocaleString() %>$
-                                </b></div>
+                            <div class="ml-auto"><b>N/A</b></div>
                         </div>
-                        <% } else { %>
-                            <div class="p-2 d-flex">
-                                <div class="col-8">Voiture:</div>
-                                <div class="ml-auto">N/A</div> <!-- Display N/A if no car data is available -->
-                            </div>
-                            <% } %>
-
-                                <button class="btn btn-primary">Payer</button>
+                    <% } %> <!-- End of if-else block -->
+                    <% }); %> 
+                    <button class="btn btn-primary">Payer</button>
+                </div>
             </div>
+         
         </div>
-
-        <% }) %>
     </div>
+

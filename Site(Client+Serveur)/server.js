@@ -13,10 +13,12 @@ import { count } from "console";
 
 import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
+import {loadStripe} from '@stripe/stripe-js';
 config();
 
 await executeOperations();
 import { MongoClient } from 'mongodb';
+
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -45,33 +47,68 @@ app.use('/images', express.static(__dirname + '/views/images'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// MongoDB Connection
+//Aide avec ChatGPT pour troubleshoot les erreurs de connection entre MongoDB et MySQL à HTML(ejs)
+const mongoUrl = 'mongodb://localhost:27017';
+const dbName = 'AllNighter';
+let db; // Declare db variable outside of MongoClient.connect
 
-// Définition de la route pour récupérer les données de MongoDB et les afficher
-app.get('/pages/detailee', async (req, res) => {
+(async () => {
     try {
-        // Connect to MongoDB
-        const client = await MongoClient.connect(uri);
-        const database = client.db('AllNighter');
-        const collection = database.collection('voitureDetaille');
+        const client = await MongoClient.connect(mongoUrl);
+        console.log('Connected to MongoDB');
+        db = client.db(dbName); // Assign the MongoDB client to the db variable
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+        // Handle error
+    }
+})();
 
-        // Find all cars
-        const allCars = await collection.find({}).toArray();
-        console.log(allCars);
+// Define the route for fetching car information from MySQL and MongoDB
+app.get('/detailee/:id_voiture', async (req, res) => {
+    const carId = req.params.id_voiture;
 
-        // Render the page with the retrieved cars
-        res.render("pages/detailee", {
-            pageTitle: "Concessionnaire Rubious",
-            items: allCars
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures WHERE id_voiture = ${con.escape(carId)}`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
 
-        // Close the MongoDB connection
-        await client.close();
-    } catch (error) {
-        console.error('Error retrieving data from MongoDB:', error);
-        res.status(500).send('Internal Server Error');
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        const carInfo = rows; // Assuming only one row is returned
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const result = await collection.findOne({ _id: parseInt(carId) });
+
+        // Check if car details are found in MongoDB
+        if (!result) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+        // Render the detailee page with car information
+        res.render('pages/detailee', { carInfo, carDetails: [result] });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error');
     }
 });
-
 
 app.get("/", function (req, res) {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -293,6 +330,36 @@ app.get('/get_modeles', (req, res) => {
 
 
 //End test
+
+//Paiement lors de l'achat de la voiture
+const stripe = await loadStripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
+app.post('/purchase', async (req, res) => {
+    const { carId, stripeTokenId } = req.body;
+  
+    // Retrieve car data
+    const carData = itemsJson.voiture.find(item => item.id === carId);
+  
+    if (!carData) {
+      return res.status(404).json({ error: 'Car not found' });
+    }
+  
+    try {
+      // Create Stripe charge
+      const charge = await stripeInstance.charges.create({
+        amount: carData.prix * 100, // Convert to cents
+        currency: 'usd',
+        source: stripeTokenId,
+        description: `Purchase of ${carData.marque} ${carData.modele}`,
+      });
+  
+      // Payment successful
+      res.json({ message: 'Payment successful', charge });
+    } catch (error) {
+      console.error('Error processing payment:', error);
+      res.status(500).json({ error: 'Payment failed' });
+    }
+  });
+
 
 /*
     Importation de Bootstrap
