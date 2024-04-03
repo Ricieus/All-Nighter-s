@@ -162,7 +162,7 @@ app.post('/connexion/submit_connexion', (req, res) => {
     let courriel = req.body.courriel;
     let motDePasse = req.body.motDePasse;
 
-    var sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE email = ? AND motdepasse = ?";
+    var sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE BINARY email = ? AND BINARY motdepasse = ?";
 
     con.query(sql, [courriel, motDePasse], function (err, result) {
         if (err) {
@@ -179,6 +179,7 @@ app.post('/connexion/submit_connexion', (req, res) => {
         }
     });
 });
+
 
 
 
