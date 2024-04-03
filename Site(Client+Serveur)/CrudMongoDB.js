@@ -174,7 +174,144 @@ export async function executeOperations() {
                     "chevrolet_silverado_2021_ext-der.avif",
                     "chevrolet_silverado_2021_int.avif"
                 ]
+            },
+            {
+                "_id": 9,
+                "corps": "SUV",
+                "transmission": "Automatique",
+                "moteur": "8 cylindres",
+                "annee": 2023,
+                "carburant": "Essence",
+                "description": "Une SUV plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "tahoeChev.jpg",
+                    "chevrolet_tahoe_2023_ext-cote.jpeg",
+                    "chevrolet_tahoe_2023_ext-der.jpeg",
+                    "chevrolet_tahoe_2023_int.avif"
+                ]
+            },
+            {
+                "_id": 10,
+                "corps": "Coupe",
+                "transmission": "Automatique",
+                "moteur": "8 cylindres",
+                "annee": 2021,
+                "carburant": "Essence",
+                "description": "Une coupe plus que confortable",
+                "pneus_bougent": "RWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "mustang.jpg",
+                    "ford_mustang_2021_ext-cote.jpg",
+                    "ford_mustang_2021_ext-der.avif",
+                    "ford_mustang_2021_int.avif"
+                ]
+            },
+            {
+                "_id": 11,
+                "corps": "Camionette",
+                "transmission": "Automatique",
+                "moteur": "8 cylindres",
+                "annee": 2023,
+                "carburant": "Essence",
+                "description": "Une camionette plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "f150.jpg",
+                    "ford_f150_2023_ext-cote.avif",
+                    "ford_f150_2023_ext-der.avif",
+                    "ford_f150_2023_int.avif"
+                ]
+            },
+            {
+                "_id": 12,
+                "corps": "Sedan",
+                "transmission": "Automatique",
+                "moteur": "4 cylindres",
+                "annee": 2021,
+                "carburant": "Essence",
+                "description": "Une sedan plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "a4.jpg",
+                    "audi_a4_2021_ext-cote.jpg",
+                    "audi_a4_2021_ext-der.jpg",
+                    "audi_a4_2021_int.jpg"
+                ]
+            },
+            {
+                "_id": 13,
+                "corps": "Sportback",
+                "transmission": "Automatique",
+                "moteur": "6 cylindres",
+                "annee": 2022,
+                "carburant": "Essence",
+                "description": "Une sportback plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "a7.jpg",
+                    "audi_a7_2022_ext-cote.avif",
+                    "audi_a7_ext-der.avif",
+                    "audi_a7_2022_int.jpg"
+                ]
+            },
+            {
+                "_id": 14,
+                "corps": "Sedan",
+                "transmission": "Automatique",
+                "moteur": "6 cylindres",
+                "annee": 2021,
+                "carburant": "Essence",
+                "description": "Une sedan plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "bmw3.jpg",
+                    "bmw_3_2021_ext-cote.png",
+                    "bmw_3_2021_ext-der.png",
+                    "bmw_3_2021_int.jpg"
+                ]
+            },
+            {
+                "_id": 15,
+                "corps": "Sedan",
+                "transmission": "Automatique",
+                "moteur": "6 cylindres",
+                "annee": 2023,
+                "carburant": "Essence",
+                "description": "Une sedan plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "bmw5.jpg",
+                    "bmw_5_2023_ext-cote.png",
+                    "bmw_5_2023_ext-der.png",
+                    "bmw_5_2023_int.jpg"
+                ]
+            },
+            {
+                "_id": 16,
+                "corps": "Wagon",
+                "transmission": "Automatique",
+                "moteur": "6 cylindres",
+                "annee": 2024,
+                "carburant": "Essence",
+                "description": "Une wagon plus que confortable",
+                "pneus_bougent": "AWD",
+                "tauxInteret": 6.99,
+                "images": [
+                    "a6.jpg",
+                    "audi_a6_2024_ext-cote.jpg",
+                    "audi_a6_2024_ext-der.jpg",
+                    "audi_a6_2024_int.jpg"
+                ]
             }
+            
         ];
 
         for (const voiture of voitures) {
