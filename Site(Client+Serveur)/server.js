@@ -278,6 +278,28 @@ app.post('/catalogue/submit_catalogue', (req, res) => {
     });
 });
 
+//Test pour page paiement:
+app.get('/pages/paiement', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/paiement", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+//Test pour page paiement:
+app.get('/pages/commande', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/commande", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
 app.get('/get_marques', (req, res) => {
     con.query('SELECT DISTINCT marque FROM voitures', (err, rows) => {
         if (err) {
@@ -302,17 +324,6 @@ app.get('/get_modeles', (req, res) => {
         }
         const modeles = rows.map(row => row.modele);
         res.json(modeles);
-    });
-});
-
-//Test pour page paiement:
-app.get('/pages/paiement', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/paiement", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
     });
 });
 

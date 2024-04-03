@@ -1,0 +1,129 @@
+<!--Ce page commande pour voire la voiture commandé-->
+
+<!--Source: https://mdbootstrap.com/docs/standard/extended/order-details/-->
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .content {
+        padding-top: 10vh;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .centrerText {
+        text-align: center;
+    }
+
+
+    .horizontalLine .items {
+        border-top: 3px solid #000000;
+        position: relative;
+    }
+
+    .horizontalLine .items .items-list {
+        position: relative;
+        margin-right: 0;
+        
+    }
+
+    .horizontalLine .items .items-list::before {
+        content: "";
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background-color: #ddd;
+        top: 0;
+        margin-top: -10px;
+    }
+
+    /* .horizontalLine .items .items-list::after {
+        content: "";
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background-color: greenyellow;
+        top: 0;
+        margin-top:-10px;
+    } */
+
+    .horizontalLine .items .items-list {
+        padding-top: 15px;
+    }
+
+    .items-list.blue::before {
+        background-color: blue !important;
+    }
+</style>
+
+
+
+<body>
+    <div class="content">
+        <div class="container py-5 h-100">
+            <div class="d-flex align-items-center justify-content-center mt-5">
+                <div class="col-md-10 col-lg-8 col-xl-6">
+                    <h1 class="centrerText">Félicitations!</h1>
+                    <h4 class="centrerText">Votre voiture est en mode de procédure.</h4>
+                    <div class="d-flex flex-row mb-4 pb-2">
+                        <div class="flex-fill">
+                            <h5 class="bold">Nom voiture</h5>
+                            <p>Prix: XXXXXX </p>
+                            <h4>Autre détails</h4>
+                            <p>Date de livraison estimée: XX/XX/XXXX</p>
+                        </div>
+                        <div>
+                            <img src="../images/audirsq8.png" width="450">
+                        </div>
+                    </div>
+                    <h4>Détails</h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                            <div class="horizontalLine">
+
+                                <ul class="list-inline items d-flex justify-content-between">
+                                    <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-black" style="background-color: #427ef6; font-weight: bold;">
+                                            Commande passée</p>
+                                    </li>
+                                    <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-black" style="font-weight: bold;">
+                                            En processus</p>
+                                    </li>
+                                    <li class="list-inline-item items-list">
+                                        <p class="py-1 px-2 rounded text-black" style="font-weight: bold;">Expédié
+                                        </p>
+                                    </li>
+                                    <li class="list-inline-item items-list text-end" style=" font-weight: bold;">
+                                        <p class="py-1 px-2 rounded text-black">Achat complété
+                                        </p>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/sectionContact.ejs') %>
+</body>
+
+<script>
+    function changerDeCouleur(){
+        const items = document.querySelectorAll('.horizontalLine .items-list p');
+        items.forEach((items, index) =>{
+            setTimeout(() => {
+                items.style.backgroundColor = '#427ef6';
+            }, index * 7000 );
+        });
+    }
+    setTimeout(changerDeCouleur, 7000);
+</script>
