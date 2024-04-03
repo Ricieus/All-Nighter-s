@@ -22,11 +22,16 @@
         justify-content: center;
         margin-top: 5%;
     }
+
+    .btn-purchase {
+        display: block;
+    }
+
     label {
         margin-bottom: 2%;
     }
 </style>
-
+<script src="https://checkout.stripe.com/checkout.js" defer></script>
 <body>
     <div class="content">
         <div class="d-flex align-items-center justify-content-center mt-5">
@@ -132,15 +137,63 @@
                     </div>
                     <div class="p-2 d-flex pt-3">
                         <div class="col-8"><b>Prix total:</b></div>
-                        <div class="ml-auto"><b>XXXXXX$</b></div>
+                        <div class="cart-total-price"><b>500$</b></div>
                     </div>
 
-                    <button class="btn btn-primary">Payer</button>
+                    <button class="btn btn-primary btn-purchase" type="button">Payer</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
 <script>
-    
+if (document.readyState == 'loading') {
+    document.addEventListener('DOMContentLoaded', ready)
+} else {
+    ready()
+}
+
+function ready() {
+    document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
+    console.log("hasClicked")
+}
+
+var stripeHandler = StripeCheckout.configure({
+    key: stripePublicKey,
+    locale: 'en',
+    token: function(token) {
+        var items = "Audi"
+
+        fetch('/purchase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                stripeTokenId: token.id,
+                items: items
+            })
+        }).then(function(res) {
+            return res.json()
+        }).then(function(data) {
+            alert(data.message)
+            // var cartItems = document.getElementsByClassName('cart-items')[0]
+            // while (cartItems.hasChildNodes()) {
+            //     cartItems.removeChild(cartItems.firstChild)
+            // }
+            updateCartTotal()
+        }).catch(function(error) {
+            console.error(error)
+        })
+    }
+})
+
+function purchaseClicked() {
+    var priceElement = document.getElementsByClassName('cart-total-price')
+    var price = parseFloat(priceElement.innerText.replace('$', '')) * 100
+    stripeHandler.open({
+        amount: price
+    })
+}
 </script>
