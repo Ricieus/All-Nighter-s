@@ -17,16 +17,14 @@
         text-align: center;
     }
 
+    .centrerText2 {
+        text-align: center;
+    }
+
 
     .horizontalLine .items {
         border-top: 3px solid #000000;
         position: relative;
-    }
-
-    .horizontalLine .items .items-list {
-        position: relative;
-        margin-right: 0;
-        
     }
 
     .horizontalLine .items .items-list::before {
@@ -40,24 +38,10 @@
         margin-top: -10px;
     }
 
-    /* .horizontalLine .items .items-list::after {
-        content: "";
-        position: absolute;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        background-color: greenyellow;
-        top: 0;
-        margin-top:-10px;
-    } */
-
     .horizontalLine .items .items-list {
         padding-top: 15px;
     }
 
-    .items-list.blue::before {
-        background-color: blue !important;
-    }
 </style>
 
 
@@ -68,7 +52,7 @@
             <div class="d-flex align-items-center justify-content-center mt-5">
                 <div class="col-md-10 col-lg-8 col-xl-6">
                     <h1 class="centrerText">Félicitations!</h1>
-                    <h4 class="centrerText">Votre voiture est en mode de procédure.</h4>
+                    <h4 class="centrerText2">Votre voiture est en mode de procédure.</h4>
                     <div class="d-flex flex-row mb-4 pb-2">
                         <div class="flex-fill">
                             <h5 class="bold">Nom voiture</h5>
@@ -88,7 +72,7 @@
 
                                 <ul class="list-inline items d-flex justify-content-between">
                                     <li class="list-inline-item items-list">
-                                        <p class="py-1 px-2 rounded text-black" style="background-color: #427ef6; font-weight: bold;">
+                                        <p class="py-1 px-2 rounded text-black" style="background-color: #3bb42e; font-weight: bold;">
                                             Commande passée</p>
                                     </li>
                                     <li class="list-inline-item items-list">
@@ -100,7 +84,7 @@
                                         </p>
                                     </li>
                                     <li class="list-inline-item items-list text-end" style=" font-weight: bold;">
-                                        <p class="py-1 px-2 rounded text-black">Achat complété
+                                        <p class="py-1 px-2 rounded text-black">Prêt à chercher
                                         </p>
                                     </li>
                                 </ul>
@@ -119,11 +103,14 @@
 <script>
     function changerDeCouleur(){
         const items = document.querySelectorAll('.horizontalLine .items-list p');
-        items.forEach((items, index) =>{
+        const changerTexte = ["Votre voiture est en mode de procédure.", "Votre voiture est en mode processus", "Votre voiture est expédié", "Votre voiture est livré"];
+        items.forEach((item, index) =>{
             setTimeout(() => {
-                items.style.backgroundColor = '#427ef6';
+                item.style.backgroundColor = '#3bb42e';
+                document.querySelector('.centrerText2').textContent = changerTexte[index];
             }, index * 7000 );
         });
     }
     setTimeout(changerDeCouleur, 7000);
 </script>
+
