@@ -64,10 +64,10 @@ export async function executeOperations() {
                 "pneus_bougent": "FWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "honda_civic.jpg",
-                    "honda_civic_2022_ext-cote.avif",
-                    "honda_civic_2022_ext-der.avif",
-                    "honda_civic_2022_int.png"
+                    "honda_civic.avif",
+                    "honda_civic_2022_ext-cote.jpg",
+                    "honda_civic_2022_ext-der.jpg",
+                    "honda_civic_2022_int.webp"
                 ]
             },
             {
