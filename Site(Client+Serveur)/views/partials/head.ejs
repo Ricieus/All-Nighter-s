@@ -1,45 +1,8 @@
-<!DOCTYPE html>
-<html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concessionnaire Rubious</title>
     <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico" />
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
-</head>
-
-<body>
-    <div id="userFullName" style="position: fixed; top: 10px; right: 10px;"></div>
-
-    <!-- Votre contenu HTML existant ici -->
-
-    <button id="deconnexionBtn" class="btn btn-primary mt-3" style="position: fixed; top: 80px; right: 10px;">Se déconnecter</button>
-
     <script src="/js/bootstrap.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const fullName = urlParams.get('fullName');
-
-            if (fullName) {
-                document.getElementById('userFullName').innerText = fullName;
-                sessionStorage.setItem('userFullName', fullName);
-            } else {
-                const userFullName = sessionStorage.getItem('userFullName');
-                if (userFullName) {
-                    document.getElementById('userFullName').innerText = userFullName;
-                }
-            }
-
-            document.getElementById('deconnexionBtn').addEventListener('click', function () {
-                // Supprimer les informations de session
-                sessionStorage.removeItem('userFullName');
-                // Rediriger vers la page de connexion ou d'accueil
-                window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
-            });
-        });
-    </script>
-</body>
-
-</html>
+</head>

@@ -9,7 +9,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="d-flex collapse navbar-collapse" id="navbarNav">
             <div class="mx-auto"></div>
             <ul class="navbar-nav">
                 <li class="nav-item m-2">
@@ -49,6 +49,14 @@
             </ul>
         </div>
     </div>
+    <div class="nav-item ml-auto">
+        <div class="justify-content-center" style="width: 7rem">
+            <div class="bg-light rounded-5" id="userFullName" style="text-align: center;"></div>
+            <button id="deconnexionBtn" class="btn btn-primary w-100 h-100 rounded-pill" style="font-size: small;">
+                Déconnexion
+            </button>
+        </div>
+    </div>
 </nav>
 
 <script>
@@ -61,4 +69,26 @@
             nav.classList.remove('bg-body-secondary', 'shadow');
         }
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fullName = urlParams.get('fullName');
+
+        if (fullName) {
+            document.getElementById('userFullName').innerText = fullName;
+            sessionStorage.setItem('userFullName', fullName);
+        } else {
+            const userFullName = sessionStorage.getItem('userFullName');
+            if (userFullName) {
+                document.getElementById('userFullName').innerText = userFullName;
+            }
+        }
+
+        document.getElementById('deconnexionBtn').addEventListener('click', function () {
+            // Supprimer les informations de session
+            sessionStorage.removeItem('userFullName');
+            // Rediriger vers la page de connexion ou d'accueil
+            window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
+        });
+    });
+
 </script>
