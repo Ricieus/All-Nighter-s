@@ -157,4 +157,13 @@
         const re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+
+    function afficherMotDePasse() {
+        var x = document.getElementById("motDePasseConnexion");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
 </script>
