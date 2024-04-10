@@ -52,9 +52,9 @@
     <div class="nav-item ml-auto">
         <div class="justify-content-center" style="width: 7rem">
             <div class="bg-light rounded-5" id="userFullName" style="text-align: center;"></div>
-            <button id="deconnexionBtn" class="btn btn-primary w-100 h-100 rounded-pill" style="font-size: small;">
+            <button id="deconnexionBtn" class="btn btn-primary w-100 h-100 rounded-pill" style="font-size: small;" disabled>
                 Déconnexion
-            </button>
+            </button>            
         </div>
     </div>
 </nav>
@@ -69,26 +69,43 @@
             nav.classList.remove('bg-body-secondary', 'shadow');
         }
     });
-    document.addEventListener('DOMContentLoaded', function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const fullName = urlParams.get('fullName');
+    function gestionDeconnexion() {
+    const userFullName = sessionStorage.getItem('userFullName');
+    const btnDeconnexion = document.getElementById('deconnexionBtn');
 
-        if (fullName) {
-            document.getElementById('userFullName').innerText = fullName;
-            sessionStorage.setItem('userFullName', fullName);
-        } else {
-            const userFullName = sessionStorage.getItem('userFullName');
-            if (userFullName) {
-                document.getElementById('userFullName').innerText = userFullName;
-            }
-        }
+    if (userFullName) {
+        document.getElementById('userFullName').innerText = userFullName;
+        btnDeconnexion.disabled = false; // Activer le bouton de déconnexion
+    } else {
+        document.getElementById('userFullName').innerText = ''; // Effacer le nom d'utilisateur affiché
+        btnDeconnexion.disabled = true; // Désactiver le bouton de déconnexion
+    }
+}
 
-        document.getElementById('deconnexionBtn').addEventListener('click', function () {
-            // Supprimer les informations de session
-            sessionStorage.removeItem('userFullName');
-            // Rediriger vers la page de connexion ou d'accueil
-            window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    gestionDeconnexion(); // Appeler la fonction au chargement initial de la page
+
+    document.getElementById('deconnexionBtn').addEventListener('click', function () {
+        // Supprimer les informations de session
+        sessionStorage.removeItem('userFullName');
+        // Rediriger vers la page de connexion ou d'accueil
+        window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
     });
+});
+    document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fullName = urlParams.get('fullName');
+
+  
+
+    document.getElementById('deconnexionBtn').addEventListener('click', function () {
+        // Supprimer les informations de session
+        sessionStorage.removeItem('userFullName');
+        // Rediriger vers la page de connexion ou d'accueil
+        window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
+    });
+});
+
+
 
 </script>
