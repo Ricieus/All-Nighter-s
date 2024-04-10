@@ -133,6 +133,8 @@
                     document.getElementById('userFullName').innerText = prenom + " " + nom;
                     // Après une connexion réussie
                     sessionStorage.setItem('userFullName', prenom + " " + nom);
+                    gestionDeconnexion(); // Activer le bouton de déconnexion
+
 
                 }
             })
