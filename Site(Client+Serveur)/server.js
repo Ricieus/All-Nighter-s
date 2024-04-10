@@ -13,7 +13,8 @@ import { count } from "console";
 
 import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
-import {loadStripe} from '@stripe/stripe-js';
+import Stripe from 'stripe';
+const stripe = new Stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
 config();
 
 await executeOperations();
@@ -29,9 +30,18 @@ const client = new MongoClient(uri);
 /*
     Connect to server
 */
-const server = app.listen(4000, function () {
-    console.log("serveur fonctionne sur 4000... ! ");
-});
+
+(async () => {
+    await connectToMongo();
+    await loadStripeObject();
+    startServer();
+})();
+
+function startServer() {
+    const server = app.listen(4000, () => {
+        console.log("Server running on port 4000");
+    });
+}
 
 /*
     Configuration de EJS
@@ -53,16 +63,26 @@ const mongoUrl = 'mongodb://localhost:27017';
 const dbName = 'AllNighter';
 let db; // Declare db variable outside of MongoClient.connect
 
-(async () => {
+async function connectToMongo() {
     try {
-        const client = await MongoClient.connect(mongoUrl);
+        const client = await MongoClient.connect(uri);
         console.log('Connected to MongoDB');
-        db = client.db(dbName); // Assign the MongoDB client to the db variable
+        db = client.db(dbName);
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
-        // Handle error
     }
-})();
+}
+
+async function loadStripeObject() {
+    try {
+        var stripe = await stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
+        app.set('stripe', stripe); // Set the stripe object in app for later use
+        console.log(stripe);
+        console.log('Stripe object loaded successfully');
+    } catch (err) {
+        console.error('Error loading Stripe:', err);
+    }
+}
 
 // Define the route for fetching car information from MySQL and MongoDB
 app.get('/detailee/:id_voiture', async (req, res) => {
@@ -326,40 +346,34 @@ app.get('/get_modeles', (req, res) => {
         res.json(modeles);
     });
 });
+const DOMAIN = 'http://localhost:4000';
 
-
-
-//End test
-
-//Paiement lors de l'achat de la voiture
-const stripe = await loadStripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
-app.post('/purchase', async (req, res) => {
-    const { carId, stripeTokenId } = req.body;
-  
-    // Retrieve car data
-    const carData = itemsJson.voiture.find(item => item.id === carId);
-  
-    if (!carData) {
-      return res.status(404).json({ error: 'Car not found' });
-    }
-  
-    try {
-      // Create Stripe charge
-      const charge = await stripeInstance.charges.create({
-        amount: carData.prix * 100, // Convert to cents
-        currency: 'usd',
-        source: stripeTokenId,
-        description: `Purchase of ${carData.marque} ${carData.modele}`,
+app.post('/create-checkout-session', async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+        ui_mode: 'embedded',
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: 'price_1P1LtWLJ3MC705wbISJ69Hte',
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        return_url: `${DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
+        automatic_tax: {enabled: true},
       });
-  
-      // Payment successful
-      res.json({ message: 'Payment successful', charge });
-    } catch (error) {
-      console.error('Error processing payment:', error);
-      res.status(500).json({ error: 'Payment failed' });
-    }
-  });
+    
+      res.send({clientSecret: session.client_secret});
+});
 
+app.get('/session-status', async (req, res) => {
+    const session = await stripeTest.checkout.sessions.retrieve(req.query.session_id);
+  
+    res.send({
+      status: session.status,
+      customer_email: session.customer_details.email
+    });
+});
 
 /*
     Importation de Bootstrap

@@ -9,190 +9,51 @@
 
     .content {
         padding-top: 15vh;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .containerPaiement {
-        width: 40%;
-    }
-
-    .btn-group {
         display: flex;
         justify-content: center;
-        margin-top: 5%;
+        align-items: center;
+        height: 100vh;
     }
 
-    .btn-purchase {
-        display: block;
+    #checkout {
+        width: 50%;
     }
 
-    label {
-        margin-bottom: 2%;
+    .error-message {
+        color: red;
     }
 </style>
-<script src="https://checkout.stripe.com/checkout.js" defer></script>
 <body>
     <div class="content">
-        <div class="d-flex align-items-center justify-content-center mt-5">
-            <div class="containerPaiement" id="methodePaiement">
-                <div class="h-100 d-flex align-items-center justify-content-center ms-5 me-5">
-                    <form>
-                        <div class="groupe-formulaire">
-                            <h1>1. Adresse de livraison</h1>
-                            <label for="Addresse">Adresse de maison</label>
-                            <input type="text" class="form-control" id="Addresse" placeholder="Adresse">
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6">
-                                <div class="groupe-formulaire">
-                                    <label for="ville">Ville</label>
-                                    <input type="text" class="form-control" id="ville" placeholder="Ville">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="groupe-formulaire">
-                                    <label for="zip">Code Postal</label>
-                                    <input type="text" class="form-control" id="zip" placeholder="Code Postal">
-                                </div>
-                            </div>
-
-                            <hr class="my-4">
-                        </div>
-
-                        <div class="groupe-formulaire mt-2">
-                            <h1>2. Choisissez un mode de paiement</h1>
-                        </div>
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons" id="selectionCredit">
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" id="creditCard" autocomplete="off" checked> Carte de
-                                crédit
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" id="paypal" autocomplete="off"> PayPal
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" id="googlePay" autocomplete="off"> GooglePay
-                            </label>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div class="groupe-formulaire mt-3">
-                            <h1>3. Payer ici</h1>
-                        </div>
-                        <div class="groupe-formulaire" id="remplirCredit">
-                            <label for="nomCarte">Nom de la carte</label>
-                            <input type="text" class="form-control" id="nomCarte"
-                                placeholder="Entrez votre nom sur la carte">
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6">
-                                <div class="groupe-formulaire">
-                                    <label for="carteCvc">Numéro de la carte</label>
-                                    <input type="text" class="form-control" id="numeroCarte" placeholder="Numéro de la carte">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="groupe-formulaire">
-                                    <label for="annee">Date d'expiration</label>
-                                    <input type="text" class="form-control" id="dateExpiration" placeholder="Date d'expiration">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="groupe-formulaire">
-                                    <label for="mois">CVV</label>
-                                    <input type="text" class="form-control" id="CVV" placeholder="CVV">
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-4">
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-4 ms-5 me-5" style="margin-top: -17.5%;">
-                <div class="bg-light rounded d-flex flex-column">
-                    <div class="p-2 ml-3">
-                        <h4><b>Résumé de commande</b></h4>
-                    </div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Voiture choisi:</div>
-                        <div class="ml-auto">XXXXXX</div>
-                    </div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">Prix sans taxes:</div>
-                        <div class="ml-auto"><b>XXXXXX$</b></div>
-                    </div>
-                    <div class="border-top px-4 mx-3"></div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">TPS/TVH estimée:</div>
-                        <div class="ml-auto">XX%</div>
-                    </div>
-                    <div class="p-2 d-flex">
-                        <div class="col-8">TVP/TVD/TVQ estimée:</div>
-                        <div class="ml-auto">XX%</div>
-                    </div>
-                    <div class="border-top px-4 mx-3">
-                    </div>
-                    <div class="p-2 d-flex pt-3">
-                        <div class="col-8"><b>Prix total:</b></div>
-                        <div class="cart-total-price"><b>500$</b></div>
-                    </div>
-
-                    <button class="btn btn-primary btn-purchase" type="button">Payer</button>
-                </div>
-            </div>
+    <!-- Display a payment form -->
+        <div id="checkout">
+            <!-- Checkout will insert the payment form here -->
         </div>
     </div>
-</body>
-<script>
-if (document.readyState == 'loading') {
-    document.addEventListener('DOMContentLoaded', ready)
-} else {
-    ready()
-}
-
-function ready() {
-    document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
-    console.log("hasClicked")
-}
-
-function purchaseClicked() {
-    var priceElement = document.getElementsByClassName('cart-total-price')
-    var price = parseFloat(priceElement.innerText.replace('$', '')) * 100
-    stripeHandler.open({
-        amount: price
-    })
-}
-
-var stripeHandler = StripeCheckout.configure({
-    key: stripePublicKey,
-    locale: 'en',
-    token: function(token) {
-        var items = "Toyota"
-
-        fetch('/purchase', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                stripeTokenId: token.id,
-                items: items
-            })
-        }).then(function(res) {
-            return res.json()
-        }).then(function(data) {
-            alert(data.message)
-            // var cartItems = document.getElementsByClassName('cart-items')[0]
-            // while (cartItems.hasChildNodes()) {
-            //     cartItems.removeChild(cartItems.firstChild)
-            // }
-        }).catch(function(error) {
-            console.error(error)
-        })
+    <script>
+        // This is your test publishable API key.
+    const stripe = Stripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
+    
+    
+    initialize();
+    
+    // Create a Checkout Session
+    async function initialize() {
+        const fetchClientSecret = async () => {
+            const response = await fetch("/create-checkout-session", {
+            method: "POST",
+            });
+            const { clientSecret } = await response.json();
+            console.log(clientSecret);
+            return clientSecret;
+        };
+        
+        const checkout = await stripe.initEmbeddedCheckout({
+            fetchClientSecret,
+        });
+        
+        // Mount Checkout
+        checkout.mount('#checkout');
     }
-})
-</script>
+    </script>
+</body>
