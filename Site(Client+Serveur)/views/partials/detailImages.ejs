@@ -13,23 +13,23 @@
         <div class="d-flex justify-content-center" style="width: 40rem;">
 
             <div class="row">
-               
-                    <div class="col m-3">
-                        <img src="/images/<%= car.images[0] %>" class="card-img-top" id="thumbImg<%= index %>"
-                            onclick="changeImage('/images/<%= car.images[0] %>')">
-                    </div>
-                    <div class="col m-3">
-                        <img src="/images/<%= car.images[1] %>" class="card-img-top" id="thumbImg<%= index + 1 %>"
-                            onclick="changeImage('/images/<%= car.images[1] %>')">
-                    </div>
-                    <div class="col m-3">
-                        <img src="/images/<%= car.images[2] %>" class="card-img-top" id="thumbImg<%= index + 2 %>"
-                            onclick="changeImage('/images/<%= car.images[2] %>')">
-                    </div>
-                    <div class="col m-3">
-                        <img src="/images/<%= car.images[3] %>" class="card-img-top" id="thumbImg<%= index + 3 %>"
-                            onclick="changeImage('/images/<%= car.images[3] %>')">
-                    </div>
+
+                <div class="col m-3">
+                    <img src="/images/<%= car.images[0] %>" class="card-img-top" id="thumbImg<%= index %>"
+                        onclick="changeImage('/images/<%= car.images[0] %>')">
+                </div>
+                <div class="col m-3">
+                    <img src="/images/<%= car.images[1] %>" class="card-img-top" id="thumbImg<%= index + 1 %>"
+                        onclick="changeImage('/images/<%= car.images[1] %>')">
+                </div>
+                <div class="col m-3">
+                    <img src="/images/<%= car.images[2] %>" class="card-img-top" id="thumbImg<%= index + 2 %>"
+                        onclick="changeImage('/images/<%= car.images[2] %>')">
+                </div>
+                <div class="col m-3">
+                    <img src="/images/<%= car.images[3] %>" class="card-img-top" id="thumbImg<%= index + 3 %>"
+                        onclick="changeImage('/images/<%= car.images[3] %>')">
+                </div>
 
             </div>
 
@@ -40,23 +40,23 @@
 </div>
 <div class="container mt-5">
     <% if (carDetails && carInfo) { %>
-        <% carInfo.forEach(carInfoItem => { %>
+        <% carInfo.forEach(carInfoItem=> { %>
             <div class="d-flex justify-content-center">
-            <h1>Prix de base: <%= carInfoItem.prix.toLocaleString() %>$</h1>
-        </div>
-        <% }); %>
- 
-        <div class="d-flex justify-content-center">
-            <p>
-                <%= car.description %>
-            </p>
-        </div>
-    <% } else { %>
-        <div class="d-flex justify-content-center">
-            <p>Aucune information disponible</p>
-        </div>
-    <% } %>
-    <% }); %>
+                <h1>Prix de base: <%= carInfoItem.prix.toLocaleString() %>$</h1>
+            </div>
+            <% }); %>
+
+                <div class="d-flex justify-content-center">
+                    <p style="text-align: center;">
+                        <%= car.description %>
+                    </p>
+                </div>
+                <% } else { %>
+                    <div class="d-flex justify-content-center">
+                        <p>Aucune information disponible</p>
+                    </div>
+                    <% } %>
+                        <% }); %>
 
 </div>
 
