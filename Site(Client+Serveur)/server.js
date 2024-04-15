@@ -365,7 +365,7 @@ app.post('/create-checkout-session', async (req, res) => {
         
         let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
         let priceNumber = parseFloat(sanitizedPriceString);
-
+        
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
@@ -427,7 +427,7 @@ app.post('/create-checkout-session', async (req, res) => {
             },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
+            return_url: `${DOMAIN}/pages/commande`,
             automatic_tax: {enabled: true},
         });
 
