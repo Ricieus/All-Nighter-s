@@ -31,6 +31,11 @@ const client = new MongoClient(uri);
     Connect to server
 */
 
+(async () => {
+    await connectToMongo();
+    startServer();
+})();
+
 function startServer() {
     const server = app.listen(4000, () => {
         console.log("Server running on port 4000");
@@ -283,17 +288,6 @@ app.post('/catalogue/submit_catalogue', (req, res) => {
 });
 
 //Test pour page paiement:
-app.get('/pages/paiement', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/paiement", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-//Test pour page paiement:
 app.get('/pages/commande', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
@@ -332,26 +326,47 @@ app.get('/get_modeles', (req, res) => {
 });
 const DOMAIN = 'http://localhost:4000';
 
+//Test pour page paiement:
+app.get('/pages/paiement', (req, res) => {
+    const marque = req.query.marque;
+    const taux = req.query.taux;
+    const priceVoiture = req.query.price;
+
+    res.render('pages/paiement', {
+        pageTitle: 'Concessionnaire Rubious',
+        marque,
+        taux,
+        priceVoiture
+    });
+});
+
 app.post('/create-checkout-session', async (req, res) => {
     try {
-        // Extracting car details from the request body
-        //const { carModel, carYear, carPrice, customerEmail } = req.body;
+        let marque = req.body.marque;
+        let taux = req.body.taux;
+        let priceVoiture = req.body.price;
+        
+        let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
+        let priceNumber = parseFloat(sanitizedPriceString);
 
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
-            query: 'name:\'Toyota Corrola\'',
+            query: `name:'${marque}'`,
         });
-        if (productResponse.data.length == 0) {
-            // Create a new product if it doesn't exist
-            productResponse = await stripe.products.create({
-                name: 'Toyota Corrola',
-            });
-        }
 
+        let product; // Declare a new variable for the product
+
+        if (productResponse.data.length === 0) {
+            product = await stripe.products.create({
+                name: marque,
+            });
+        } else {
+            product = productResponse.data[0];
+        }
 
         // Create or retrieve a price in Stripe
         const priceResponse = await stripe.prices.list({
-            product: productResponse.id,
+            product: product.id,
             currency: 'cad',
             active: true,
         });
@@ -364,7 +379,7 @@ app.post('/create-checkout-session', async (req, res) => {
             // Create a new price if it doesn't exist
             price = await stripe.prices.create({
                 currency: 'cad',
-                unit_amount: 25000 * 100, // Convert to cents
+                unit_amount: priceNumber * 100, // Convert to cents
                 product: product.id,
             });
         }
@@ -384,6 +399,7 @@ app.post('/create-checkout-session', async (req, res) => {
         //         email: customerEmail,
         //     });
         // }
+        
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
