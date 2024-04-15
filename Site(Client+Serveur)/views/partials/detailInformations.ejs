@@ -11,7 +11,6 @@
             margin-right: 5%;
         }
     </style>
-
     <div class="content">
         <div class="d-flex align-items-center justify-content-center mt-5">
             <div class="container">
@@ -62,19 +61,19 @@
                         <% carInfo.forEach(info => { %> <!-- Check if carDetails and carInfo are available -->
                             <div class="p-2 d-flex">
                                 <div class="col-8">Voiture:</div>
-                                <div class="ml-auto">
+                                <div class="ml-auto" id="marqueVoiture">
                                     <%= info.marque %> <%= info.modele %> <%= info.annee %>
                                 </div>
                             </div>
                             <div class="border-top px-4 mx-3"></div>
                             <div class="p-2 d-flex">
                                 <div class="col-8">Taux d'interet:</div>
-                                <div class="ml-auto"><%= car.tauxInteret %>%</div> <!-- Assuming you want to use car.tauxInteret -->
+                                <div class="ml-auto" id="tauxInteret"><%= car.tauxInteret %>%</div> <!-- Assuming you want to use car.tauxInteret -->
                             </div>
                             <div class="border-top px-4 mx-3"></div>
                             <div class="p-2 d-flex">
                                 <div class="col-8">Prix sans taxes:</div>
-                                <div class="ml-auto"><b><%= info.prix.toLocaleString()%>$</b></div>
+                                <div class="ml-auto" id="voiturePrix"><b><%= info.prix.toLocaleString()%>$</b></div>
                             </div>
                             <% }); %>
                             
@@ -97,10 +96,31 @@
                         </div>
                     <% } %> <!-- End of if-else block -->
                     <% }); %> 
-                    <button class="btn btn-primary">Payer</button>
+                    <button class="btn btn-primary" onclick="dataPaiement()">Payer</button>
                 </div>
             </div>
-         
         </div>
     </div>
+    <script>
+        function dataPaiement(){
+            const marqueVoiture = document.getElementById('marqueVoiture').innerText || document.getElementById('marqueVoiture').value;
+            const tauxInteret = document.getElementById('tauxInteret').innerText || document.getElementById('tauxInteret').value;
+            const voiturePrix = document.getElementById('voiturePrix').innerText || document.getElementById('voiturePrix').value;
+
+            // Specify the base URL of the new page
+            const baseURL = '/pages/paiement';
+            // Create a URLSearchParams object with the query parameters
+            const queryParams = new URLSearchParams({
+                marque: marqueVoiture,
+                taux: tauxInteret,
+                price: voiturePrix
+            });
+            
+            // Create the full URL with query parameters
+            const newPageURL = `${baseURL}?${queryParams.toString()}`;
+            
+            // Redirect the user to the new page
+            window.location.href = newPageURL;
+        }
+    </script>
 

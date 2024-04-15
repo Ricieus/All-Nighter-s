@@ -33,7 +33,6 @@ const client = new MongoClient(uri);
 
 (async () => {
     await connectToMongo();
-    await loadStripeObject();
     startServer();
 })();
 
@@ -70,17 +69,6 @@ async function connectToMongo() {
         db = client.db(dbName);
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
-    }
-}
-
-async function loadStripeObject() {
-    try {
-        var stripe = await stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
-        app.set('stripe', stripe); // Set the stripe object in app for later use
-        console.log(stripe);
-        console.log('Stripe object loaded successfully');
-    } catch (err) {
-        console.error('Error loading Stripe:', err);
     }
 }
 
@@ -300,17 +288,6 @@ app.post('/catalogue/submit_catalogue', (req, res) => {
 });
 
 //Test pour page paiement:
-app.get('/pages/paiement', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/paiement", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-//Test pour page paiement:
 app.get('/pages/commande', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
         if (err) throw err;
@@ -349,26 +326,103 @@ app.get('/get_modeles', (req, res) => {
 });
 const DOMAIN = 'http://localhost:4000';
 
+//Test pour page paiement:
+app.get('/pages/paiement', (req, res) => {
+    const marque = req.query.marque;
+    const taux = req.query.taux;
+    const priceVoiture = req.query.price;
+
+    res.render('pages/paiement', {
+        pageTitle: 'Concessionnaire Rubious',
+        marque,
+        taux,
+        priceVoiture
+    });
+});
+
 app.post('/create-checkout-session', async (req, res) => {
-    const session = await stripe.checkout.sessions.create({
-        ui_mode: 'embedded',
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: 'price_1P1LtWLJ3MC705wbISJ69Hte',
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        return_url: `${DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
-        automatic_tax: {enabled: true},
-      });
-    
-      res.send({clientSecret: session.client_secret});
+    try {
+        let marque = req.body.marque;
+        let taux = req.body.taux;
+        let priceVoiture = req.body.price;
+        
+        let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
+        let priceNumber = parseFloat(sanitizedPriceString);
+
+        // Create or retrieve a product in Stripe
+        const productResponse = await stripe.products.search({
+            query: `name:'${marque}'`,
+        });
+
+        let product; // Declare a new variable for the product
+
+        if (productResponse.data.length === 0) {
+            product = await stripe.products.create({
+                name: marque,
+            });
+        } else {
+            product = productResponse.data[0];
+        }
+
+        // Create or retrieve a price in Stripe
+        const priceResponse = await stripe.prices.list({
+            product: product.id,
+            currency: 'cad',
+            active: true,
+        });
+
+        let price;
+        if (priceResponse.data.length > 0) {
+            // Price already exists
+            price = priceResponse.data[0];
+        } else {
+            // Create a new price if it doesn't exist
+            price = await stripe.prices.create({
+                currency: 'cad',
+                unit_amount: priceNumber * 100, // Convert to cents
+                product: product.id,
+            });
+        }
+
+        // Create or retrieve a customer in Stripe
+        // let customer;
+        // const customerResponse = await stripe.customers.list({
+        //     email: customerEmail,
+        // });
+
+        // if (customerResponse.data.length > 0) {
+        //     // Customer already exists
+        //     customer = customerResponse.data[0];
+        // } else {
+        //     // Create a new customer if it doesn't exist
+        //     customer = await stripe.customers.create({
+        //         email: customerEmail,
+        //     });
+        // }
+        
+        // Create a checkout session
+        const session = await stripe.checkout.sessions.create({
+            ui_mode: 'embedded',
+            line_items: [
+            {
+                price: price.id,
+                quantity: 1,
+            },
+            ],
+            mode: 'payment',
+            return_url: `${DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
+            automatic_tax: {enabled: true},
+        });
+
+        res.send({clientSecret: session.client_secret});
+    } catch (error) {
+        console.error('Error creating checkout session:', error);
+        res.status(500).json({ error: 'Failed to create checkout session' });
+    }
 });
 
 app.get('/session-status', async (req, res) => {
-    const session = await stripeTest.checkout.sessions.retrieve(req.query.session_id);
+    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
   
     res.send({
       status: session.status,
