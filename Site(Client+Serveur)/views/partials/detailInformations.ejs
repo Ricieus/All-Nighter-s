@@ -1,122 +1,208 @@
+<style>
+    .boiteInformation {
+        height: auto;
+        width: 100%;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+    }
 
-    <style>
-        .boiteInformation {
-            height: 75vh;
-            width: 60vh;
-        }
+    .imgIcons {
+        width: 30px;
+        height: 30px;
+        margin-right: 5%;
+    }
+</style>
 
-        .imgIcons {
-            width: 30px;
-            height: 30px;
-            margin-right: 5%;
-        }
-    </style>
-    <div class="content">
-        <div class="d-flex align-items-center justify-content-center mt-5">
-            <div class="container">
-                <div class="jumbotron p-5">
-                    <div class="mb-5">
-                        <% carDetails.forEach(car => { %>
-                            <div class="row">
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
-                                    <%= car.corps %>
-                                </div>
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/odometer.svg" alt="">
-                                    <%= car.moteur %>
-                                </div>
+<div class="content">
+    <div class="d-flex align-items-center justify-content-center mt-5">
+        <div class="container">
+            <div class="jumbotron p-5">
+                <div class="mb-5">
+                    <% carDetails.forEach(car => { %>
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
+                                <%= car.corps %>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/fuel.svg" alt="">
-                                    <%= car.carburant %>
-                                </div>
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/calendar.svg" alt="">
-                                    <%= car.annee %>
-                                </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/odometer.svg" alt="">
+                                <%= car.moteur %>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/transmission.svg" alt="">
-                                    <%= car.transmission %>
-                                </div>
-                                <div class="col">
-                                    <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
-                                    <%= car.pneus_bougent %>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/fuel.svg" alt="">
+                                <%= car.carburant %>
                             </div>
-                          
-                    </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/calendar.svg" alt="">
+                                <%= car.annee %>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <img class="imgIcons" src="../images/transmission.svg" alt="">
+                                <%= car.transmission %>
+                            </div>
+                            <div class="col">
+                                <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
+                                <%= car.pneus_bougent %>
+                            </div>
+                        </div>
+                    <% }); %>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="bg-light rounded d-flex flex-column">
-                    <div class="p-2 ml-3">
-                        <h4><b>Achat de voiture</b></h4>
+        </div>
+
+        <div class="boiteInformation">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form id="loanCalc" action="" method="get" class="paymentCalc">
+                            <h3>Calculer votre financement par mois</h3>
+                            <div class="col-md-12">
+                                <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
+                                    <% carInfo.forEach(info => { %>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group ">
+                                                    <label for="prixDeVehicule">Prix du véhicule</label>
+                                                    <input type="number" class="form-control" id="prixDeVehicule" placeholder="Prix véhicule" value="car">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="downPayment">Mise de fonds</label>
+                                                    <input type="number" class="form-control" id="downPayment" placeholder="" value="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="valeurCommerce">Commerce en valeur</label>
+                                                    <input type="text" class="form-control" id="valeurCommerce" placeholder="" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tauxInteret">Taux d'intérêt</label>
+                                                    <input type="text" class="form-control" id="tauxInteret" placeholder="" value="6.99">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="dureeFinancement">Durée du financement</label>
+                                                    <select class="form-control wider-input" id="dureeFinancement">
+                                                        <option value="36">36 Mois</option>
+                                                        <option value="48">48 Mois</option>
+                                                        <option value="60">60 Mois</option>
+                                                        <option value="72">72 Mois</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mt-2">
+                                            <button type="button" class="btn btn-primary calcBtn" onclick="calculerPaymentMensuel()">Calculer</button>
+                                        </div>
+        
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary" onclick="dataPaiement()">Payer</button>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                <% } %>
+                            </div>
+                        </form>
                     </div>
-                    
-                    <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
-                        <% carInfo.forEach(info => { %> <!-- Check if carDetails and carInfo are available -->
-                            <div class="p-2 d-flex">
-                                <div class="col-8">Voiture:</div>
-                                <div class="ml-auto" id="marqueVoiture">
-                                    <%= info.marque %> <%= info.modele %> <%= info.annee %>
-                                </div>
-                            </div>
-                            <div class="border-top px-4 mx-3"></div>
-                            <div class="p-2 d-flex">
-                                <div class="col-8">Taux d'interet:</div>
-                                <div class="ml-auto" id="tauxInteret"><%= car.tauxInteret %>%</div> <!-- Assuming you want to use car.tauxInteret -->
-                            </div>
-                            <div class="border-top px-4 mx-3"></div>
-                            <div class="p-2 d-flex">
-                                <div class="col-8">Prix sans taxes:</div>
-                                <div class="ml-auto" id="voiturePrix"><b><%= info.prix.toLocaleString()%>$</b></div>
-                            </div>
-                            <% }); %>
-                            
-                        <!-- End of forEach loop -->
-                    <%  }else { %> <!-- If carDetails or carInfo is not available -->
-                        <!-- Assuming you want the first item in carInfo -->
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Voiture:</div>
-                            <div class="ml-auto">N/A</div>
-                        </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Taux d'interet:</div>
-                            <div class="ml-auto">N/A</div>
-                        </div>
-                        <div class="border-top px-4 mx-3"></div>
-                        <div class="p-2 d-flex">
-                            <div class="col-8">Prix sans taxes:</div>
-                            <div class="ml-auto"><b>N/A</b></div>
-                        </div>
-                    <% } %> <!-- End of if-else block -->
-                    <% }); %> 
-                    <button class="btn btn-primary" onclick="dataPaiement()">Payer</button>
+                    <div class="col-md-6">
+                        <div id="paymentResults"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function dataPaiement(){
-            const marqueVoiture = document.getElementById('marqueVoiture').innerText || document.getElementById('marqueVoiture').value;
-            const tauxInteret = document.getElementById('tauxInteret').innerText || document.getElementById('tauxInteret').value;
-            const voiturePrix = document.getElementById('voiturePrix').innerText || document.getElementById('voiturePrix').value;
+</div>
 
-            const baseURL = '/pages/paiement';
-            const queryParams = new URLSearchParams({
-                marque: marqueVoiture,
-                taux: tauxInteret,
-                price: voiturePrix
-            });
-            
-            const newPageURL = `${baseURL}?${queryParams.toString()}`;
-            
-            window.location.href = newPageURL;
+
+<script>
+    function dataPaiement() {
+        const marqueVoiture = document.getElementById('marqueVoiture').innerText || document.getElementById('marqueVoiture').value;
+        const tauxInteret = document.getElementById('tauxInteret').innerText || document.getElementById('tauxInteret').value;
+        const voiturePrix = document.getElementById('voiturePrix').innerText || document.getElementById('voiturePrix').value;
+
+        // Specify the base URL of the new page
+        const baseURL = '/pages/paiement';
+        // Create a URLSearchParams object with the query parameters
+        const queryParams = new URLSearchParams({
+            marque: marqueVoiture,
+            taux: tauxInteret,
+            price: voiturePrix
+        });
+
+        // Create the full URL with query parameters
+        const newPageURL = `${baseURL}?${queryParams.toString()}`;
+
+        // Redirect the user to the new page
+        window.location.href = newPageURL;
+    }
+</script>
+
+<script>
+    function calculerPaymentMensuel() {
+        var prixDeVehicule = document.getElementById('prixDeVehicule').value,
+            dureeFinancement = document.getElementById('dureeFinancement').value,
+            tauxInteret = document.getElementById('tauxInteret').value,
+            downPayment = document.getElementById('downPayment').value,
+            valeurCommerce = document.getElementById('valeurCommerce').value,
+            montant = parseInt(prixDeVehicule),
+            mois = parseInt(dureeFinancement),
+            acompteTotal = parseInt(downPayment),
+            EchangeValeur = parseInt(valeurCommerce),
+            totalDown = acompteTotal + EchangeValeur,
+            tauxAnnuel = parseFloat(tauxInteret),
+            tauxMensuel = tauxAnnuel / 1200;
+
+        if (!montant) {
+            alert('Ajouter un montant de financement'); //Changer ca pour mettre directement le id du prix
+            return;
         }
-    </script>
 
+        if (!mois) {
+            mois = 60;
+            dureeFinancement = document.getElementById('dureeFinancement').value = '60';
+        }
+
+        if (!downPayment) {
+            acompteTotal = 0;
+            downPayment = document.getElementById('downPayment').value = '0';
+        }
+
+        if (!EchangeValeur) {
+            EchangeValeur = 0;
+            valeurCommerce = document.getElementById('valeurCommerce').value = '0';
+        }
+
+        // if (!tauxAnnuel) {
+        //     tauxAnnuel = 6.99;
+        //     tauxInteret = document.getElementById('tauxInteret').value = '6.99';
+        // }
+
+        var calc = ((tauxMensuel + (tauxMensuel / (Math.pow((1 + tauxMensuel), mois) - 1))) * (montant - (totalDown || 0))).toFixed(2);
+        var interets = ((calc * mois) - montant).toFixed(2);
+
+        var paymentResults = document.getElementById('paymentResults');
+        paymentResults.style.display = 'block';
+        paymentResults.innerHTML = '';
+        var results = document.createElement('div');
+        results.innerHTML = '<h1 style="text-align:center">Le paiement mensuel estimé est:<br/></h1>' + '<h3 style="text-align:center">$' + calc + '/Mois</h3>' + '<br/><br/>' +'<h3 style="text-align:center">Total intérets: $' + interets + '</h3>';
+
+        paymentResults.append(results);
+    }
+</script>
