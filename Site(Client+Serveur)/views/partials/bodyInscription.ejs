@@ -126,10 +126,7 @@
      const adresse = document.getElementById('adresse');
      const motdepasse = document.getElementById('motdepasse');
      const confirmerMotPasse = document.getElementById('confirmerMotPasse');
-     document.getElementById('userFullName').innerText = prenom + " " + nom;
-                    // Après une connexion réussie
-   sessionStorage.setItem('userFullName', prenom + " " + nom);
-    gestionDeconnexion(); // Activer le bouton de déconnexion
+     
      // Réinitialiser les messages d'erreur et les bordures
      document.querySelectorAll('.error-message').forEach(function (element) {
          element.style.display = 'none';
@@ -195,6 +192,10 @@
      // Soumettre le formulaire si la validation est réussie
      if (isValid) {
          this.submit();
+         document.getElementById('userFullName').innerText = prenom + " " + nom;
+                    // Après une connexion réussie
+   sessionStorage.setItem('userFullName', prenom + " " + nom);
+    gestionDeconnexion(); // Activer le bouton de déconnexion
      }
  });
  
