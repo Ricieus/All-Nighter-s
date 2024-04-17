@@ -60,16 +60,37 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <form id="loanCalc" action="" method="get" class="paymentCalc">
+                        <form id="loanCalc" action="/pages/paiement" method="GET" class="paymentCalc">
                             <h3>Calculer votre financement par mois</h3>
                             <div class="col-md-12">
                                 <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
                                     <% carInfo.forEach(info => { %>
+                                        <div class="p-2 d-flex" hidden>
+                                            <div class="col-8">Voiture:</div>
+                                            <div class="ml-auto" id="marqueVoiture">
+                                                <%= info.marque %> <%= info.modele %> <%= info.annee %>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group ">
                                                     <label for="prixDeVehicule">Prix du véhicule</label>
-                                                    <input type="number" class="form-control" id="prixDeVehicule" placeholder="Prix véhicule" value="car">
+                                                    <input type="number" class="form-control" id="prixDeVehicule" placeholder="Prix véhicule" value="<%= info.prix %>" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="tauxInteret">Taux d'intérêt</label>
+                                                    <input type="text" class="form-control" id="tauxInteret" value="6.99" readonly>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="valeurCommerce">Commerce en valeur</label>
+                                                    <input type="text" class="form-control" id="valeurCommerce" placeholder="" value="0">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -82,26 +103,12 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="valeurCommerce">Commerce en valeur</label>
-                                                    <input type="text" class="form-control" id="valeurCommerce" placeholder="" value="0">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="tauxInteret">Taux d'intérêt</label>
-                                                    <input type="text" class="form-control" id="tauxInteret" placeholder="" value="6.99">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
                                                     <label for="dureeFinancement">Durée du financement</label>
                                                     <select class="form-control wider-input" id="dureeFinancement" onchange="calculerTauxInteret()">
                                                         <option value="36">36 Mois</option>
                                                         <option value="48">48 Mois</option>
                                                         <option value="60">60 Mois</option>
-                                                        <option value="72">72 Mois</option>
+                                                        <option value="72" selected>72 Mois</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -113,7 +120,7 @@
         
                                         <div class="row mt-3">
                                             <div class="col-md-12">
-                                                <button class="btn btn-primary" onclick="dataPaiement()">Payer</button>
+                                                <button class="btn btn-primary" type="submit">Payer</button>
                                             </div>
                                         </div>
                                     <% }); %>
@@ -171,24 +178,19 @@
 
         
         if (!montant) {
-            alert('Ajouter un montant de financement'); //Changer ca pour mettre directement le id du prix
+            alert('Ajouter un montant de financement');
             return;
         }
 
-        //Valeur par défaut
-        if (!downPayment) {
-            acompteTotal = 0;
-            downPayment = document.getElementById('downPayment').value = '0';
-        }
+        // Calcul de la mise de fonds totale
+        var totalDownPayment = acompteTotal + EchangeValeur;
 
-        //Valeur par défaut
-        if (!EchangeValeur) {
-            EchangeValeur = 0;
-            valeurCommerce = document.getElementById('valeurCommerce').value = '0';
-        }
+        // Calcul du montant financé
+        var montantFinance = montant - totalDownPayment;
 
-        var calc = ((tauxMensuel + (tauxMensuel / (Math.pow((1 + tauxMensuel), mois) - 1))) * (montant - (totalDown || 0))).toFixed(2);
-        var interets = ((calc * mois) - montant).toFixed(2);
+        // Calcul des intérêts totaux
+        var calc = ((tauxMensuel + (tauxMensuel / (Math.pow((1 + tauxMensuel), mois) - 1))) * montantFinance).toFixed(2);
+        var interets = (calc * mois).toFixed(2);
 
         var paymentResults = document.getElementById('paymentResults');
         paymentResults.style.display = 'block';
@@ -199,6 +201,7 @@
         paymentResults.append(results);
     }
 </script>
+
 
 <script>
     function calculerTauxInteret(){
