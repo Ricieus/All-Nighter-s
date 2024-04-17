@@ -101,18 +101,8 @@
         });
 
         // Validation du courriel et du mot de passe
-        if (!courriel || !validateEmail(courriel)) {
-            document.getElementById('courrielError').innerText = 'Courriel invalide';
-            document.getElementById('courrielError').style.display = 'block';
-            document.getElementById("courrielConnexion").classList.add('error-border');
-            return;
-        }
-        if (!motDePasse) {
-            document.getElementById('motdepasseError').innerText = 'Le mot de passe est incorrect';
-            document.getElementById('motdepasseError').style.display = 'block';
-            document.getElementById("motDePasseConnexion").classList.add('error-border');
-            return;
-        }
+          
+        
 
         //  requête à la base de données pour vérifier l'existence du compte
         fetch('/connexion/submit_connexion', {
@@ -137,21 +127,15 @@
 
 
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Gérer les erreurs et afficher les messages appropriés
-                if (error.message === 'Le compte n\'existe pas') {
-                    document.getElementById('courrielError').innerText = 'Le courriel ou le mot de passe est incorrect';
-                    document.getElementById('courrielError').style.display = 'block';
-                    document.getElementById('motdepasseError').innerText = 'Le courriel ou le mot de passe est incorrect';
+
+                else{
                     document.getElementById("courrielConnexion").classList.add('error-border');
-                    document.getElementById("motDePasseConnexion").classList.add('error-border');
-                } else {
-                    console.error('Erreur de connexion');
-                    // Afficher un message d'erreur général
+            document.getElementById('motdepasseError').innerText = 'Le courriel ou le mot de passe est incorrect';
+            document.getElementById('motdepasseError').style.display = 'block';
+            document.getElementById("motDePasseConnexion").classList.add('error-border');
                 }
-            });
+            })
+           
     });
 
     //Fonction pour valider un courriel
