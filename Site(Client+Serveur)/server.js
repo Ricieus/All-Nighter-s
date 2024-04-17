@@ -14,6 +14,7 @@ import { count } from "console";
 import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
 import Stripe from 'stripe';
+
 const stripe = new Stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
 config();
 
@@ -22,6 +23,8 @@ import { MongoClient } from 'mongodb';
 
 
 const app = express();
+import bcrypt from 'bcrypt';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uri = process.env.DB_URI;
@@ -166,51 +169,65 @@ app.get('/pages/contact', (req, res) => {
 });
 
 //Connexion:
-app.post('/connexion/submit_connexion', (req, res) => {
-    let courriel = req.body.courriel;
-    let motDePasse = req.body.motDePasse;
+app.post('/connexion/submit_connexion', async (req, res) => {
+    try {
+        const { courriel, motDePasse } = req.body;
 
-    var sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE BINARY email = ? AND BINARY motdepasse = ?";
+        const sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE BINARY email = ?";
+        con.query(sql, [courriel], async (err, result) => {
+            if (err) {
+                console.error('Erreur lors de la requête SQL:', err);
+                return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
+            }
 
-    con.query(sql, [courriel, motDePasse], function (err, result) {
-        if (err) {
-            console.error('Erreur lors de la requête SQL:', err);
-            return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
-        }
+            if (result.length > 0) {
+                const hashedPassword = result[0].motdepasse;
+                const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
-        if (result.length > 0) {
-            const nom = result[0].nom; //prendre le nom
-            const prenom = result[0].prenom; //prendre le prenom
-            res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
-        } else {
+                if (passwordMatch) {
+                    const { nom, prenom } = result[0];
+                    return res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
+                }
+            }
+
             res.json({ exists: false }); // Changer "success" en "exists"
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Erreur lors de la connexion:', error);
+        return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
+    }
 });
 
 
 
+app.post('/inscription/submit_inscription', async (req, res) => {
+    try {
+        let prenom = req.body.prenom;
+        let nom = req.body.nom;
+        let courriel = req.body.courriel;
+        let telephone = req.body.telephone;
+        let motdePasse = req.body.confirmerMotPasse;
+        let adresse = req.body.adresse;
 
-app.post('/inscription/submit_inscription', (req, res) => {
-    let prenom = req.body.prenom;
-    let nom = req.body.nom;
-    let courriel = req.body.courriel;
-    let telephone = req.body.telephone;
-    let motdePasse = req.body.confirmerMotPasse;
-    let adresse = req.body.adresse;
+        // Chiffrez le mot de passe
+        const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-    var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + motdePasse + "','" + telephone + "','" + adresse + "')";
+        console.log(hashedPassword);
 
-    con.query(sql, function (err, result) {
-        if (err) {
-            console.log(err);
-            return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
-        }
-        setTimeout(function () { res.redirect('/'); }, 3000);
+        var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + hashedPassword + "','" + telephone + "','" + adresse + "')";
 
-    });
+        con.query(sql, function (err, result) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
+            }
+            setTimeout(function () { res.redirect('/'); }, 4000);
+        });
+    } catch (error) {
+        console.error("Erreur lors du chiffrement du mot de passe :", error);
+        return res.status(500).send('Erreur lors du chiffrement du mot de passe');
+    }
 });
-
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
@@ -345,7 +362,7 @@ app.post('/create-checkout-session', async (req, res) => {
         let marque = req.body.marque;
         let taux = req.body.taux;
         let priceVoiture = req.body.price;
-        
+
         let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
         let priceNumber = parseFloat(sanitizedPriceString);
 
@@ -399,22 +416,22 @@ app.post('/create-checkout-session', async (req, res) => {
         //         email: customerEmail,
         //     });
         // }
-        
+
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
-            {
-                price: price.id,
-                quantity: 1,
-            },
+                {
+                    price: price.id,
+                    quantity: 1,
+                },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/return.html?session_id={CHECKOUT_SESSION_ID}`,
-            automatic_tax: {enabled: true},
+            return_url: `${DOMAIN}/pages/commande`,
+            automatic_tax: { enabled: true },
         });
 
-        res.send({clientSecret: session.client_secret});
+        res.send({ clientSecret: session.client_secret });
     } catch (error) {
         console.error('Error creating checkout session:', error);
         res.status(500).json({ error: 'Failed to create checkout session' });
@@ -423,10 +440,10 @@ app.post('/create-checkout-session', async (req, res) => {
 
 app.get('/session-status', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-  
+
     res.send({
-      status: session.status,
-      customer_email: session.customer_details.email
+        status: session.status,
+        customer_email: session.customer_details.email
     });
 });
 

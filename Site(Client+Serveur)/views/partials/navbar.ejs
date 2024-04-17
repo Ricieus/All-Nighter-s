@@ -30,15 +30,6 @@
                         <a href="/pages/connexion" class="nav-link text-center">Connexion</a>
                     </div>
                 </li>
-
-                <!--Code pour effectuer les paiements: Temporairement dans le navbar-->
-                <li class="nav-item m-2">
-                    <div class="border border-light rounded-pill justify-content-center bg-light shadow-sm"
-                        style="width: 7rem">
-                        <a href="/pages/paiement" class="nav-link text-center">Paiement</a>
-                    </div>
-                </li>
-
                 <!--Code pour voir la commande: Temporairement dans le navbar-->
                 <li class="nav-item m-2">
                     <div class="border border-light rounded-pill justify-content-center bg-light shadow-sm"
@@ -50,11 +41,24 @@
         </div>
     </div>
     <div class="nav-item ml-auto">
-        <div class="justify-content-center" style="width: 7rem">
-            <div class="bg-light rounded-5" id="userFullName" style="text-align: center;"></div>
-            <button id="deconnexionBtn" class="btn btn-primary w-100 h-100 rounded-pill" style="font-size: small;" disabled>
-                Déconnexion
-            </button>            
+
+        <div class="dropdown dropstart">
+            <button type="button" class="btn btn-secondary rounded-5" data-bs-toggle="dropdown" data-bs-display="static"
+                aria-expanded="false">
+                <i class="bi bi-person-circle"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <div id="userFullName" class="dropdown-item w-100 h-100" style="text-align: center;">
+                    </div>
+                </li>
+                <li>
+                    <button id="deconnexionBtn" class="btn btn-secondary w-100 h-100"
+                        style="font-size: small; text-align: center;" disabled>
+                        Déconnexion
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -70,41 +74,41 @@
         }
     });
     function gestionDeconnexion() {
-    const userFullName = sessionStorage.getItem('userFullName');
-    const btnDeconnexion = document.getElementById('deconnexionBtn');
+        const userFullName = sessionStorage.getItem('userFullName');
+        const btnDeconnexion = document.getElementById('deconnexionBtn');
 
-    if (userFullName) {
-        document.getElementById('userFullName').innerText = userFullName;
-        btnDeconnexion.disabled = false; // Activer le bouton de déconnexion
-    } else {
-        document.getElementById('userFullName').innerText = ''; // Effacer le nom d'utilisateur affiché
-        btnDeconnexion.disabled = true; // Désactiver le bouton de déconnexion
+        if (userFullName) {
+            document.getElementById('userFullName').innerText = userFullName;
+            btnDeconnexion.disabled = false; // Activer le bouton de déconnexion
+        } else {
+            document.getElementById('userFullName').innerText = ''; // Effacer le nom d'utilisateur affiché
+            btnDeconnexion.disabled = true; // Désactiver le bouton de déconnexion
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', function () {
-    gestionDeconnexion(); // Appeler la fonction au chargement initial de la page
-
-    document.getElementById('deconnexionBtn').addEventListener('click', function () {
-        // Supprimer les informations de session
-        sessionStorage.removeItem('userFullName');
-        // Rediriger vers la page de connexion ou d'accueil
-        window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
-    });
-});
     document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const fullName = urlParams.get('fullName');
+        gestionDeconnexion(); // Appeler la fonction au chargement initial de la page
 
-  
-
-    document.getElementById('deconnexionBtn').addEventListener('click', function () {
-        // Supprimer les informations de session
-        sessionStorage.removeItem('userFullName');
-        // Rediriger vers la page de connexion ou d'accueil
-        window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
+        document.getElementById('deconnexionBtn').addEventListener('click', function () {
+            // Supprimer les informations de session
+            sessionStorage.removeItem('userFullName');
+            // Rediriger vers la page de connexion ou d'accueil
+            window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
+        });
     });
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fullName = urlParams.get('fullName');
+
+
+
+        document.getElementById('deconnexionBtn').addEventListener('click', function () {
+            // Supprimer les informations de session
+            sessionStorage.removeItem('userFullName');
+            // Rediriger vers la page de connexion ou d'accueil
+            window.location.href = '/pages/connexion'; // Modifier l'URL selon votre structure de pages
+        });
+    });
 
 
 
