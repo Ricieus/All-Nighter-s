@@ -1,18 +1,18 @@
 <style>
     .boiteInformation {
-        height: 75vh;
-        width: 60vh;
+        height: auto;
+        width: 100%;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
     }
 
     .imgIcons {
         width: 30px;
         height: 30px;
         margin-right: 5%;
-
-        
     }
-
-
 </style>
 
 <div class="content">
@@ -56,25 +56,25 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="boiteInformation">
             <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form id="loanCalc" action="" method="get" class="paymentCalc">
-                                    <h3>Calculer votre financement par mois</h3>
-                                    <div class="col-md-12">
-                                        <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
-                                            <% carInfo.forEach(info => { %>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form id="loanCalc" action="" method="get" class="paymentCalc">
+                            <h3>Calculer votre financement par mois</h3>
+                            <div class="col-md-12">
+                                <% if (typeof carDetails !== undefined && typeof carInfo !== undefined) { %>
+                                    <% carInfo.forEach(info => { %>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group ">
-                                                    <label for="vehiclePrice">Prix du véhicule</label>
-                                                    <input type="number" class="form-control" id="vehiclePrice" placeholder="Prix véhicuke">
+                                                    <label for="prixDeVehicule">Prix du véhicule</label>
+                                                    <input type="number" class="form-control" id="prixDeVehicule" placeholder="Prix véhicule" value="car">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="downPayment">Acompte</label>
+                                                    <label for="downPayment">Mise de fonds</label>
                                                     <input type="number" class="form-control" id="downPayment" placeholder="" value="0">
                                                 </div>
                                             </div>
@@ -82,34 +82,33 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="tradeValue">Commerce en valeur</label>
-                                                    <input type="text" class="form-control" id="tradeValue" placeholder="" value="0">
+                                                    <label for="valeurCommerce">Commerce en valeur</label>
+                                                    <input type="text" class="form-control" id="valeurCommerce" placeholder="" value="0">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="intRate">Taux d'intérêt</label>
-                                                    <input type="text" class="form-control" id="intRate" placeholder="" value="6.99">
+                                                    <label for="tauxInteret">Taux d'intérêt</label>
+                                                    <input type="text" class="form-control" id="tauxInteret" placeholder="" value="6.99">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="loanTerm">Durée du financement</label>
-                                                    <select class="form-control wider-input" id="loanTerm">
+                                                    <label for="dureeFinancement">Durée du financement</label>
+                                                    <select class="form-control wider-input" id="dureeFinancement">
                                                         <option value="36">36 Mois</option>
-                                                        <option value="72">48 Mois</option>
+                                                        <option value="48">48 Mois</option>
                                                         <option value="60">60 Mois</option>
                                                         <option value="72">72 Mois</option>
-                                                        <!-- Add more options as needed -->
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-primary calcBtn" onclick="calculatePayments()">Calculer</button>
+                                            <button type="button" class="btn btn-primary calcBtn" onclick="calculerPaymentMensuel()">Calculer</button>
                                         </div>
         
                                         <div class="row mt-3">
@@ -117,28 +116,23 @@
                                                 <button class="btn btn-primary" onclick="dataPaiement()">Payer</button>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    <% }); %>
+                                <% } %>
                             </div>
-                            <div class="col-md-6">
-                                <div id="paymentResults"></div>
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } %> <!-- Fin du bloc if-else -->
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="paymentResults"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-            
-        </div>
-        
-        
-        
     </div>
 </div>
 
+
 <script>
-    function dataPaiement(){
+    function dataPaiement() {
         const marqueVoiture = document.getElementById('marqueVoiture').innerText || document.getElementById('marqueVoiture').value;
         const tauxInteret = document.getElementById('tauxInteret').innerText || document.getElementById('tauxInteret').value;
         const voiturePrix = document.getElementById('voiturePrix').innerText || document.getElementById('voiturePrix').value;
@@ -151,62 +145,63 @@
             taux: tauxInteret,
             price: voiturePrix
         });
-        
+
         // Create the full URL with query parameters
         const newPageURL = `${baseURL}?${queryParams.toString()}`;
-        
+
         // Redirect the user to the new page
         window.location.href = newPageURL;
     }
 </script>
 
 <script>
-    function calculatePayments(){
-        var vehiclePrice = document.getElementById('vehiclePrice').value,
-            loanTerm = document.getElementById('loanTerm').value,
-            intRate = document.getElementById('intRate').value,
+    function calculerPaymentMensuel() {
+        var prixDeVehicule = document.getElementById('prixDeVehicule').value,
+            dureeFinancement = document.getElementById('dureeFinancement').value,
+            tauxInteret = document.getElementById('tauxInteret').value,
             downPayment = document.getElementById('downPayment').value,
-            tradeValue = document.getElementById('tradeValue').value,
-            amount = parseInt(vehiclePrice),
-            months = parseInt(loanTerm),
-            down  = parseInt(downPayment),
-            trade =  parseInt(tradeValue),
-            totalDown  = down + trade,
-            annInterest = parseFloat(intRate),
-            monInt = annInterest / 1200;
+            valeurCommerce = document.getElementById('valeurCommerce').value,
+            montant = parseInt(prixDeVehicule),
+            mois = parseInt(dureeFinancement),
+            acompteTotal = parseInt(downPayment),
+            EchangeValeur = parseInt(valeurCommerce),
+            totalDown = acompteTotal + EchangeValeur,
+            tauxAnnuel = parseFloat(tauxInteret),
+            tauxMensuel = tauxAnnuel / 1200;
 
-        if(!amount){
-            alert('Please add a loan amount');
+        if (!montant) {
+            alert('Ajouter un montant de financement'); //Changer ca pour mettre directement le id du prix
             return;
         }
 
-        if(!months){
-            months = 60;
-            loanTerm = document.getElementById('loanTerm').value = '60';
+        if (!mois) {
+            mois = 60;
+            dureeFinancement = document.getElementById('dureeFinancement').value = '60';
         }
 
-        if(!downPayment){
-            down = 0;
+        if (!downPayment) {
+            acompteTotal = 0;
             downPayment = document.getElementById('downPayment').value = '0';
         }
 
-        if(!trade){
-            trade = 0;
-            tradeValue = document.getElementById('tradeValue').value = '0';
+        if (!EchangeValeur) {
+            EchangeValeur = 0;
+            valeurCommerce = document.getElementById('valeurCommerce').value = '0';
         }
 
-        if(!annInterest){
-            annInterest = 3.25;
-            intRate = document.getElementById('intRate').value = '3.25';
-        }
+        // if (!tauxAnnuel) {
+        //     tauxAnnuel = 6.99;
+        //     tauxInteret = document.getElementById('tauxInteret').value = '6.99';
+        // }
 
-        var calc = ((monInt + (monInt / (Math.pow((1 + monInt), months) -1))) * (amount - (totalDown || 0))).toFixed(2);
+        var calc = ((tauxMensuel + (tauxMensuel / (Math.pow((1 + tauxMensuel), mois) - 1))) * (montant - (totalDown || 0))).toFixed(2);
+        var interets = ((calc * mois) - montant).toFixed(2);
 
         var paymentResults = document.getElementById('paymentResults');
         paymentResults.style.display = 'block';
         paymentResults.innerHTML = '';
         var results = document.createElement('div');
-        results.innerHTML = '<h1 style="text-align:center">Estimated Monthly Payment is:<br/></h1>' + '<h3 style="text-align:center">$' + calc + '/Month</h3>';
+        results.innerHTML = '<h1 style="text-align:center">Le paiement mensuel estimé est:<br/></h1>' + '<h3 style="text-align:center">$' + calc + '/Mois</h3>' + '<br/><br/>' +'<h3 style="text-align:center">Total intérets: $' + interets + '</h3>';
 
         paymentResults.append(results);
     }
