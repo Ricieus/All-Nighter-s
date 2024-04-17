@@ -97,7 +97,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="dureeFinancement">Durée du financement</label>
-                                                    <select class="form-control wider-input" id="dureeFinancement">
+                                                    <select class="form-control wider-input" id="dureeFinancement" onchange="calculerTauxInteret()">
                                                         <option value="36">36 Mois</option>
                                                         <option value="48">48 Mois</option>
                                                         <option value="60">60 Mois</option>
@@ -197,5 +197,31 @@
         results.innerHTML = '<h1 style="text-align:center">Le paiement mensuel estimé est:<br/></h1>' + '<h3 style="text-align:center">$' + calc + '/Mois</h3>' + '<br/><br/>' +'<h3 style="text-align:center">Total intérets: $' + interets + '</h3>';
 
         paymentResults.append(results);
+    }
+</script>
+
+<script>
+    function calculerTauxInteret(){
+        const dureeFinancement = document.getElementById('dureeFinancement').value;
+        let tauxInteret;
+
+        switch (parseInt(dureeFinancement)){
+            case 36:
+                tauxInteret = 6.59;
+                break;
+            case 48:
+                tauxInteret = 6.69;
+                break;
+            case 60:
+                tauxInteret = 6.79;
+                break;
+            case 72:
+                tauxInteret = 6.99;
+                break;
+        }
+        document.getElementById('tauxInteret').value = tauxInteret;
+        window.onload = function(){
+            calculerTauxInteret();
+        }
     }
 </script>
