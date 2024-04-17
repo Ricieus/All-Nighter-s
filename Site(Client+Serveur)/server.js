@@ -121,15 +121,7 @@ app.get('/detailee/:id_voiture', async (req, res) => {
     }
 });
 
-app.get("/", function (req, res) {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/index", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
+
 
 app.get('/pages/connexion', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -253,8 +245,15 @@ app.post('/contact/submit_contact', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.redirect('/pages/index');
+    });
+});
+
 app.get('/pages/index', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
+    con.query("SELECT * FROM voitures", function (err, result) {
         if (err) throw err;
         res.render("pages/index", {
             pageTitle: "Concessionnaire Rubious",
