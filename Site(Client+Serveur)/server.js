@@ -208,7 +208,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         let telephone = req.body.telephone;
         let motdePasse = req.body.confirmerMotPasse;
         let adresse = req.body.adresse;
-        const existingUser = await getUserByEmail(courriel);
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
@@ -227,17 +226,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         console.error("Erreur lors du chiffrement du mot de passe :", error);
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
-
-    async function getUserByEmail(email) {
-        return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM utilisateurs WHERE email = ?';
-            con.query(sql, [email], (err, result) => {
-                if (err) return reject(err);
-                resolve(result[0]); // Renvoie le premier utilisateur trouvé ou null s'il n'y en a aucun
-            });
-        });
-    }
-    });
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
@@ -372,10 +360,10 @@ app.post('/create-checkout-session', async (req, res) => {
         let marque = req.body.marque;
         let taux = req.body.taux;
         let priceVoiture = req.body.price;
-        
+
         let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
         let priceNumber = parseFloat(sanitizedPriceString);
-        
+
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
@@ -426,22 +414,22 @@ app.post('/create-checkout-session', async (req, res) => {
         //         email: customerEmail,
         //     });
         // }
-        
+
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
-            {
-                price: price.id,
-                quantity: 1,
-            },
+                {
+                    price: price.id,
+                    quantity: 1,
+                },
             ],
             mode: 'payment',
             return_url: `${DOMAIN}/pages/commande`,
-            automatic_tax: {enabled: true},
+            automatic_tax: { enabled: true },
         });
 
-        res.send({clientSecret: session.client_secret});
+        res.send({ clientSecret: session.client_secret });
     } catch (error) {
         console.error('Error creating checkout session:', error);
         res.status(500).json({ error: 'Failed to create checkout session' });
@@ -450,10 +438,10 @@ app.post('/create-checkout-session', async (req, res) => {
 
 app.get('/session-status', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-  
+
     res.send({
-      status: session.status,
-      customer_email: session.customer_details.email
+        status: session.status,
+        customer_email: session.customer_details.email
     });
 });
 
