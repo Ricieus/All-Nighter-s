@@ -208,7 +208,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         let telephone = req.body.telephone;
         let motdePasse = req.body.confirmerMotPasse;
         let adresse = req.body.adresse;
-
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
@@ -228,7 +227,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
 });
-
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
