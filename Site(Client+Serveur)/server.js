@@ -245,6 +245,13 @@ app.post('/contact/submit_contact', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.redirect('/pages/index');
+    });
+});
+
 app.get('/pages/index', (req, res) => {
     con.query("SELECT * FROM voitures", function (err, result) {
         if (err) throw err;
