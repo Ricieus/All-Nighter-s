@@ -121,15 +121,7 @@ app.get('/detailee/:id_voiture', async (req, res) => {
     }
 });
 
-app.get("/", function (req, res) {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/index", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
+
 
 app.get('/pages/connexion', (req, res) => {
     con.query("SELECT * FROM utilisateurs", function (err, result) {
@@ -208,7 +200,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         let telephone = req.body.telephone;
         let motdePasse = req.body.confirmerMotPasse;
         let adresse = req.body.adresse;
-
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
@@ -228,7 +219,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
 });
-
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
@@ -255,8 +245,15 @@ app.post('/contact/submit_contact', (req, res) => {
     });
 });
 
+app.get('/', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.redirect('/pages/index');
+    });
+});
+
 app.get('/pages/index', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
+    con.query("SELECT * FROM voitures", function (err, result) {
         if (err) throw err;
         res.render("pages/index", {
             pageTitle: "Concessionnaire Rubious",
