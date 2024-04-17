@@ -208,7 +208,7 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         let telephone = req.body.telephone;
         let motdePasse = req.body.confirmerMotPasse;
         let adresse = req.body.adresse;
-
+        const existingUser = await getUserByEmail(courriel);
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
@@ -227,7 +227,17 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         console.error("Erreur lors du chiffrement du mot de passe :", error);
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
-});
+
+    async function getUserByEmail(email) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT * FROM utilisateurs WHERE email = ?';
+            con.query(sql, [email], (err, result) => {
+                if (err) return reject(err);
+                resolve(result[0]); // Renvoie le premier utilisateur trouvé ou null s'il n'y en a aucun
+            });
+        });
+    }
+    });
 
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
