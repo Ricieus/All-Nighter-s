@@ -226,7 +226,7 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         console.error("Erreur lors du chiffrement du mot de passe :", error);
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
-
+});
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
