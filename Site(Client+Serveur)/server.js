@@ -172,23 +172,31 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
             }
 
-            if (result.length > 0) {
-                const hashedPassword = result[0].motdepasse;
+            let userExists = false;
+            let userData = {};
+
+            for (let i = 0; i < result.length; i++) {
+                const hashedPassword = result[i].motdepasse;
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
-                if (passwordMatch) {
+                 if (passwordMatch) {
                     const { nom, prenom } = result[0];
                     return res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
                 }
             }
 
-            res.json({ exists: false }); // Changer "success" en "exists"
+            if (userExists) {
+                return res.json({ exists: true, userData });
+            } else {
+                return res.json({ exists: false });
+            }
         });
     } catch (error) {
         console.error('Erreur lors de la connexion:', error);
         return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
     }
 });
+
 
 
 
