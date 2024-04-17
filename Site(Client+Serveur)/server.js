@@ -200,6 +200,23 @@ app.post('/connexion/submit_connexion', async (req, res) => {
 
 
 
+app.post('/checkEmailExists', (req, res) => {
+    const email = req.body.email;
+    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
+    con.query(checkEmailQuery, [email], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
+        }
+        if (result.length > 0) {
+            return res.json({ exists: true });
+        } else {
+            return res.json({ exists: false });
+        }
+    });
+});
+
+// Endpoint pour gérer l'inscription
 app.post('/inscription/submit_inscription', async (req, res) => {
     try {
         let prenom = req.body.prenom;
@@ -213,20 +230,33 @@ app.post('/inscription/submit_inscription', async (req, res) => {
 
         console.log(hashedPassword);
 
-        var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + hashedPassword + "','" + telephone + "','" + adresse + "')";
-
-        con.query(sql, function (err, result) {
+        // Vérifier si l'email existe déjà
+        var checkEmailQuery = "SELECT * FROM utilisateurs WHERE email = ?";
+        con.query(checkEmailQuery, [courriel], function (err, rows) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
             }
-            setTimeout(function () { res.redirect('/'); }, 4000);
+            if (rows.length > 0) {
+                return res.status(400).send('Cet email est déjà utilisé. Veuillez en choisir un autre.');
+            }
+
+            // Insérer les données dans la base de données
+            var insertQuery = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES (?, ?, ?, ?, ?, ?)";
+            con.query(insertQuery, [nom, prenom, courriel, hashedPassword, telephone, adresse], function (err, result) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
+                }
+                setTimeout(function () { res.redirect('/'); }, 4000);
+            });
         });
     } catch (error) {
         console.error("Erreur lors du chiffrement du mot de passe :", error);
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
 });
+
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
