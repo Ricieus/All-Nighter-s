@@ -179,7 +179,7 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 const hashedPassword = result[i].motdepasse;
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
-                 if (passwordMatch) {
+                if (passwordMatch) {
                     const { nom, prenom } = result[0];
                     return res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
                 }
@@ -288,7 +288,9 @@ app.get('/pages/index', async (req, res) => {
         }
 
         const collection = db.collection('voitureDetaille');
-        const result = await collection.find();
+        const cursor = collection.find({});
+        const result = await cursor.toArray();
+
 
         // Check if car details are found in MongoDB
         if (!result) {

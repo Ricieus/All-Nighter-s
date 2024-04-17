@@ -31,21 +31,17 @@
                 <div class="card-wrapper">
                     <% for (let i=0; i < 5; i++) { %>
 
-                        <!-- <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], voitureDetail:
-                            itemsDetail[i] }) %> -->
-
-
-
-                        <% } %>
+                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], infosVoiture:
+                            itemsMongo[i] }) %>
+                            <% } %>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="card-wrapper">
                     <% for (let i=5; i < 10; i++) { %>
 
-                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], voitureDetail:
-                            itemsDetail[i] }) %>
-
+                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], infosVoiture:
+                            itemsMongo[i] }) %>
                             <% } %>
                 </div>
             </div>
