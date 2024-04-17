@@ -169,30 +169,23 @@
             tauxAnnuel = parseFloat(tauxInteret),
             tauxMensuel = tauxAnnuel / 1200;
 
+        
         if (!montant) {
             alert('Ajouter un montant de financement'); //Changer ca pour mettre directement le id du prix
             return;
         }
 
-        if (!mois) {
-            mois = 60;
-            dureeFinancement = document.getElementById('dureeFinancement').value = '60';
-        }
-
+        //Valeur par défaut
         if (!downPayment) {
             acompteTotal = 0;
             downPayment = document.getElementById('downPayment').value = '0';
         }
 
+        //Valeur par défaut
         if (!EchangeValeur) {
             EchangeValeur = 0;
             valeurCommerce = document.getElementById('valeurCommerce').value = '0';
         }
-
-        // if (!tauxAnnuel) {
-        //     tauxAnnuel = 6.99;
-        //     tauxInteret = document.getElementById('tauxInteret').value = '6.99';
-        // }
 
         var calc = ((tauxMensuel + (tauxMensuel / (Math.pow((1 + tauxMensuel), mois) - 1))) * (montant - (totalDown || 0))).toFixed(2);
         var interets = ((calc * mois) - montant).toFixed(2);
