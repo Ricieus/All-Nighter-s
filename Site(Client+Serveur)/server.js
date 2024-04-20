@@ -172,8 +172,11 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 return res.status(500).json({ success: false, error: 'Erreur interne du serveur' });
             }
 
-            if (result.length > 0) {
-                const hashedPassword = result[0].motdepasse;
+            let userExists = false;
+            let userData = {};
+
+            for (let i = 0; i < result.length; i++) {
+                const hashedPassword = result[i].motdepasse;
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
                 if (passwordMatch) {
@@ -182,7 +185,11 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 }
             }
 
-            res.json({ exists: false }); // Changer "success" en "exists"
+            if (userExists) {
+                return res.json({ exists: true, userData });
+            } else {
+                return res.json({ exists: false });
+            }
         });
     } catch (error) {
         console.error('Erreur lors de la connexion:', error);
@@ -192,6 +199,24 @@ app.post('/connexion/submit_connexion', async (req, res) => {
 
 
 
+
+app.post('/checkEmailExists', (req, res) => {
+    const email = req.body.email;
+    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
+    con.query(checkEmailQuery, [email], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
+        }
+        if (result.length > 0) {
+            return res.json({ exists: true });
+        } else {
+            return res.json({ exists: false });
+        }
+    });
+});
+
+// Endpoint pour gérer l'inscription
 app.post('/inscription/submit_inscription', async (req, res) => {
     try {
         let prenom = req.body.prenom;
@@ -205,20 +230,33 @@ app.post('/inscription/submit_inscription', async (req, res) => {
 
         console.log(hashedPassword);
 
-        var sql = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES ('" + nom + "','" + prenom + "','" + courriel + "','" + hashedPassword + "','" + telephone + "','" + adresse + "')";
-
-        con.query(sql, function (err, result) {
+        // Vérifier si l'email existe déjà
+        var checkEmailQuery = "SELECT * FROM utilisateurs WHERE email = ?";
+        con.query(checkEmailQuery, [courriel], function (err, rows) {
             if (err) {
                 console.log(err);
                 return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
             }
-            setTimeout(function () { res.redirect('/'); }, 4000);
+            if (rows.length > 0) {
+                return res.status(400).send('Cet email est déjà utilisé. Veuillez en choisir un autre.');
+            }
+
+            // Insérer les données dans la base de données
+            var insertQuery = "INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse) VALUES (?, ?, ?, ?, ?, ?)";
+            con.query(insertQuery, [nom, prenom, courriel, hashedPassword, telephone, adresse], function (err, result) {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
+                }
+                setTimeout(function () { res.redirect('/'); }, 4000);
+            });
         });
     } catch (error) {
         console.error("Erreur lors du chiffrement du mot de passe :", error);
         return res.status(500).send('Erreur lors du chiffrement du mot de passe');
     }
 });
+
 //INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
@@ -252,14 +290,50 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/pages/index', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/index", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
+app.get('/pages/index', async (req, res) => {
+
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
-    });
+
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        const carInfo = rows; // Assuming only one row is returned
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const result = await cursor.toArray();
+
+
+        // Check if car details are found in MongoDB
+        if (!result) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+        // Render the detailee page with car information
+        res.render('pages/index', { carInfo, carDetails: result });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
 });
 
 app.get('/pages/catalogue', (req, res) => {
@@ -342,15 +416,17 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    const marque = req.query.marque;
-    const taux = req.query.taux;
-    const priceVoiture = req.query.price;
+    
+    const marqueVoiture = req.query.marque;
+    const prixDeVehicule = parseFloat(req.query.taux);
+    const tauxInteret = parseFloat(req.query.price);
+
 
     res.render('pages/paiement', {
         pageTitle: 'Concessionnaire Rubious',
-        marque,
-        taux,
-        priceVoiture
+        marqueVoiture,
+        tauxInteret,
+        prixDeVehicule
     });
 });
 
@@ -358,10 +434,7 @@ app.post('/create-checkout-session', async (req, res) => {
     try {
         let marque = req.body.marque;
         let taux = req.body.taux;
-        let priceVoiture = req.body.price;
-
-        let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
-        let priceNumber = parseFloat(sanitizedPriceString);
+        let priceNumber = req.body.price;
 
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
@@ -441,6 +514,16 @@ app.get('/session-status', async (req, res) => {
     res.send({
         status: session.status,
         customer_email: session.customer_details.email
+    });
+});
+
+app.get('/pages/administrateur', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateur", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
     });
 });
 

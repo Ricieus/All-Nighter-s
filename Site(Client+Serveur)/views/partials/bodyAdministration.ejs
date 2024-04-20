@@ -1,0 +1,45 @@
+<div class="container" style="margin-top: 5%; height: 100vh;">
+    <h1>Administrateur</h1>
+    
+    <h2>Ajouter une voiture</h2>
+    <form id="addCarForm" action="" method="POST">
+      <div class="mb-3">
+        <label for="carMarque" class="form-label">Marque</label>
+        <input type="text" class="form-control" id="carMarque" required>
+      </div>
+      <div class="mb-3">
+        <label for="carModele" class="form-label">Modèle</label>
+        <input type="text" class="form-control" id="carModele" required>
+      </div>
+      <div class="mb-3">
+        <label for="carAnnee" class="form-label">Année</label>
+        <input type="number" class="form-control" id="carAnnee" required>
+      </div>
+      <div class="mb-3">
+        <label for="imageInput" class="form-label">Image</label><br>
+        <input type="file" id="imageInput" name="image" accept="image/*" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Ajouter un voiture</button>
+    </form>
+    
+    <h2 style="margin-top: 5%;">Liste de voiture</h2><hr>
+    <ul id="carListe" class="list-group">
+        
+        <div id="messageEmpty" onload="isEmpty(carListe)"></div>
+    </ul>
+</div>
+
+<script>
+    let messageEmpty = document.getElementById("messageEmpty");
+
+    function isEmpty(id) {
+        return document.getElementById(id).innerHTML.trim() == ""
+    }
+
+    if (isEmpty("carListe")){
+        messageEmpty.innerText = "Aucune voiture existe à travers la base de donnée"
+    } else {
+        messageEmpty.innerText = ""
+    }
+</script>

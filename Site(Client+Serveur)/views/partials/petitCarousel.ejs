@@ -29,19 +29,19 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="card-wrapper">
-                    <% for (let i=0; i < 5; i++) { %>
+                    <% for (let i=0; i < 4; i++) { %>
 
-                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i] }) %>
-
+                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], infosVoiture:
+                            itemsMongo[i] }) %>
                             <% } %>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="card-wrapper">
-                    <% for (let i=5; i < 10; i++) { %>
+                    <% for (let i=4; i < 8; i++) { %>
 
-                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i] }) %>
-
+                        <%- include ('../partials/petitCarouselVoiture.ejs', { voiture: items[i], infosVoiture:
+                            itemsMongo[i] }) %>
                             <% } %>
                 </div>
             </div>
@@ -58,6 +58,7 @@
 </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
         // Fonction pour récupérer les données depuis le serveur
         function getData(url, selectId) {

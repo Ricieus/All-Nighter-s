@@ -28,7 +28,6 @@ export async function executeOperations() {
 
     try {
         if (!mongoClient) {
-            console.log(uri);
             mongoClient = await connectToMongo(uri);
         }
 
@@ -77,7 +76,7 @@ export async function executeOperations() {
                 "moteur": "4 cylindres",
                 "annee": 2023,
                 "carburant": "Essence",
-                "description": "Une SUV plus que confortable",
+                "description": "La Honda CR-V 2023 est un SUV qui allie confort, polyvalence et performances. Dotée d'un design élégant et moderne, elle offre un intérieur spacieux et bien aménagé, parfait pour accueillir toute la famille ou transporter des chargements volumineux.",
                 "pneus_bougent": "FWD",
                 "tauxInteret": 6.99,
                 "images": [
@@ -316,7 +315,6 @@ export async function executeOperations() {
 
         for (const voiture of voitures) {
             let result = await collection.deleteOne({ "_id": voiture._id });
-            console.log(`${voiture.corps} supprimée : ${result.deletedCount} document(s) supprimé(s)`);
         }
 
         // Insérer les nouveaux documents
