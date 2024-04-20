@@ -101,8 +101,8 @@
         });
 
         // Validation du courriel et du mot de passe
-          
-        
+
+
 
         //  requête à la base de données pour vérifier l'existence du compte
         fetch('/connexion/submit_connexion', {
@@ -124,18 +124,18 @@
                     // Après une connexion réussie
                     sessionStorage.setItem('userFullName', prenom + " " + nom);
                     gestionDeconnexion(); // Activer le bouton de déconnexion
-
+                    window.location.href = '/pages/index';
 
                 }
 
-                else{
+                else {
                     document.getElementById("courrielConnexion").classList.add('error-border');
-            document.getElementById('motdepasseError').innerText = 'Le courriel ou le mot de passe est incorrect';
-            document.getElementById('motdepasseError').style.display = 'block';
-            document.getElementById("motDePasseConnexion").classList.add('error-border');
+                    document.getElementById('motdepasseError').innerText = 'Le courriel ou le mot de passe est incorrect';
+                    document.getElementById('motdepasseError').style.display = 'block';
+                    document.getElementById("motDePasseConnexion").classList.add('error-border');
                 }
             })
-           
+
     });
 
     //Fonction pour valider un courriel
