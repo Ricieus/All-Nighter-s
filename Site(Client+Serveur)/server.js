@@ -342,29 +342,25 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    const marque = req.body.marqueVoiture;
-    const taux = req.body.tauxInteret;
-    const priceVoiture = req.body.prixDeVehicule;
+    
+    const marqueVoiture = req.query.marque;
+    const prixDeVehicule = parseFloat(req.query.taux);
+    const tauxInteret = parseFloat(req.query.price);
+
 
     res.render('pages/paiement', {
         pageTitle: 'Concessionnaire Rubious',
-        marque,
-        taux,
-        priceVoiture
+        marqueVoiture,
+        tauxInteret,
+        prixDeVehicule
     });
 });
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
-        let marque = req.params.marque;
-        let taux = req.params.taux;
-        let priceNumber = req.params.priceVoiture;
-
-        // let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
-        // let priceNumber = parseFloat(sanitizedPriceString);
-
-        console.log(marque)
-        console.log(priceNumber)
+        let marque = req.body.marque;
+        let taux = req.body.taux;
+        let priceNumber = req.body.price;
 
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
@@ -444,6 +440,16 @@ app.get('/session-status', async (req, res) => {
     res.send({
         status: session.status,
         customer_email: session.customer_details.email
+    });
+});
+
+app.get('/pages/administrateur', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateur", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
     });
 });
 
