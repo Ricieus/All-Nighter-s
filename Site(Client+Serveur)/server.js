@@ -339,12 +339,13 @@ app.get('/pages/index', async (req, res) => {
 app.get('/pages/profile', (req, res) => {
     con.query("SELECT * FROM voitures", function (err, results) {
         if (err) throw err;
-        res.render('/pages/profile', {
+        res.render('pages/profile', {  // Update path here to 'profile'
             pageTitle: "Concessionnaire Rubious",
             items: results
         });
     });
 });
+
 
 app.get('/pages/catalogue', (req, res) => {
     con.query("SELECT * FROM voitures", (err, results) => {
