@@ -66,7 +66,6 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <form id="loanCalc" action="/pages/paiement" method="GET" class="paymentCalc">
                                 <button type="button" id="btnFinancer" class="btn btn-primary mt-2"
                                     onclick="cacherCalculatrice(); cacherMessageFinancement(); cacherMontantCalculer();">Argent
                                     Comptant</button>
@@ -148,13 +147,12 @@
 
                                             <div class="row mt-3">
                                                 <div class="col-md-12">
-                                                    <button class="btn btn-primary" type="submit">Payer</button>
+                                                    <button class="btn btn-primary" type="submit" onclick="dataPaiement()">Payer</button>
                                                 </div>
                                             </div>
                                             <% }); %>
                                                 <% } %>
                                 </div>
-                            </form>
 
                         </div>
                         <div class="col-md-6">
