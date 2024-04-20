@@ -416,9 +416,9 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    const marque = req.query.marque;
-    const taux = req.query.taux;
-    const priceVoiture = req.query.price;
+    const marque = req.body.marqueVoiture;
+    const taux = req.body.tauxInteret;
+    const priceVoiture = req.body.prixDeVehicule;
 
     res.render('pages/paiement', {
         pageTitle: 'Concessionnaire Rubious',
@@ -430,12 +430,15 @@ app.get('/pages/paiement', (req, res) => {
 
 app.post('/create-checkout-session', async (req, res) => {
     try {
-        let marque = req.body.marque;
-        let taux = req.body.taux;
-        let priceVoiture = req.body.price;
+        let marque = req.params.marque;
+        let taux = req.params.taux;
+        let priceNumber = req.params.priceVoiture;
 
-        let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
-        let priceNumber = parseFloat(sanitizedPriceString);
+        // let sanitizedPriceString = priceVoiture.replace(/[^0-9.-]/g, '');
+        // let priceNumber = parseFloat(sanitizedPriceString);
+
+        console.log(marque)
+        console.log(priceNumber)
 
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
