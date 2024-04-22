@@ -108,6 +108,12 @@
             </form>
             <p class="mt-5 text-success" id="texteSucces"></p>
             <p id="userFullName" style="position: fixed; top: 10px; right: 10px;"></p>
+            <p id="userNom"></p>
+            <p id="userPrenom"></p>
+            <p id="userCourriel"></p>
+            <p id="userTelephone"></p>
+            <p id="userAdresse"></p>
+            <p id="userMotDePasse"></p>
         </div>
     </div>
 </div>
@@ -115,123 +121,128 @@
 
 
 <script>
-   document.getElementById('inscriptionForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Empêcher la soumission par défaut du formulaire
+    document.getElementById('inscriptionForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Empêcher la soumission par défaut du formulaire
 
-    // Récupérer les valeurs des champs
-    const prenom = document.getElementById('prenom').value;
-    const nom = document.getElementById('nom').value;
-    const courriel = document.getElementById('courriel1');
-    const telephone = document.getElementById('telephone');
-    const adresse = document.getElementById('adresse');
-    const motdepasse = document.getElementById('motdepasse');
-    const confirmerMotPasse = document.getElementById('confirmerMotPasse');
+        // Récupérer les valeurs des champs
+        const prenom = document.getElementById('prenom').value;
+        const nom = document.getElementById('nom').value;
+        const courriel = document.getElementById('courriel1');
+        const telephone = document.getElementById('telephone');
+        const adresse = document.getElementById('adresse');
+        const motdepasse = document.getElementById('motdepasse');
+        const confirmerMotPasse = document.getElementById('confirmerMotPasse');
 
-    // Réinitialiser les messages d'erreur et les bordures
-    document.querySelectorAll('.error-message').forEach(function (element) {
-        element.style.display = 'none';
-    });
-    document.querySelectorAll('.form-control').forEach(function (element) {
-        element.classList.remove('error-border');
-    });
+        // Réinitialiser les messages d'erreur et les bordures
+        document.querySelectorAll('.error-message').forEach(function (element) {
+            element.style.display = 'none';
+        });
+        document.querySelectorAll('.form-control').forEach(function (element) {
+            element.classList.remove('error-border');
+        });
 
-    // Vérifier la validation
-    let isValid = true;
+        // Vérifier la validation
+        let isValid = true;
 
-    if (!prenom) {
-        document.getElementById('prenomError').innerText = 'Prénom est requis';
-        document.getElementById('prenomError').style.display = 'block';
-        document.getElementById('prenom').classList.add('error-border');
-        isValid = false;
-    }
+        if (!prenom) {
+            document.getElementById('prenomError').innerText = 'Prénom est requis';
+            document.getElementById('prenomError').style.display = 'block';
+            document.getElementById('prenom').classList.add('error-border');
+            isValid = false;
+        }
 
-    if (!nom) {
-        document.getElementById('nomError').innerText = 'Nom de Famille est requis';
-        document.getElementById('nomError').style.display = 'block';
-        document.getElementById('nom').classList.add('error-border');
-        isValid = false;
-    }
+        if (!nom) {
+            document.getElementById('nomError').innerText = 'Nom de Famille est requis';
+            document.getElementById('nomError').style.display = 'block';
+            document.getElementById('nom').classList.add('error-border');
+            isValid = false;
+        }
 
-    if (!courriel.value || !validateEmail(courriel.value)) {
-        document.getElementById('courrielError').innerText = 'Courriel invalide';
-        document.getElementById('courrielError').style.display = 'block';
-        courriel.classList.add('error-border');
-        isValid = false;
-    }
-
-    const numeroTelephone = telephone.value.replace(/\D/g, '');
-
-    if (!numeroTelephone || numeroTelephone.length !== 10) {
-        document.getElementById('telephoneError').innerText = 'Numéro invalide';
-        document.getElementById('telephoneError').style.display = 'block';
-        telephone.classList.add('error-border');
-        isValid = false;
-    }
-
-    if (!adresse.value) {
-        document.getElementById('adresseError').innerText = 'Adresse est requise';
-        document.getElementById('adresseError').style.display = 'block';
-        adresse.classList.add('error-border');
-        isValid = false;
-    }
-
-    if (!motdepasse.value || motdepasse.value.length < 8) {
-        document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
-        document.getElementById('motdepasseError').style.display = 'block';
-        motdepasse.classList.add('error-border');
-        isValid = false;
-    }
-
-    if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
-        document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
-        document.getElementById('confirmerMotPasseError').style.display = 'block';
-        confirmerMotPasse.classList.add('error-border');
-        isValid = false;
-    }
-
-    // Soumettre le formulaire si la validation est réussie
-    if (isValid) {
-        // Vérifier si l'email existe déjà
-        const emailExists = await checkEmailExists(courriel.value);
-        if (emailExists) {
-            document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
+        if (!courriel.value || !validateEmail(courriel.value)) {
+            document.getElementById('courrielError').innerText = 'Courriel invalide';
             document.getElementById('courrielError').style.display = 'block';
             courriel.classList.add('error-border');
-        } else {
-            this.submit();
-            document.getElementById('userFullName').innerText = prenom + " " + nom;
-            // Après une connexion réussie
-            sessionStorage.setItem('userFullName', prenom + " " + nom);
-            gestionDeconnexion(); // Activer le bouton de déconnexion
+            isValid = false;
         }
-    }
-});
 
-// Fonction pour valider un courriel
-function validateEmail(email) {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-}
+        const numeroTelephone = telephone.value.replace(/\D/g, '');
 
-// Fonction pour vérifier si l'email existe déjà
-async function checkEmailExists(email) {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    resolve(response.exists);
-                } else {
-                    reject(xhr.statusText);
-                }
+        if (!numeroTelephone || numeroTelephone.length !== 10) {
+            document.getElementById('telephoneError').innerText = 'Numéro invalide';
+            document.getElementById('telephoneError').style.display = 'block';
+            telephone.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!adresse.value) {
+            document.getElementById('adresseError').innerText = 'Adresse est requise';
+            document.getElementById('adresseError').style.display = 'block';
+            adresse.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!motdepasse.value || motdepasse.value.length < 8) {
+            document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
+            document.getElementById('motdepasseError').style.display = 'block';
+            motdepasse.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!confirmerMotPasse.value || confirmerMotPasse.value !== motdepasse.value) {
+            document.getElementById('confirmerMotPasseError').innerText = 'Les mots de passe ne correspondent pas';
+            document.getElementById('confirmerMotPasseError').style.display = 'block';
+            confirmerMotPasse.classList.add('error-border');
+            isValid = false;
+        }
+
+        // Soumettre le formulaire si la validation est réussie
+        if (isValid) {
+            // Vérifier si l'email existe déjà
+            const emailExists = await checkEmailExists(courriel.value);
+            if (emailExists) {
+                document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
+                document.getElementById('courrielError').style.display = 'block';
+                courriel.classList.add('error-border');
+            } else {
+                this.submit();
+                document.getElementById('userFullName').innerText = prenom + " " + nom;
+                // Après une connexion réussie
+                sessionStorage.setItem('userFullName', prenom + " " + nom);
+                sessionStorage.setItem('userNom', nom);
+                sessionStorage.setItem('userPrenom', prenom);
+                sessionStorage.setItem('userCourriel', courriel.value);
+                sessionStorage.setItem('userTelephone', telephone.value);
+                sessionStorage.setItem('userAdresse', adresse.value);
+                sessionStorage.setItem('userMotDePasse', motdepasse.value);
+                gestionDeconnexion(); // Activer le bouton de déconnexion
             }
-        };
-        xhr.open('POST', '/checkEmailExists');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({ email: email }));
+        }
     });
-}
 
- </script>
- 
+    // Fonction pour valider un courriel
+    function validateEmail(email) {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    // Fonction pour vérifier si l'email existe déjà
+    async function checkEmailExists(email) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve(response.exists);
+                    } else {
+                        reject(xhr.statusText);
+                    }
+                }
+            };
+            xhr.open('POST', '/checkEmailExists');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({ email: email }));
+        });
+    }
+
+</script>

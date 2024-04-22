@@ -165,7 +165,7 @@ app.post('/connexion/submit_connexion', async (req, res) => {
     try {
         const { courriel, motDePasse } = req.body;
 
-        const sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE BINARY email = ?";
+        const sql = "SELECT email, motdepasse, nom, telephone, adresse, prenom FROM utilisateurs WHERE BINARY email = ?";
         con.query(sql, [courriel], async (err, result) => {
             if (err) {
                 console.error('Erreur lors de la requête SQL:', err);
@@ -180,8 +180,8 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
                 if (passwordMatch) {
-                    const { nom, prenom } = result[0];
-                    return res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
+                    const { nom, prenom, email, telephone, adresse, motdepasse} = result[0];
+                    return res.json({ exists: true, nom, prenom, email, telephone, adresse, motdepasse}); // Changer "success" en "exists"
                 }
             }
 
@@ -337,14 +337,39 @@ app.get('/pages/index', async (req, res) => {
 });
 
 app.get('/pages/profile', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, results) {
-        if (err) throw err;
-        res.render('pages/profile', {  // Update path here to 'profile'
+    const sql = "SELECT * FROM utilisateurs";
+    con.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des informations des utilisateurs:', err);
+            return res.status(500).send('Erreur serveur lors de la récupération des informations des utilisateurs');
+        }
+        // Assurez-vous que `results` est correctement défini avant d'accéder à ses propriétés
+        res.render('pages/profile', {
             pageTitle: "Concessionnaire Rubious",
             items: results
         });
     });
 });
+app.post('/profil/submit_profil', (req, res) => {
+    let prenom = req.body.userPrenom;
+    let nom = req.body.nom1;
+    let courriel = req.body.courriel;
+    let telephone = req.body.telephone;
+    let motdePasse = req.body.motDePasse;
+    let adresse = req.body.adresse;
+    const sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ?";
+    
+    con.query(sql, [nom, prenom, courriel, telephone, adresse, motdePasse], (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la mise à jour du profil :', err);
+            return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+        }
+        res.redirect('pages/connexion')
+    });
+});
+
+
+
 
 
 app.get('/pages/catalogue', (req, res) => {

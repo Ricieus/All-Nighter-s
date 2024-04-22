@@ -47,6 +47,7 @@
 </style>
 <br>
 <br>
+<br>
 <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
         <div class="col-md-3">
@@ -54,7 +55,7 @@
                 <img width="200px" src="../images/Concessionnaire_Rubious-removebg-preview.png" alt="Logo">
             </div>
             <div class="d-flex align-items-center mt-5 h-50 justify-content-center">
-                <h5 class="text-black-50">Bonjour...</h5>
+                <h3 class="text-black-50" id="messageBonjour"></h3>
             </div>
         </div>
         <div class="col-md-5">
@@ -63,14 +64,15 @@
                     <h4 class="text-right">Votre Profil</h4>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-md-6">
-                        <label for="nom" class="labels">Nom</label>
-                        <input id="nom" type="text" class="form-control" placeholder="Nom">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="prenom" class="labels">Prénom</label>
-                        <input id="prenom" type="text" class="form-control" placeholder="Prénom">
-                    </div>
+                    <form action="/profil/submit_profil" method="post" id="profilForm">
+                        <div class="col-md-6">
+                            <label for="nom" class="labels">Nom</label>
+                            <input id="nom" type="text" class="form-control" placeholder="Nom">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="prenom" class="labels">Prénom</label>
+                            <input id="prenom" type="text" class="form-control" placeholder="Prénom">
+                        </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
@@ -79,25 +81,62 @@
                     </div>
                     <div class="col-md-12">
                         <label for="telephone" class="labels">Téléphone</label>
-                        <input id="telephone" type="text" class="form-control" placeholder="Entrez votre numéro de téléphone">
+                        <input id="telephone" type="text" class="form-control"
+                            placeholder="Entrez votre numéro de téléphone">
                     </div>
                     <div class="col-md-12">
                         <label for="adresse" class="labels">Adresse</label>
                         <input id="adresse" type="text" class="form-control" placeholder="Entrez votre adresse">
                     </div>
                     <div class="col-md-12">
-                        <label for="codePostal" class="labels">Code postal</label>
-                        <input id="codePostal" type="text" class="form-control" placeholder="Entrez votre code postal">
-                    </div>
-                    <div class="col-md-12">
                         <label for="motDePasse" class="labels">Mot de passe</label>
-                        <input id="motDePasse" type="password" class="form-control" placeholder="Entrez votre mot de passe">
+                        <input id="motDePasse" type="password" class="form-control"
+                            placeholder="Entrez votre mot de passe">
+                        <div class="checkbox">
+                            <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
+                            <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <button class="btn btn-primary profile-button" type="button">Enregistrer</button>
+                    <button class="btn btn-primary profile-button" type="submit">Enregistrer</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userNom = sessionStorage.getItem('userNom');
+        const userPrenom = sessionStorage.getItem('userPrenom');
+        const userCourriel = sessionStorage.getItem('userCourriel');
+        const userTelephone = sessionStorage.getItem('userTelephone');
+        const userAdresse = sessionStorage.getItem('userAdresse');
+        const userMotDePasse = sessionStorage.getItem('userMotDePasse');
+
+        const prenom = document.getElementById('prenom').value;
+        const nom = document.getElementById('nom').value;
+        const courriel = document.getElementById('courriel').value;
+        const telephone = document.getElementById('telephone').value;
+        const adresse = document.getElementById('adresse').value;
+        const motdePasse = document.getElementById('motDePasse').value;
+        console.log(userMotDePasse);
+        document.getElementById('nom').value = userNom;
+        document.getElementById('prenom').value = userPrenom;
+        document.getElementById('courriel').value = userCourriel;
+        document.getElementById('telephone').value = userTelephone;
+        document.getElementById('adresse').value = userAdresse;
+        document.getElementById('motDePasse').value = userMotDePasse;
+        document.getElementById('messageBonjour').innerText = "Bonjour \n" + userPrenom + " " + userNom + "!";
+    });
+
+    function afficherMotDePasse() {
+        var x = document.getElementById("motDePasse");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+</script>
