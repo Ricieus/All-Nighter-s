@@ -44,6 +44,14 @@
         cursor: pointer;
         border: solid 1px #6f84d7
     }
+
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+        /* Les messages d'erreur sont cachés par défaut */
+    }
 </style>
 <br>
 <br>
@@ -68,10 +76,12 @@
                         <div class="col-md-6">
                             <label for="nom">Nom</label>
                             <input id="nom" type="text" class="form-control" placeholder="Nom" name="nom">
+                            <div id="nomError" class="error-message"></div>
                         </div>
                         <div class="col-md-6">
                             <label for="prenom">Prénom</label>
                             <input id="prenom" type="text" class="form-control" placeholder="Prénom" name="prenom">
+                            <div id="prenomError" class="error-message"></div>
                         </div>
                 </div>
                 <div class="row mt-3">
@@ -79,24 +89,28 @@
                         <label for="courriel">Courriel</label>
                         <input id="courriel" type="text" class="form-control" placeholder="Entrez votre courriel"
                             name="courriel">
+                        <div id="courrielError" class="error-message"></div>
                     </div>
                     <div class="col-md-12">
                         <label for="telephone">Téléphone</label>
                         <input id="telephone" type="tel" class="form-control"
                             placeholder="Entrez votre numéro de téléphone" name="telephone">
+                        <div id="telephoneError" class="error-message"></div>
                     </div>
                     <div class="col-md-12">
                         <label for="adresse">Adresse</label>
                         <input id="adresse" type="text" class="form-control" placeholder="Entrez votre adresse"
                             name="adresse">
+                        <div id="adresseError" class="error-message"></div>
                     </div>
                     <div class="col-md-12">
                         <label for="motDePasse">Mot de passe</label>
                         <input id="motDePasse" type="password" class="form-control"
                             placeholder="Entrez votre mot de passe" name="motDePasse">
+                        <div id="motdepasseError" class="error-message"></div>
                         <div class="checkbox">
                             <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                            <label for="showPasswordCheckbox" class="label" >Afficher mot de passe</label>
+                            <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
                         </div>
                     </div>
                 </div>
@@ -107,7 +121,7 @@
 
                 <input id="userId" type="hidden" class="form-control" placeholder="Entrez votre mot de passe"
                     name="userId1">
-                    <p id="userFullName"></p>
+                <p id="userFullName"></p>
                 </form>
             </div>
         </div>
@@ -133,34 +147,7 @@
         document.getElementById('userId').value = userId;
         document.getElementById('messageBonjour').innerText = "Bonjour \n" + userPrenom + " " + userNom + "!";
 
-        document.getElementById("profilForm").addEventListener("submit", function (event) {
-
-        // Mettre à jour les valeurs dans sessionStorage
-        sessionStorage.setItem('userNom', document.getElementById('nom').value);
-        sessionStorage.setItem('userPrenom', document.getElementById('prenom').value);
-        sessionStorage.setItem('userFullName',document.getElementById('prenom').value + " " + document.getElementById('nom').value);
-        sessionStorage.setItem('userCourriel', document.getElementById('courriel').value);
-        sessionStorage.setItem('userTelephone', document.getElementById('telephone').value);
-        sessionStorage.setItem('userAdresse', document.getElementById('adresse').value);
-        sessionStorage.setItem('userMotDePasse', document.getElementById('motDePasse').value);
-        sessionStorage.setItem('userId', document.getElementById('userId').value);
-        const newPrenom = document.getElementById('prenom').value;
-        const newNom = document.getElementById('nom').value;
-        const newCourriel = document.getElementById('courriel').value;
-        const newTelephone = document.getElementById('telephone').value;
-        const newAdresse = document.getElementById('adresse').value;
-        const newMotDePasse = document.getElementById('motDePasse').value;
-        if (newPrenom === '' || newNom === '' || newCourriel === '' || newTelephone === '' || newAdresse === '' || newMotDePasse === '') {
-            alert('Veuillez remplir tous les champs.');
-            return; // Arrêter la soumission du formulaire si des champs sont vides
-        }
-        // Recharger la page pour afficher les nouvelles informations
-        location.reload();
-    
-    
     });
-
-});
     function afficherMotDePasse() {
         var x = document.getElementById("motDePasse");
         if (x.type === "password") {
@@ -168,5 +155,122 @@
         } else {
             x.type = "password";
         }
+    }
+
+
+    document.getElementById('profilForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // Empêcher la soumission par défaut du formulaire
+        // Récupérer les valeurs des champs
+        const prenom = document.getElementById('prenom').value;
+        const nom = document.getElementById('nom').value;
+        const courriel = document.getElementById('courriel');
+        const telephone = document.getElementById('telephone');
+        const adresse = document.getElementById('adresse');
+        const motdepasse = document.getElementById('motDePasse');
+
+        // Réinitialiser les messages d'erreur et les bordures
+        document.querySelectorAll('.error-message').forEach(function (element) {
+            element.style.display = 'none';
+        });
+        document.querySelectorAll('.form-control').forEach(function (element) {
+            element.classList.remove('error-border');
+        });
+
+        // Vérifier la validation
+        let isValid = true;
+
+        if (!prenom) {
+            document.getElementById('prenomError').innerText = 'Prénom est requis';
+            document.getElementById('prenomError').style.display = 'block';
+            document.getElementById('prenom').classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!nom) {
+            document.getElementById('nomError').innerText = 'Nom de Famille est requis';
+            document.getElementById('nomError').style.display = 'block';
+            document.getElementById('nom').classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!courriel.value || !validateEmail(courriel.value)) {
+            document.getElementById('courrielError').innerText = 'Courriel invalide';
+            document.getElementById('courrielError').style.display = 'block';
+            courriel.classList.add('error-border');
+            isValid = false;
+        }
+
+        const numeroTelephone = telephone.value.replace(/\D/g, '');
+
+        if (!numeroTelephone || numeroTelephone.length !== 10) {
+            document.getElementById('telephoneError').innerText = 'Numéro invalide';
+            document.getElementById('telephoneError').style.display = 'block';
+            telephone.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!adresse.value) {
+            document.getElementById('adresseError').innerText = 'Adresse est requise';
+            document.getElementById('adresseError').style.display = 'block';
+            adresse.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (!motdepasse.value || motdepasse.value.length < 8) {
+            document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
+            document.getElementById('motdepasseError').style.display = 'block';
+            motdepasse.classList.add('error-border');
+            isValid = false;
+        }
+        // Soumettre le formulaire si la validation est réussie
+        if (isValid) {
+            // Vérifier si l'email existe déjà
+            const emailExists = await checkEmailExists(courriel.value);
+
+            if (emailExists || courriel.value != sessionStorage.getItem('userCourriel')) {
+                document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
+                document.getElementById('courrielError').style.display = 'block';
+                courriel.classList.add('error-border');
+            } else {
+                this.submit();
+                document.getElementById('userFullName').innerText = prenom + " " + nom;
+                // Après une connexion réussie
+                sessionStorage.setItem('userFullName', prenom + " " + nom);
+                sessionStorage.setItem('userNom', nom);
+                sessionStorage.setItem('userPrenom', prenom);
+                sessionStorage.setItem('userCourriel', courriel.value);
+                sessionStorage.setItem('userTelephone', telephone.value);
+                sessionStorage.setItem('userAdresse', adresse.value);
+                sessionStorage.setItem('userMotDePasse', motdepasse.value);
+                gestionDeconnexion(); // Activer le bouton de déconnexion
+            }
+        }
+    });
+
+    // Fonction pour valider un courriel
+    function validateEmail(email) {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    // Fonction pour vérifier si l'email existe déjà
+    async function checkEmailExists(email) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve(response.exists);
+                    } else {
+
+                        reject(xhr.statusText);
+                    }
+                }
+            };
+            xhr.open('POST', '/checkEmailExists1');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({ email: email }));
+        });
     }
 </script>

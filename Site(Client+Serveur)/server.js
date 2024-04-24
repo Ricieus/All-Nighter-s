@@ -215,6 +215,21 @@ app.post('/checkEmailExists', (req, res) => {
         }
     });
 });
+app.post('/checkEmailExists1', (req, res) => {
+    const email1 = req.body.courriel;
+    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
+    con.query(checkEmailQuery, [email1], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
+        }
+        if (result.length > 0) {
+            return res.json({ exists: true });
+        } else {
+            return res.json({ exists: false });
+        }
+    });
+});
 
 // Endpoint pour gérer l'inscription
 app.post('/inscription/submit_inscription', async (req, res) => {
