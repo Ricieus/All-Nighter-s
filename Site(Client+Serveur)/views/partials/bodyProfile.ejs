@@ -64,72 +64,103 @@
                     <h4 class="text-right">Votre Profil</h4>
                 </div>
                 <div class="row mt-2">
-                    <form action="/profil/submit_profil" method="post" id="profilForm">
+                    <form action="/profile/submit_profil" method="post" id="profilForm">
                         <div class="col-md-6">
-                            <label for="nom" class="labels">Nom</label>
-                            <input id="nom" type="text" class="form-control" placeholder="Nom">
+                            <label for="nom">Nom</label>
+                            <input id="nom" type="text" class="form-control" placeholder="Nom" name="nom">
                         </div>
                         <div class="col-md-6">
-                            <label for="prenom" class="labels">Prénom</label>
-                            <input id="prenom" type="text" class="form-control" placeholder="Prénom">
+                            <label for="prenom">Prénom</label>
+                            <input id="prenom" type="text" class="form-control" placeholder="Prénom" name="prenom">
                         </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12">
-                        <label for="courriel" class="labels">Courriel</label>
-                        <input id="courriel" type="text" class="form-control" placeholder="Entrez votre courriel">
+                        <label for="courriel">Courriel</label>
+                        <input id="courriel" type="text" class="form-control" placeholder="Entrez votre courriel"
+                            name="courriel">
                     </div>
                     <div class="col-md-12">
-                        <label for="telephone" class="labels">Téléphone</label>
-                        <input id="telephone" type="text" class="form-control"
-                            placeholder="Entrez votre numéro de téléphone">
+                        <label for="telephone">Téléphone</label>
+                        <input id="telephone" type="tel" class="form-control"
+                            placeholder="Entrez votre numéro de téléphone" name="telephone">
                     </div>
                     <div class="col-md-12">
-                        <label for="adresse" class="labels">Adresse</label>
-                        <input id="adresse" type="text" class="form-control" placeholder="Entrez votre adresse">
+                        <label for="adresse">Adresse</label>
+                        <input id="adresse" type="text" class="form-control" placeholder="Entrez votre adresse"
+                            name="adresse">
                     </div>
                     <div class="col-md-12">
-                        <label for="motDePasse" class="labels">Mot de passe</label>
+                        <label for="motDePasse">Mot de passe</label>
                         <input id="motDePasse" type="password" class="form-control"
-                            placeholder="Entrez votre mot de passe">
+                            placeholder="Entrez votre mot de passe" name="motDePasse">
                         <div class="checkbox">
                             <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                            <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                            <label for="showPasswordCheckbox" class="label" >Afficher mot de passe</label>
                         </div>
                     </div>
                 </div>
+
                 <div class="mt-5 text-center">
                     <button class="btn btn-primary profile-button" type="submit">Enregistrer</button>
                 </div>
+
+                <input id="userId" type="hidden" class="form-control" placeholder="Entrez votre mot de passe"
+                    name="userId1">
+                    <p id="userFullName"></p>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         const userNom = sessionStorage.getItem('userNom');
         const userPrenom = sessionStorage.getItem('userPrenom');
         const userCourriel = sessionStorage.getItem('userCourriel');
         const userTelephone = sessionStorage.getItem('userTelephone');
         const userAdresse = sessionStorage.getItem('userAdresse');
         const userMotDePasse = sessionStorage.getItem('userMotDePasse');
-
-        const prenom = document.getElementById('prenom').value;
-        const nom = document.getElementById('nom').value;
-        const courriel = document.getElementById('courriel').value;
-        const telephone = document.getElementById('telephone').value;
-        const adresse = document.getElementById('adresse').value;
-        const motdePasse = document.getElementById('motDePasse').value;
-        console.log(userMotDePasse);
+        const userId = sessionStorage.getItem('userId');
+        const fullName = sessionStorage.getItem('userFullName');
         document.getElementById('nom').value = userNom;
         document.getElementById('prenom').value = userPrenom;
         document.getElementById('courriel').value = userCourriel;
         document.getElementById('telephone').value = userTelephone;
         document.getElementById('adresse').value = userAdresse;
         document.getElementById('motDePasse').value = userMotDePasse;
+        document.getElementById('userId').value = userId;
         document.getElementById('messageBonjour').innerText = "Bonjour \n" + userPrenom + " " + userNom + "!";
+
+        document.getElementById("profilForm").addEventListener("submit", function (event) {
+
+        // Mettre à jour les valeurs dans sessionStorage
+        sessionStorage.setItem('userNom', document.getElementById('nom').value);
+        sessionStorage.setItem('userPrenom', document.getElementById('prenom').value);
+        sessionStorage.setItem('userFullName',document.getElementById('prenom').value + " " + document.getElementById('nom').value);
+        sessionStorage.setItem('userCourriel', document.getElementById('courriel').value);
+        sessionStorage.setItem('userTelephone', document.getElementById('telephone').value);
+        sessionStorage.setItem('userAdresse', document.getElementById('adresse').value);
+        sessionStorage.setItem('userMotDePasse', document.getElementById('motDePasse').value);
+        sessionStorage.setItem('userId', document.getElementById('userId').value);
+        const newPrenom = document.getElementById('prenom').value;
+        const newNom = document.getElementById('nom').value;
+        const newCourriel = document.getElementById('courriel').value;
+        const newTelephone = document.getElementById('telephone').value;
+        const newAdresse = document.getElementById('adresse').value;
+        const newMotDePasse = document.getElementById('motDePasse').value;
+        if (newPrenom === '' || newNom === '' || newCourriel === '' || newTelephone === '' || newAdresse === '' || newMotDePasse === '') {
+            alert('Veuillez remplir tous les champs.');
+            return; // Arrêter la soumission du formulaire si des champs sont vides
+        }
+        // Recharger la page pour afficher les nouvelles informations
+        location.reload();
+    
+    
     });
 
+});
     function afficherMotDePasse() {
         var x = document.getElementById("motDePasse");
         if (x.type === "password") {
@@ -138,5 +169,4 @@
             x.type = "password";
         }
     }
-
 </script>

@@ -165,7 +165,7 @@ app.post('/connexion/submit_connexion', async (req, res) => {
     try {
         const { courriel, motDePasse } = req.body;
 
-        const sql = "SELECT email, motdepasse, nom, telephone, adresse, prenom FROM utilisateurs WHERE BINARY email = ?";
+        const sql = "SELECT email, motdepasse, nom, telephone, adresse, prenom, id_utilisateurs FROM utilisateurs WHERE BINARY email = ?";
         con.query(sql, [courriel], async (err, result) => {
             if (err) {
                 console.error('Erreur lors de la requête SQL:', err);
@@ -180,8 +180,8 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
                 if (passwordMatch) {
-                    const { nom, prenom, email, telephone, adresse, motdepasse} = result[0];
-                    return res.json({ exists: true, nom, prenom, email, telephone, adresse, motdepasse}); // Changer "success" en "exists"
+                    const { nom, prenom, email, telephone, adresse, motdepasse, id_utilisateurs } = result[0];
+                    return res.json({ exists: true, nom, prenom, email, telephone, adresse, motdepasse, id_utilisateurs }); // Changer "success" en "exists"
                 }
             }
 
@@ -350,21 +350,28 @@ app.get('/pages/profile', (req, res) => {
         });
     });
 });
-app.post('/profil/submit_profil', (req, res) => {
-    let prenom = req.body.userPrenom;
-    let nom = req.body.nom1;
+app.post('/profile/submit_profil', async (req, res) => {
+    // Récupérer les données du formulaire
+    let prenom = req.body.prenom;
+    let nom = req.body.nom;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
     let motdePasse = req.body.motDePasse;
     let adresse = req.body.adresse;
-    const sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ?";
-    
-    con.query(sql, [nom, prenom, courriel, telephone, adresse, motdePasse], (err, results) => {
+    let userId = req.body.userId1;
+    const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
+
+    // Construire la requête SQL pour la mise à jour du profil
+    var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+
+    // Exécuter la requête SQL avec les valeurs mises à jour
+    con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
         if (err) {
             console.error('Erreur lors de la mise à jour du profil :', err);
             return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
         }
-        res.redirect('pages/connexion')
+        // Redirection vers la page de profil après la mise à jour
+        res.redirect('/pages/profile');
     });
 });
 
