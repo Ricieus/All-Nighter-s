@@ -1,7 +1,8 @@
+-- Ce code permet de créer l'environnement de la base de données
 CREATE DATABASE AllNighter;
-use AllNighter;
--------------------------------------------
--------------------------------------------
+use AllNighter; -- Après la création de l'environnement, ce code permet d'accéder dans l'environnement
+-- Dans les prochanes lignes, veuillez copier et coller dans le terminal du docker les prochaines code un par un (séparer par un "---")
+------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE utilisateurs (
     id_utilisateurs INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -62,50 +63,3 @@ INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRen
 ('Alice', 'Smith', 'alice.smith@example.com', '1234567891', '2024-03-01', 'Je veux me plaindre', 1),
 ('Bob', 'Johnson', 'bob.johnson@example.com', '5149744492', '2024-03-02', 'Je veux réserver un essai routier', 2),
 ('Charlie', 'Brown', 'charlie.brown@example.com', '4508901284', '2024-03-03', 'Je veux laisser un commentaire', 1);
-
-
-----------------------------------------------------------------------------------------------------------------------------------
- CREATE TABLE stock (
-    id_stock INT NOT NULL PRIMARY KEY,
-    voitureRestante INT NOT NULL,
-    voitures_id_voiture INT NOT NULL,
-    FOREIGN KEY (voitures_id_voiture) REFERENCES voitures (id_voiture)
-);
-INSERT INTO stock (id_stock, voitureRestante, voitures_id_voiture)
-VALUES 
-(1, 5, 1),
-(2, 8, 2),
-(3, 3, 3);
--------------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE commande ( 
-    id_commande INT AUTO_INCREMENT PRIMARY KEY,
-     dateLivraison DATE NOT NULL, 
-     voitures_id_voiture INT NOT NULL, 
-     paiement_id_paiement INT NOT NULL,
-     FOREIGN KEY (voitures_id_voiture) REFERENCES voitures (id_voiture)
-     );
-
-     INSERT INTO commande (dateLivraison, voitures_id_voiture, paiement_id_paiement) VALUES
-     ('2024-02-21', 1, 1),
-     ('2024-02-22', 2, 2),
-     ('2024-02-23', 3, 3);
--------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE paiement (
-    id_paiement  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    commande_id_commande INT NOT NULL,
-     typePaiement  VARCHAR(200) NOT NULL,
-     typeFinancement VARCHAR(200) NOT NULL,
-    prixTotal INT NOT NULL
-     );
-     INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (2, 'PayPal', 'Hebdomadaire', 125);
-     INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (1, 'Visa', 'Mensuel', 825);
-     INSERT INTO paiement (commande_id_commande, typePaiement, typeFinancement, prixTotal) VALUES (3, 'Mastercard', 'Bi-Hebdomadaire', 227);
------------------------------------------------------------------------------------------------------------------------------------------------------
-ALTER TABLE commande
-ADD CONSTRAINT fk_commande_paiement
-FOREIGN KEY (paiement_id_paiement) REFERENCES paiement(id_paiement);
------------------------------------------------------------------------------------------
-ALTER TABLE paiement
-ADD CONSTRAINT fk_paiement_commande
-FOREIGN KEY (commande_id_commande) REFERENCES commande(id_commande);
