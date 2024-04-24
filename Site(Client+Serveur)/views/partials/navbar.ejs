@@ -35,19 +35,19 @@
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown dropstart">
-            <button class="btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+            <button class="btn" type="button" id="dropdownMenuButton" aria-expanded="false"
                 style="background: transparent; width: 4rem; border: transparent">
                 <img src="/images/icons8-male-user.gif" alt="icone utilisateur" class="w-100 h-100"
                     style="display: flex; border-radius: 100%;">
                 <span id="userFullName">Profil</span>
             </button>
             <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="/profile">Profil</a></li>
+                <li><a class="dropdown-item" id="btnProfil" href="/pages/profile">Profil</a></li>
                 <li class="text-start"> <!-- Ajoute la classe text-start pour aligner à gauche -->
                     <a href="/pages/connexion" class="dropdown-item" id="connexionBtn">Connexion</a>
                 </li>
                 <li>
-                    <button id="deconnexionBtn" class="dropdown-item" disabled>Déconnexion</button>
+                    <button id="deconnexionBtn" class="dropdown-item">Déconnexion</button>
                 </li>
             </ul>
         </li>
@@ -61,6 +61,7 @@
     .dropstart:hover>.dropdown-menu {
         display: block;
         margin-top: 0;
+        right: 0;
     }
 </style>
 
@@ -79,27 +80,23 @@
         const userFullName = sessionStorage.getItem('userFullName');
         const btnDeconnexion = document.getElementById('deconnexionBtn');
         const connexionBtn = document.getElementById('connexionBtn');
+        const btnProfil = document.getElementById('btnProfil');
 
         if (userFullName) {
             document.getElementById('userFullName').innerText = userFullName;
-            btnDeconnexion.disabled = false; // Activer le bouton de déconnexion
+            btnDeconnexion.style.display = 'block'; // Activer le bouton de déconnexion
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
+            btnProfil.style.display = 'block'; // Activer le bouton de profil
         } else {
             document.getElementById('userFullName').innerText = ''; // Effacer le nom d'utilisateur affiché
-            btnDeconnexion.disabled = true; // Désactiver le bouton de déconnexion
+            btnDeconnexion.style.display = 'none'; // Désactiver le bouton de déconnexion
             connexionBtn.style.display = 'block'; // Afficher le bouton de connexion
+            btnProfil.style.display = 'none'; // Désactiver le bouton de profil
         }
     }
 
     document.addEventListener('DOMContentLoaded', function () {
         gestionDeconnexion();
-
-        document.getElementById('dropdownMenuButton').addEventListener('click', function () {
-            const dropdownMenu = document.getElementById('dropdownMenu');
-            dropdownMenu.classList.toggle('show');
-            const isDropdownVisible = dropdownMenu.classList.contains('show');
-            document.getElementById('deconnexionBtn').disabled = !isDropdownVisible;
-        });
 
         document.getElementById('deconnexionBtn').addEventListener('click', function () {
             sessionStorage.removeItem('userFullName');
