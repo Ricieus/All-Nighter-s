@@ -21,13 +21,12 @@
     flex-grow: 1;
   }
 
-  /* Styliser les liens de navigation */
-  .nav-link {
+  .sidebar .nav-link {
     color: #fff;
     transition: color 0.3s;
   }
 
-  .nav-link:hover {
+  .sidebar .nav-link:hover {
     color: #ffc107;
   }
 </style>
@@ -38,28 +37,26 @@
       <div class="col-lg-3 sidebar">
         <h3>Menu</h3>
         <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Bootstrap</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Customers</a></li>
+          <li class="nav-item"><a class="nav-link">Gestion clients</a></li>
+          <li class="nav-item"><a class="nav-link">Produits</a></li>
+          <li class="nav-item"><a class="nav-link">Commandes</a></li>
         </ul>
         <hr>
         <div class="dropdown">
           <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">Admin</a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#">New project...</a>
             <a class="dropdown-item" href="#">Settings</a>
             <a class="dropdown-item" href="#">Profile</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">Sign out</a>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="col-lg-9 content-area">
         <h1>Administrateur</h1>
+        
         <h2>Ajouter une voiture</h2>
         <form id="addCarForm" action="" method="POST">
           <div class="form-group">
@@ -86,8 +83,10 @@
             <label for="imageInput">Image</label><br>
             <input type="file" id="imageInput" name="image" accept="image/*" required>
           </div>
+          <br> <!-- A changer apres  -->
           <button type="submit" class="btn btn-primary">Ajouter un voiture</button>
         </form>
+        <br> <!-- A changer apres  -->
         <h2>Liste de voitures</h2>
         <hr>
         <ul id="carListe" class="list-group">
