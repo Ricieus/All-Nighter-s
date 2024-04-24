@@ -487,6 +487,27 @@ app.post('/create-checkout-session', async (req, res) => {
         //     });
         // }
 
+        let currentDate = new Date();
+
+        let twoWeeksLater = new Date(currentDate.getTime() + (2 * 7 * 24 * 60 * 60 * 1000));
+
+        let formattedDate = twoWeeksLater.toISOString().split('T')[0];
+
+        let database = client.db('AllNighter');
+        let collection = database.collection('commandeVoiture');
+
+
+
+        // try {
+        //     let resultCollection = await collection.insertOne({
+        //         nom: `'${product.name}'`,
+        //         prix: `'${prix.unit_amount}'`,
+        //         date: `'${formattedDate}'`
+        //     });
+        // } catch (error) {
+        //     console.error('Error inserting document:', error);
+        // }
+
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
@@ -497,7 +518,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/pages/commande`,
+            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount}&date=${formattedDate}`,
             automatic_tax: { enabled: true },
         });
 
@@ -506,15 +527,6 @@ app.post('/create-checkout-session', async (req, res) => {
         console.error('Error creating checkout session:', error);
         res.status(500).json({ error: 'Failed to create checkout session' });
     }
-});
-
-app.get('/session-status', async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-
-    res.send({
-        status: session.status,
-        customer_email: session.customer_details.email
-    });
 });
 
 app.get('/pages/administrateur', (req, res) => {
