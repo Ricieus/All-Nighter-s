@@ -47,7 +47,7 @@ export async function executeOperations() {
                 "pneus_bougent": "FWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "toyota_corrola.jpg",
+                    "toyota_corolla.png",
                     "toyota_corolla_2021_ext-cote.png",
                     "toyota_corolla_2021_ext-der.png",
                     "toyota_corolla_2021_int.jpg"
@@ -65,8 +65,8 @@ export async function executeOperations() {
                 "tauxInteret": 6.99,
                 "images": [
                     "honda_civic.avif",
-                    "honda_civic_2022_ext-cote.jpg",
-                    "honda_civic_2022_ext-der.jpg",
+                    "honda_civic_2022_ext-cote.avif",
+                    "honda_civic_2022_ext-der.avif",
                     "honda_civic_2022_int.webp"
                 ]
             },
@@ -81,10 +81,10 @@ export async function executeOperations() {
                 "pneus_bougent": "FWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "honda_CRV.jpg",
+                    "honda_CRV.avif",
                     "honda_crv_2023_ext-cote.avif",
                     "honda_crv_2023_ext-der.avif",
-                    "honda_crv_2023_int.png"
+                    "honda_crv_2023_int.jpg"
                 ]
             },
             {
@@ -98,7 +98,7 @@ export async function executeOperations() {
                 "pneus_bougent": "FWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "teslaS.jpg",
+                    "teslaS.jpeg",
                     "tesla_model_s_2021_ext-cote.jpeg",
                     "tesla_model_s_2021_ext-der.jpeg",
                     "tesla_model_s_2021_int.jpeg"
@@ -115,7 +115,7 @@ export async function executeOperations() {
                 "pneus_bougent": "RWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "Tesla3.jpg",
+                    "Tesla3.jpeg",
                     "tesla_model_3_2022_ext-cote.jpeg",
                     "tesla_model_3_2022_ext-der.jpeg",
                     "tesla_model_3_2022_int.jpeg"
@@ -132,7 +132,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "teslaX.jpg",
+                    "teslaX.jpeg",
                     "tesla_model_x_2022_ext-cote.jpeg",
                     "tesla_model_x_2022_ext-der.jpeg",
                     "tesla_model_x_2022_int.jpeg"
@@ -150,7 +150,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "teslaY.jpg",
+                    "teslaY.jpeg",
                     "tesla_model_y_2023_ext-cote.jpeg",
                     "tesla_model_y_2023_ext-der.jpeg",
                     "tesla_model_y_2023_int.jpeg"
@@ -169,7 +169,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "chevSilver.jpg",
+                    "chevSilver.avif",
                     "chevrolet_silverado_2021_ext-cote.avif",
                     "chevrolet_silverado_2021_ext-der.avif",
                     "chevrolet_silverado_2021_int.avif"
@@ -186,7 +186,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "tahoeChev.jpg",
+                    "chevrolet-tahoe.avif",
                     "chevrolet_tahoe_2023_ext-cote.jpeg",
                     "chevrolet_tahoe_2023_ext-der.jpeg",
                     "chevrolet_tahoe_2023_int.avif"
@@ -203,10 +203,10 @@ export async function executeOperations() {
                 "pneus_bougent": "RWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "mustang.jpg",
-                    "ford_mustang_2021_ext-cote.jpg",
-                    "ford_mustang_2021_ext-der.avif",
-                    "ford_mustang_2021_int.avif"
+                    "mustang.png",
+                    "ford_mustang_2021_ext-cote.png",
+                    "ford_mustang_2021_ext-der.png",
+                    "ford_mustang_2021_int.webp"
                 ]
             },
             {
@@ -220,9 +220,9 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "f150.jpg",
-                    "ford_f150_2023_ext-cote.avif",
-                    "ford_f150_2023_ext-der.avif",
+                    "f150.png",
+                    "ford_f150_2023_ext-cote.png",
+                    "ford_f150_2023_ext-der.png",
                     "ford_f150_2023_int.avif"
                 ]
             },
@@ -237,7 +237,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "a4.jpg",
+                    "audi_a4.jpg",
                     "audi_a4_2021_ext-cote.jpg",
                     "audi_a4_2021_ext-der.jpg",
                     "audi_a4_2021_int.jpg"
@@ -254,9 +254,9 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "a7.jpg",
+                    "audi_a7.avif",
                     "audi_a7_2022_ext-cote.avif",
-                    "audi_a7_ext-der.avif",
+                    "audi_a7_2022_ext-der.avif",
                     "audi_a7_2022_int.jpg"
                 ]
             },
