@@ -236,10 +236,10 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "audi_a4.jpg",
-                    "audi_a4_2021_ext-cote.jpg",
-                    "audi_a4_2021_ext-der.jpg",
-                    "audi_a4_2021_int.jpg"
+                    "a4.jpeg",
+                    "audi_a4_2021_ext-cote.jpeg",
+                    "audi_a4_2021_ext-der.jpeg",
+                    "audi_a4_2021_int.jpeg"
                 ]
             },
             {
@@ -253,10 +253,10 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "audi_a7.avif",
-                    "audi_a7_2022_ext-cote.avif",
-                    "audi_a7_2022_ext-der.avif",
-                    "audi_a7_2022_int.jpg"
+                    "a7.jpeg",
+                    "audi_a7_2022_ext-cote.jpeg",
+                    "audi_a7_2022_ext-der.jpeg",
+                    "audi_a7_2022_int.jpeg"
                 ]
             },
             {
@@ -270,7 +270,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "bmw3.jpg",
+                    "bmw_3.png",
                     "bmw_3_2021_ext-cote.png",
                     "bmw_3_2021_ext-der.png",
                     "bmw_3_2021_int.jpg"
@@ -287,7 +287,7 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "bmw5.jpg",
+                    "bmw_5.png",
                     "bmw_5_2023_ext-cote.png",
                     "bmw_5_2023_ext-der.png",
                     "bmw_5_2023_int.jpg"
@@ -304,10 +304,10 @@ export async function executeOperations() {
                 "pneus_bougent": "AWD",
                 "tauxInteret": 6.99,
                 "images": [
-                    "a6.jpg",
-                    "audi_a6_2024_ext-cote.jpg",
-                    "audi_a6_2024_ext-der.jpg",
-                    "audi_a6_2024_int.jpg"
+                    "a6.jpeg",
+                    "audi_a6_2024_ext-cote.jpeg",
+                    "audi_a6_2024_ext-der.jpeg",
+                    "audi_a6_2024_int.jpeg"
                 ]
             }
 
