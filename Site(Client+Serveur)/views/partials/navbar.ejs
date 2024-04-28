@@ -107,6 +107,8 @@
         document.getElementById('userFullName').addEventListener('input', function () {
             const newName = document.getElementById('userFullName').innerText;
             sessionStorage.setItem('userFullName', newName);
+
+            location.reload();
         });
     });
 </script>

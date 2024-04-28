@@ -1,3 +1,4 @@
+@ -1,171 +1,174 @@
 <style>
     body {
         margin: 0;
@@ -79,6 +80,13 @@
                     </div>
                 </form>
                 <p id="userFullName" style="position: fixed; top: 10px; right: 10px;"></p>
+                <p id="userNom"></p>
+                <p id="userPrenom"></p>
+                <p id="userCourriel"></p>
+                <p id="userTelephone"></p>
+                <p id="userAdresse"></p>
+                <p id="userMotDePasse"></p>
+                <p id="userId"></p>
             </div>
         </div>
     </div>
@@ -120,9 +128,21 @@
                 if (data.exists) {
                     let nom = data.nom;
                     let prenom = data.prenom;
+                    let courriel = data.email;
+                    let telephone = data.telephone;
+                    let adresse = data.adresse;
+                    let mot_de_passe = data.motDePasse;
+                    let id1 = data.id_utilisateurs;
                     document.getElementById('userFullName').innerText = prenom + " " + nom;
                     // Après une connexion réussie
                     sessionStorage.setItem('userFullName', prenom + " " + nom);
+                    sessionStorage.setItem('userNom', nom);
+                    sessionStorage.setItem('userPrenom', prenom);
+                    sessionStorage.setItem('userCourriel', courriel);
+                    sessionStorage.setItem('userTelephone', telephone);
+                    sessionStorage.setItem('userAdresse', adresse);
+                    sessionStorage.setItem('userMotDePasse', motDePasse);
+                    sessionStorage.setItem('userId', id1);
                     gestionDeconnexion(); // Activer le bouton de déconnexion
                     window.location.href = '/pages/index';
                 }
