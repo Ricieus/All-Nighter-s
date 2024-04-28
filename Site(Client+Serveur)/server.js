@@ -533,6 +533,12 @@ app.post('/create-checkout-session', async (req, res) => {
         //     });
         // }
 
+        let currentDate = new Date();
+
+        let twoWeeksLater = new Date(currentDate.getTime() + (2 * 7 * 24 * 60 * 60 * 1000));
+
+        let formattedDate = twoWeeksLater.toISOString().split('T')[0];
+
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
@@ -543,7 +549,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/pages/commande`,
+            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount/100}&date=${formattedDate}`,
             automatic_tax: { enabled: true },
         });
 
@@ -554,15 +560,6 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.get('/session-status', async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-
-    res.send({
-        status: session.status,
-        customer_email: session.customer_details.email
-    });
-});
-
 app.get('/pages/administrateur', (req, res) => {
     con.query("SELECT * FROM voitures", function (err, result) {
         if (err) throw err;
@@ -571,6 +568,49 @@ app.get('/pages/administrateur', (req, res) => {
             items: result
         });
     });
+});
+
+app.post('/command', (req, res) => {
+    let uri = process.env.DB_URI;
+    let nomVoiture = req.body.nom;
+    let prixVoiture = req.body.prix;
+    let dateVoiture = req.body.date;
+    let utilisateurActive = req.body.user;
+
+    console.log(nomVoiture);
+    console.log(prixVoiture);
+    console.log(dateVoiture);
+    console.log(utilisateurActive);
+
+    const commandeInformation = {
+        nom: nomVoiture,
+        prix: prixVoiture,
+        date: dateVoiture,
+        utilisateur: utilisateurActive
+    };
+
+    try {
+        if (!client) {
+            client = connectToMongo(uri);
+        }
+
+        let database = client.db('AllNighter');
+        let collection = database.collection('voitureCommande');
+
+        collection.insertOne({ commandeInformation }, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
+
+    } catch (error) {
+        console.error("Error executing operations:", error);
+    } finally {
+        if (mongoClient) {
+            mongoClient.close(); // Close the MongoDB client
+            console.log("MongoDB connection closed.");
+        }
+    }
 });
 
 /*

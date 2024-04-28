@@ -55,10 +55,10 @@
                     <h4 class="centrerText2">Votre voiture est en mode de procédure.</h4>
                     <div class="d-flex flex-row mb-4 pb-2">
                         <div class="flex-fill">
-                            <h5 class="bold">Nom voiture</h5>
-                            <p>Prix: XXXXXX </p>
+                            <h5 class="bold" id="nom"></h5>
+                            <p id="prix"></p>
                             <h4>Autre détails</h4>
-                            <p>Date de livraison estimée: XX/XX/XXXX</p>
+                            <p id="date"></p>
                         </div>
                         <div>
                             <img src="../images/audirsq8.png" width="450">
@@ -114,24 +114,50 @@
     }
     setTimeout(changerDeCouleur, 7000);
 
+    function getQueryParams() {
+        var params = {};
+        var queryString = window.location.search.substring(1);
+        var pairs = queryString.split("&");
 
-    initialize();
+        for (var i = 0; i < pairs.length; i++) {
+            var pair = pairs[i].split("=");
+            params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        }
 
-async function initialize() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const sessionId = urlParams.get('session_id');
-  const response = await fetch(`/session-status?session_id=${sessionId}`);
-  const session = await response.json();
+        return params;
+    }
 
-  if (session.status == 'open') {
-    window.replace('http://localhost:4000/checkout.html')
-  } else if (session.status == 'complete') {
-    document.getElementById('success').classList.remove('hidden');
-    document.getElementById('customer-email').textContent = session.customer_email
-  }
-}
+    var queryParams = getQueryParams();
 
-
+    document.getElementById("nom").innerText = queryParams["produitNom"];
+    document.getElementById("prix").innerText = queryParams["price"];
+    document.getElementById("date").innerText = "Date de livraison estimée: " + queryParams["date"];
 </script>
+<script>
+    window.addEventListener('load', function() {
+        let nomVoiture = document.getElementById("nom").innerHTML;
+        let prixVoiture = document.getElementById("prix").innerHTML;
+        let dateVoiture = document.getElementById("date").innerHTML;
+        let nomUtilisateur = sessionStorage.getItem("userFullName");
 
+        fetch('/command', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nom: nomVoiture, prix: prixVoiture, date: dateVoiture, user: nomUtilisateur })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur de connection avec MongoDB');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erreur dans l`insertion : ', error);
+        });
+    });
+</script>
