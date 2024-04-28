@@ -13,159 +13,179 @@
         height: 30px;
         margin-right: 5%;
     }
+
+
+    #calculatriceContainer {
+        display: none;
+    }
 </style>
 
-<div class="content">
-    <div class="d-flex align-items-center justify-content-center mt-5">
-        <div class="container">
-            <div class="jumbotron p-5">
-                <div class="mb-5">
-                    <% carDetails.forEach(car=> { %>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
-                                <%= car.corps %>
+<body onload="afficherParDefaut()">
+    <div class="content">
+        <div class="d-flex align-items-center justify-content-center mt-5">
+            <div class="container">
+                <div class="jumbotron p-5">
+                    <div class="mb-5">
+                        <% carDetails.forEach(car=> { %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/car-silhouette.svg" alt="">
+                                    <%= car.corps %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/odometer.svg" alt="">
+                                    <%= car.moteur %>
+                                </div>
                             </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/odometer.svg" alt="">
-                                <%= car.moteur %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/fuel.svg" alt="">
+                                    <%= car.carburant %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/calendar.svg" alt="">
+                                    <%= car.annee %>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/fuel.svg" alt="">
-                                <%= car.carburant %>
+                            <div class="row">
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/transmission.svg" alt="">
+                                    <%= car.transmission %>
+                                </div>
+                                <div class="col">
+                                    <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
+                                    <%= car.pneus_bougent %>
+                                </div>
                             </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/calendar.svg" alt="">
-                                <%= car.annee %>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img class="imgIcons" src="../images/transmission.svg" alt="">
-                                <%= car.transmission %>
-                            </div>
-                            <div class="col">
-                                <img class="imgIcons" src="../images/steering-wheel.svg" alt="">
-                                <%= car.pneus_bougent %>
-                            </div>
-                        </div>
-                        <% }); %>
+                            <% }); %>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="boiteInformation">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <form id="loanCalc" action="/pages/paiement" method="GET" class="paymentCalc">
-                            <h3>Calculer votre financement par mois</h3>
-                            <div class="col-md-12">
-                                <% if (typeof carDetails !==undefined && typeof carInfo !==undefined) { %>
-                                    <% carInfo.forEach(info=> { %>
-                                        <div class="p-2 d-flex" hidden>
-                                            <div class="col-8">Voiture:</div>
-                                            <div class="ml-auto" id="marqueVoiture">
-                                                <%= info.marque %>
-                                                    <%= info.modele %>
-                                                        <%= info.annee %>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group ">
-                                                    <label for="prixDeVehicule">Prix du véhicule</label>
-                                                    <input type="number" class="form-control" id="prixDeVehicule"
-                                                        placeholder="Prix véhicule" value="<%= info.prix %>" readonly>
+            <div class="boiteInformation">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                                <button type="button" id="btnFinancer" class="btn btn-primary mt-2"
+                                    onclick="cacherCalculatrice(); cacherMessageFinancement(); cacherMontantCalculer();">Argent
+                                    Comptant</button>
+                                <button type="button" id="btnArgent" class="btn btn-primary mt-2"
+                                    onclick="afficherCalculatrice(); afficherMessageFinancer();">Financer</button>
+                                <h3 id="messageFinancement" style="display: none;">Calculer votre financement par mois
+                                </h3>
+                                <h3 id="messageArgentComptant" style="display: none;">Le prix de votre prix est: </h3>
+                                <div class="col-md-12">
+                                    <% if (typeof carDetails !==undefined && typeof carInfo !==undefined) { %>
+                                        <% carInfo.forEach(info=> { %>
+                                            <div class="p-2 d-flex" hidden>
+                                                <div class="col-8">Voiture:</div>
+                                                <div class="ml-auto" id="marqueVoiture">
+                                                    <%= info.marque %>
+                                                        <%= info.modele %>
+                                                            <%= info.annee %>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="tauxInteret">Taux d'intérêt</label>
-                                                    <input type="text" class="form-control" id="tauxInteret"
-                                                        value="6.99" readonly>
+                                            <div id="calculatriceContainer">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group ">
+                                                            <label for="prixDeVehicule">Prix du véhicule</label>
+                                                            <input type="number" class="form-control"
+                                                                id="prixDeVehicule" placeholder="Prix véhicule"
+                                                                value="<%= info.prix %>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="tauxInteret">Taux d'intérêt</label>
+                                                            <input type="text" class="form-control" id="tauxInteret"
+                                                                value="6.99" readonly>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="valeurCommerce">Commerce en valeur</label>
+                                                            <input type="number" min="0"
+                                                                oninput="this.value = Math.abs(this.value); calculerPaymentMensuel()"
+                                                                class="form-control" id="valeurCommerce" placeholder=""
+                                                                value="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="downPayment">Mise de fonds</label>
+                                                            <input type="number" min="0"
+                                                                oninput="this.value = Math.abs(this.value)"
+                                                                class="form-control" id="downPayment" placeholder=""
+                                                                value="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="dureeFinancement">Durée du financement</label>
+                                                            <select class="form-control wider-input"
+                                                                id="dureeFinancement" onchange="calculerTauxInteret()">
+                                                                <option value="36">36 Mois</option>
+                                                                <option value="48">48 Mois</option>
+                                                                <option value="60">60 Mois</option>
+                                                                <option value="72" selected>72 Mois</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 mt-2">
+                                                    <button type="button" class="btn btn-primary calcBtn"
+                                                        onclick="calculerPaymentMensuel()">Calculer</button>
                                                 </div>
                                             </div>
 
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="valeurCommerce">Commerce en valeur</label>
-                                                    <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" id="valeurCommerce"
-                                                        placeholder="" value="0">
+                                            <div class="row mt-3">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-primary" type="submit" onclick="dataPaiement()">Payer</button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="downPayment">Mise de fonds</label>
-                                                    <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" id="downPayment"
-                                                        placeholder="" value="0">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="dureeFinancement">Durée du financement</label>
-                                                    <select class="form-control wider-input" id="dureeFinancement"
-                                                        onchange="calculerTauxInteret()">
-                                                        <option value="36">36 Mois</option>
-                                                        <option value="48">48 Mois</option>
-                                                        <option value="60">60 Mois</option>
-                                                        <option value="72" selected>72 Mois</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <% }); %>
+                                                <% } %>
+                                </div>
 
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-primary calcBtn"
-                                                onclick="calculerPaymentMensuel()">Calculer</button>
-                                        </div>
-
-                                        <div class="row mt-3">
-                                            <div class="col-md-12">
-                                                <button class="btn btn-primary" type="submit">Payer</button>
-                                            </div>
-                                        </div>
-                                        <% }); %>
-                                            <% } %>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <div id="paymentResults"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="paymentResults"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</body>
 
 
 <script>
     function dataPaiement() {
-        const marqueVoiture = document.getElementById('marqueVoiture').innerText || document.getElementById('marqueVoiture').value;
-        const tauxInteret = document.getElementById('tauxInteret').innerText || document.getElementById('tauxInteret').value;
-        const voiturePrix = document.getElementById('voiturePrix').innerText || document.getElementById('voiturePrix').value;
+        if (sessionStorage != null){
+            const marqueVoiture = document.getElementById('marqueVoiture').innerText;
+            const tauxInteret = document.getElementById('tauxInteret').value;
+            const voiturePrix = document.getElementById('prixDeVehicule').value;
 
-        // Specify the base URL of the new page
-        const baseURL = '/pages/paiement';
-        // Create a URLSearchParams object with the query parameters
-        const queryParams = new URLSearchParams({
-            marque: marqueVoiture,
-            taux: tauxInteret,
-            price: voiturePrix
-        });
+            const baseURL = '/pages/paiement';
+            const queryParams = new URLSearchParams({
+                marque: marqueVoiture,
+                taux: tauxInteret,
+                price: voiturePrix
+            });
+                
+            const newPageURL = `${baseURL}?${queryParams.toString()}`;
 
-        // Create the full URL with query parameters
-        const newPageURL = `${baseURL}?${queryParams.toString()}`;
-
-        // Redirect the user to the new page
-        window.location.href = newPageURL;
+            window.location.href = newPageURL;
+        } else {
+            window.location.href = "http://localhost:4000/pages/connexion"
+        }
     }
 </script>
 
@@ -241,5 +261,52 @@
         window.onload = function () {
             calculerTauxInteret();
         }
+    }
+</script>
+
+<script>
+    function cacherCalculatrice() {
+        document.getElementById('calculatriceContainer').style.display = 'none';
+        document.getElementById('btnArgent').disabled = false;
+        document.getElementById('btnFinancer').disabled = true;
+    }
+</script>
+
+<script>
+    function afficherCalculatrice() {
+        document.getElementById('calculatriceContainer').style.display = 'block';
+        document.getElementById('btnArgent').disabled = true;
+        document.getElementById('btnFinancer').disabled = false;
+    }
+</script>
+
+<script>
+    function afficherMessageFinancer() {
+        document.getElementById('messageFinancement').style.display = 'block';
+        document.getElementById('messageArgentComptant').style.display = 'none';
+    }
+</script>
+
+<script>
+    function cacherMessageFinancement() {
+        document.getElementById('messageFinancement').style.display = 'none';
+        const prixVoiture = document.getElementById('prixDeVehicule').value;
+        document.getElementById('messageArgentComptant').innerText = 'Le prix de la voiture est: ' + prixVoiture + '$';
+        document.getElementById('messageArgentComptant').style.display = 'block';
+    }
+</script>
+
+<script>
+    function cacherMontantCalculer() {
+        document.getElementById('paymentResults').style.display = 'none';
+    }
+
+</script>
+
+<script>
+    function afficherParDefaut() {
+        cacherCalculatrice();
+        cacherMessageFinancement();
+        cacherMontantCalculer();
     }
 </script>
