@@ -113,10 +113,7 @@
         });
     }
     setTimeout(changerDeCouleur, 7000);
-</script>
 
-<script>
-    // Function to get query parameters from URL
     function getQueryParams() {
         var params = {};
         var queryString = window.location.search.substring(1);
@@ -130,12 +127,37 @@
         return params;
     }
 
-    // Get query parameters
     var queryParams = getQueryParams();
 
-    // Display parameters on the page
     document.getElementById("nom").innerText = queryParams["produitNom"];
     document.getElementById("prix").innerText = queryParams["price"];
     document.getElementById("date").innerText = "Date de livraison estimée: " + queryParams["date"];
 </script>
+<script>
+    window.addEventListener('load', function() {
+        let nomVoiture = document.getElementById("nom").innerHTML;
+        let prixVoiture = document.getElementById("prix").innerHTML;
+        let dateVoiture = document.getElementById("date").innerHTML;
+        let nomUtilisateur = sessionStorage.getItem("userFullName");
 
+        fetch('/command', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nom: nomVoiture, prix: prixVoiture, date: dateVoiture, user: nomUtilisateur })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur de connection avec MongoDB');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erreur dans l`insertion : ', error);
+        });
+    });
+</script>
