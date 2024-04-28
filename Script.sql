@@ -30,22 +30,22 @@ CREATE TABLE voitures (
 
 INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image)
 VALUES 
-('Toyota', 'Corolla', 2021, 25000, 1, 'toyota_corrola.jpg'),
-('Honda', 'Civic', 2022, 23000, 2, 'honda_civic.jpg'),
-('Honda', 'CRV', 2023, 45000, 1, 'honda_CRV.jpg'),
-('Tesla', 'Model S', 2021, 75000, 1, 'teslaS.jpg'),
-('Tesla', 'Model 3', 2022, 50000, 2, 'tesla3.jpg'),
-('Tesla', 'Model X', 2022, 90000, 2, 'teslaX.jpg'),
-('Tesla', 'Model Y', 2023, 55000, 1, 'teslaY.jpg'),
-('Chevrolet', 'Silverado', 2021, 30000, 1, 'chevSilver.jpg'),
-('Chevrolet', 'Tahoe', 2023, 55000, 2, 'tahoeChev.jpg'),
-('Ford', 'Mustang', 2021, 40000, 1, 'mustang.jpg'),
-('Ford', 'F150', 2023, 45000, 2, 'f150.jpg'),
-('Audi', 'A4', 2021, 35000, 1, 'a4.jpg'),
-('Audi', 'A7', 2022, 85000, 1, 'a7.jpg'),
-('BMW', '3-Series', 2021, 50000, 1, 'bmw3.jpg'),
-('BMW', '5-Series', 2023, 70000, 1, 'bmw5.jpg'),
-('Audi', 'A6', 2024, 60000, 2, 'a6.jpg');
+('Toyota', 'Corolla', 2021, 25000, 1, 'toyota_corolla.png'),
+('Honda', 'Civic', 2022, 23000, 2, 'honda_civic.avif'),
+('Honda', 'CRV', 2023, 45000, 1, 'honda_CRV.avif'),
+('Tesla', 'Model S', 2021, 75000, 1, 'teslaS.jpeg'),
+('Tesla', 'Model 3', 2022, 50000, 2, 'Tesla3.jpeg'),
+('Tesla', 'Model X', 2022, 90000, 2, 'teslaX.jpeg'),
+('Tesla', 'Model Y', 2023, 55000, 1, 'teslaY.jpeg'),
+('Chevrolet', 'Silverado', 2021, 30000, 1, 'chevSilver.avif'),
+('Chevrolet', 'Tahoe', 2023, 55000, 2, 'chevrolet-tahoe.avif'),
+('Ford', 'Mustang', 2021, 40000, 1, 'mustang.png'),
+('Ford', 'F150', 2023, 45000, 2, 'f150.png'),
+('Audi', 'A4', 2021, 35000, 1, 'a4.jpeg'),
+('Audi', 'A7', 2022, 85000, 1, 'a7.jpeg'),
+('BMW', '3-Series', 2021, 50000, 1, 'bmw_3.png'),
+('BMW', '5-Series', 2023, 70000, 1, 'bmw_5.png'),
+('Audi', 'A6', 2024, 60000, 2, 'a6.jpeg');
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE contact (
