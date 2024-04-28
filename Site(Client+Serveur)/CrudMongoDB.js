@@ -28,7 +28,6 @@ export async function executeOperations() {
 
     try {
         if (!mongoClient) {
-            console.log(uri);
             mongoClient = await connectToMongo(uri);
         }
 
@@ -316,7 +315,6 @@ export async function executeOperations() {
 
         for (const voiture of voitures) {
             let result = await collection.deleteOne({ "_id": voiture._id });
-            console.log(`${voiture.corps} supprimée : ${result.deletedCount} document(s) supprimé(s)`);
         }
 
         // Insérer les nouveaux documents
