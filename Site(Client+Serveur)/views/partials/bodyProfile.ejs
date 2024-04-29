@@ -103,16 +103,28 @@
                             name="adresse">
                         <div id="adresseError" class="error-message"></div>
                     </div>
-                    <div class="col-md-12">
-                        <label for="motDePasse">Mot de passe</label>
-                        <input id="motDePasse" type="password" class="form-control"
-                            placeholder="Entrez votre mot de passe" name="motDePasse">
-                        <div id="motdepasseError" class="error-message"></div>
-                        <div class="checkbox">
-                            <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                            <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <h5>Changer votre mot de passe</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="motDePasse">Ancien mot de passe</label>
+                            <input id="motDePasseAncien" type="password" class="form-control"
+                                placeholder="Entrez votre mot de passe" name="motDePasse">
+                            <div id="ancienMotDePasseError" class="error-message"></div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="motDePasse">Nouveau mot de passe</label>
+                            <input id="motDePasse" type="password" class="form-control"
+                                placeholder="Entrez votre mot de passe" name="motDePasse">
+                            <div id="motdepasseError" class="error-message"></div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
+                                <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                            </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="mt-5 text-center">
@@ -136,6 +148,7 @@
         const userTelephone = sessionStorage.getItem('userTelephone');
         const userAdresse = sessionStorage.getItem('userAdresse');
         const userMotDePasse = sessionStorage.getItem('userMotDePasse');
+        console.log(userMotDePasse);
         const userId = sessionStorage.getItem('userId');
         const fullName = sessionStorage.getItem('userFullName');
         document.getElementById('nom').value = userNom;
@@ -143,7 +156,6 @@
         document.getElementById('courriel').value = userCourriel;
         document.getElementById('telephone').value = userTelephone;
         document.getElementById('adresse').value = userAdresse;
-        document.getElementById('motDePasse').value = userMotDePasse;
         document.getElementById('userId').value = userId;
         document.getElementById('messageBonjour').innerText = "Bonjour \n" + userPrenom + " " + userNom + "!";
 
@@ -166,6 +178,7 @@
         const courriel = document.getElementById('courriel');
         const telephone = document.getElementById('telephone');
         const adresse = document.getElementById('adresse');
+        const ancienMotdepasse = document.getElementById('motDePasseAncien');
         const motdepasse = document.getElementById('motDePasse');
 
         // Réinitialiser les messages d'erreur et les bordures
@@ -216,7 +229,22 @@
             isValid = false;
         }
 
-        if (!motdepasse.value || motdepasse.value.length < 8) {
+        console.log("session storage mot de passe : " + sessionStorage.getItem('userMotDePasse'));
+        if (!ancienMotdepasse.value && motdepasse.value) {
+            document.getElementById('ancienMotDePasseError').innerText = 'Ce mot de passe est incorrect.';
+            document.getElementById('ancienMotDePasseError').style.display = 'block';
+            ancienMotdepasse.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (ancienMotdepasse.value && ancienMotdepasse.value != sessionStorage.getItem('userMotDePasse')) {
+            document.getElementById('ancienMotDePasseError').innerText = 'Ce mot de passe est incorrect.';
+            document.getElementById('ancienMotDePasseError').style.display = 'block';
+            ancienMotdepasse.classList.add('error-border');
+            isValid = false;
+        }
+
+        if (ancienMotdepasse.value && (!motdepasse.value || motdepasse.value.length < 8)) {
             document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
             document.getElementById('motdepasseError').style.display = 'block';
             motdepasse.classList.add('error-border');
@@ -242,7 +270,6 @@
                 sessionStorage.setItem('userTelephone', telephone.value);
                 sessionStorage.setItem('userAdresse', adresse.value);
                 sessionStorage.setItem('userMotDePasse', motdepasse.value);
-                gestionDeconnexion(); // Activer le bouton de déconnexion
             }
         }
     });
