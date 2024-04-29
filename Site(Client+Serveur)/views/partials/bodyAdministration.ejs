@@ -24,75 +24,240 @@
   .sidebar .nav-link {
     color: #fff;
     transition: color 0.3s;
+    cursor: pointer;
   }
 
   .sidebar .nav-link:hover {
     color: #ffc107;
   }
-</style>
 
-<div class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3 sidebar">
-        <h3>Menu</h3>
-        <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link">Gestion clients</a></li>
-          <li class="nav-item"><a class="nav-link">Produits</a></li>
-          <li class="nav-item"><a class="nav-link">Commandes</a></li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-          <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">Admin</a>
-          <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">New project...</a>
-            <a class="dropdown-item" href="#">Settings</a>
-            <a class="dropdown-item" href="#">Profile</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Sign out</a>
-          </div> -->
+  .product-list-form,
+  .sectionMain {
+    display: none;
+  }
+
+  .product-list-form.active,
+  .sectionMain.active {
+    display: block;
+  }
+
+  .image-box {
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .image-preview img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .add-image-btn {
+    margin-bottom: 10px;
+  }
+
+  .form-control-file {
+    display: none;
+  }
+
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  .custom-file-upload:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3 sidebar">
+
+          <h3>Menu</h3>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" onclick="AfficherSectionMain()">Main</a></li>
+            <li class="nav-item"><a class="nav-link">Gestion clients</a></li>
+            <li class="nav-item"><a class="nav-link" onclick="AfficherSectionProduit()">Produits</a></li>
+            <li class="nav-item"><a class="nav-link">Commandes</a></li>
+          </ul>
+          <hr>
+          <div class="dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Admin</a>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-9 content-area">
-        <h1>Administrateur</h1>
+        <div class="col-lg-9 content-area">
+          <h1>Administrateur</h1>
+
+          <div class="sectionMain active">
+            <!--Page vide: On va afficher des statistiques des soldes ici-->
+          </div>
+
+          <div class="card">
+          <div class="product-list-form">
+            <h2>Ajouter un produit</h2>
+            <div class="container">
+              <form>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="marqueProduit">Marque :</label>
+                      <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture">
+                    </div>
+                    <div class="form-group">
+                      <label for="modeleProduit">Modèle :</label>
+                      <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture">
+                    </div>
+                    <div class="form-group">
+                      <label for="voitureAnnee">Année :</label>
+                      <input type="text" class="form-control" id="voiturePrix" placeholder="Année de la voiture">
+                    </div>
+                    <div class="form-group">
+                      <label for="productDescription">Description :</label>
+                      <textarea class="form-control" id="productDescription" rows="3"
+                        placeholder="Description de la voiture"></textarea>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="voiturePrix">Prix :</label>
+                      <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture">
+                    </div>
+                    <div class="image-box">
+                      <h3>Images</h3>
+                      <div class="image-preview" id="imagePreview"></div>
+                      <div class="form-group">
+                        <label class="custom-file-upload">
+                          <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
+                            style="display: none;" onchange="AfficherImagesSelectionner(this)">
+                          Ajouter une image
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Ajouter</button>
+                  </div>
+                </div>
+              </div>
+
+                <h1 class="mt-5">Modifier les produits</h1>
+                <div class="card">
+                  <div class="container mt-5">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Marque</th>
+                          <th scope="col">Modèle</th>
+                          <th scope="col">Prix ($)</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                        <% for (let i=0; i < items.length; i++) { %>
+                          <tr>
+                            <td>
+                              <%= items[i].marque %>
+                            </td>
+                            <td>
+                              <%= items[i].modele %>
+                            </td>
+                            <td>
+                              <%= items[i].prix %>
+                            </td>
+                            <td>
+                              <button class="btn btn-warning"><i class="bi bi-pencil-fill"></i> Modifier</button>
+                              <button class="btn btn-danger"><i class="bi bi-trash3-fill"></i> Supprimer</button>
+                            </td>
+                          </tr>
+                          <% } %>
+                    </table>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         
-        <h2>Ajouter une voiture</h2>
-        <form id="addCarForm" action="" method="POST">
-          <div class="form-group">
-            <label for="carMarque">Marque</label>
-            <input type="text" class="form-control" id="carMarque" required>
-          </div>
-          <div class="form-group">
-            <label for="carModele">Modèle</label>
-            <input type="text" class="form-control" id="carModele" required>
-          </div>
-          <div class="form-group">
-            <label for="carAnnee">Année</label>
-            <input type="number" class="form-control" id="carAnnee" required>
-          </div>
-          <div class="form-group">
-            <label for="carPrix">Prix</label>
-            <input type="number" class="form-control" id="carPrix" required>
-          </div>
-          <div class="form-group">
-            <label for="carDescription">Description</label>
-            <input type="text" class="form-control" id="carDescription" required>
-          </div>
-          <div class="form-group">
-            <label for="imageInput">Image</label><br>
-            <input type="file" id="imageInput" name="image" accept="image/*" required>
-          </div>
-          <br> <!-- A changer apres  -->
-          <button type="submit" class="btn btn-primary">Ajouter un voiture</button>
-        </form>
-        <br> <!-- A changer apres  -->
-        <h2>Liste de voitures</h2>
-        <hr>
-        <ul id="carListe" class="list-group">
-          <li class="list-group-item" id="messageEmpty">Aucune voiture existe.</li>
-        </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+
+  <script>
+    function AfficherSectionMain() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+
+      sectionMain.classList.add('active');
+      productForm.classList.remove('active');
+    }
+
+    function AfficherSectionProduit() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+
+      sectionMain.classList.remove('active');
+      productForm.classList.add('active');
+    }
+
+
+    function ActivationBoutonAjouter() {
+      var submitBtn = document.getElementById('submitBtn');
+      var marqueProduit = document.getElementById('marqueProduit').value;
+      var modeleProduit = document.getElementById('modeleProduit').value;
+      var voiturePrix = document.getElementById('voiturePrix').value;
+      var productDescription = document.getElementById('productDescription').value;
+      var productImage = document.getElementById('productImage').files;
+
+      if (marqueProduit && modeleProduit && voiturePrix && productDescription && productImage.length === 4) {
+        submitBtn.disabled = false;
+      } else {
+        submitBtn.disabled = true;
+      }
+    }
+
+
+    //Source: Aidé par chatgpt
+    function AfficherImagesSelectionner(input) {
+      var preview = document.getElementById('imagePreview');
+      var files = input.files;
+
+      preview.innerHTML = '';
+
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.classList.add('mr-2', 'mb-2');
+          preview.appendChild(img);
+
+          ActivationBoutonAjouter();
+        }
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
