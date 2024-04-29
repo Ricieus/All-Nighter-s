@@ -371,7 +371,7 @@ app.post('/profile/submit_profil', async (req, res) => {
     let nom = req.body.nom;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
-    let motdePasse = req.body.motDePasse;
+    let motdePasse = req.body.motDePasse1;
     let adresse = req.body.adresse;
     let userId = req.body.userId1;
     const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
@@ -474,7 +474,7 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    
+
     const marqueVoiture = req.query.marque;
     const prixDeVehicule = parseFloat(req.query.taux);
     const tauxInteret = parseFloat(req.query.price);
@@ -561,7 +561,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount/100}&date=${formattedDate}`,
+            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount / 100}&date=${formattedDate}`,
             automatic_tax: { enabled: true },
         });
 
