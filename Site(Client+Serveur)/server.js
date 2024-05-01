@@ -371,7 +371,7 @@ app.post('/profile/submit_profil', async (req, res) => {
     let nom = req.body.nom;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
-    let motdePasse = req.body.motDePasse;
+    let motdePasse = req.body.motDePasse1;
     let adresse = req.body.adresse;
     let userId = req.body.userId1;
     const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
@@ -474,7 +474,7 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    
+
     const marqueVoiture = req.query.marque;
     const prixDeVehicule = parseFloat(req.query.taux);
     const tauxInteret = parseFloat(req.query.price);
@@ -561,7 +561,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount/100}&date=${formattedDate}`,
+            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount / 100}&date=${formattedDate}`,
             automatic_tax: { enabled: true },
         });
 
@@ -646,3 +646,50 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("connected!");
 });
+
+
+
+// app.get('/detailee/:id_voiture', async (req, res) => {
+//     const carId = req.params.id_voiture;
+
+//     try {
+//         // Fetch basic car information from MySQL
+//         const sql = `SELECT * FROM voitures WHERE id_voiture = ${con.escape(carId)}`;
+//         const rows = await new Promise((resolve, reject) => {
+//             con.query(sql, (err, rows) => {
+//                 if (err) reject(err);
+//                 else resolve(rows);
+//             });
+//         });
+
+//         if (rows.length === 0) {
+//             console.error('Car not found in MySQL');
+//             res.status(404).send('Car not found');
+//             return;
+//         }
+
+//         const carInfo = rows; // Assuming only one row is returned
+
+//         // Fetch additional car information from MongoDB using the db variable
+//         if (!db) {
+//             console.error('MongoDB connection is not complete');
+//             res.status(500).send('Internal server error');
+//             return;
+//         }
+
+//         const collection = db.collection('voitureDetaille');
+//         const result = await collection.findOne({ _id: parseInt(carId) });
+
+//         // Check if car details are found in MongoDB
+//         if (!result) {
+//             console.error('Car details not found in MongoDB');
+//             res.status(404).send('Car details not found');
+//             return;
+//         }
+//         // Render the detailee page with car information
+//         res.render('pages/detailee', { carInfo, carDetails: [result] });
+//     } catch (err) {
+//         console.error('Error:', err);
+//         res.status(500).send('Internal server error');
+//     }
+// });
