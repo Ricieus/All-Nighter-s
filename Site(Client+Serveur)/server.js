@@ -493,6 +493,7 @@ app.post('/create-checkout-session', async (req, res) => {
         let marque = req.body.marque;
         let taux = req.body.taux;
         let priceNumber = req.body.price;
+        let images = req.body.images;
 
         // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
@@ -588,6 +589,7 @@ app.post('/command', (req, res) => {
     let prixVoiture = req.body.prix;
     let dateVoiture = req.body.date;
     let utilisateurActive = req.body.user;
+
 
     console.log(nomVoiture);
     console.log(prixVoiture);
