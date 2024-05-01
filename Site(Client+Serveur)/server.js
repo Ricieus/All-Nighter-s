@@ -582,6 +582,36 @@ app.get('/pages/administrateur', (req, res) => {
     });
 });
 
+app.get('/pages/administrateurCommandes', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateurCommandes", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+app.get('/pages/administrateurGestionClient', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateurGestionClient", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+app.get('/pages/administrateurProduits', (req, res) => {
+    con.query("SELECT * FROM voitures", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateurProduits", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
 app.post('/command', (req, res) => {
     let uri = process.env.DB_URI;
     let nomVoiture = req.body.nom;
@@ -646,6 +676,7 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("connected!");
 });
+
 
 
 
