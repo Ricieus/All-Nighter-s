@@ -165,7 +165,7 @@ app.post('/connexion/submit_connexion', async (req, res) => {
     try {
         const { courriel, motDePasse } = req.body;
 
-        const sql = "SELECT email, motdepasse, nom, prenom FROM utilisateurs WHERE BINARY email = ?";
+        const sql = "SELECT email, motdepasse, nom, telephone, adresse, prenom, id_utilisateurs FROM utilisateurs WHERE BINARY email = ?";
         con.query(sql, [courriel], async (err, result) => {
             if (err) {
                 console.error('Erreur lors de la requête SQL:', err);
@@ -180,8 +180,8 @@ app.post('/connexion/submit_connexion', async (req, res) => {
                 const passwordMatch = await bcrypt.compare(motDePasse, hashedPassword);
 
                 if (passwordMatch) {
-                    const { nom, prenom } = result[0];
-                    return res.json({ exists: true, nom, prenom }); // Changer "success" en "exists"
+                    const { nom, prenom, email, telephone, adresse, motdepasse, id_utilisateurs } = result[0];
+                    return res.json({ exists: true, nom, prenom, email, telephone, adresse, motdepasse, id_utilisateurs }); // Changer "success" en "exists"
                 }
             }
 
@@ -204,6 +204,21 @@ app.post('/checkEmailExists', (req, res) => {
     const email = req.body.email;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
     con.query(checkEmailQuery, [email], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
+        }
+        if (result.length > 0) {
+            return res.json({ exists: true });
+        } else {
+            return res.json({ exists: false });
+        }
+    });
+});
+app.post('/checkEmailExists1', (req, res) => {
+    const email1 = req.body.courriel;
+    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
+    con.query(checkEmailQuery, [email1], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
@@ -337,14 +352,46 @@ app.get('/pages/index', async (req, res) => {
 });
 
 app.get('/pages/profile', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, results) {
-        if (err) throw err;
-        res.render('pages/profile', {  // Update path here to 'profile'
+    const sql = "SELECT * FROM utilisateurs";
+    con.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des informations des utilisateurs:', err);
+            return res.status(500).send('Erreur serveur lors de la récupération des informations des utilisateurs');
+        }
+        // Assurez-vous que `results` est correctement défini avant d'accéder à ses propriétés
+        res.render('pages/profile', {
             pageTitle: "Concessionnaire Rubious",
             items: results
         });
     });
 });
+app.post('/profile/submit_profil', async (req, res) => {
+    // Récupérer les données du formulaire
+    let prenom = req.body.prenom;
+    let nom = req.body.nom;
+    let courriel = req.body.courriel;
+    let telephone = req.body.telephone;
+    let motdePasse = req.body.motDePasse1;
+    let adresse = req.body.adresse;
+    let userId = req.body.userId1;
+    const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
+
+    // Construire la requête SQL pour la mise à jour du profil
+    var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+
+    // Exécuter la requête SQL avec les valeurs mises à jour
+    con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
+        if (err) {
+            console.error('Erreur lors de la mise à jour du profil :', err);
+            return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+        }
+        // Redirection vers la page de profil après la mise à jour
+        res.redirect('/pages/profile');
+    });
+});
+
+
+
 
 
 app.get('/pages/catalogue', (req, res) => {
@@ -427,7 +474,7 @@ const DOMAIN = 'http://localhost:4000';
 
 //Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-    
+
     const marqueVoiture = req.query.marque;
     const prixDeVehicule = parseFloat(req.query.taux);
     const tauxInteret = parseFloat(req.query.price);
@@ -498,6 +545,12 @@ app.post('/create-checkout-session', async (req, res) => {
         //     });
         // }
 
+        let currentDate = new Date();
+
+        let twoWeeksLater = new Date(currentDate.getTime() + (2 * 7 * 24 * 60 * 60 * 1000));
+
+        let formattedDate = twoWeeksLater.toISOString().split('T')[0];
+
         // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
@@ -508,7 +561,7 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            return_url: `${DOMAIN}/pages/commande`,
+            return_url: `${DOMAIN}/pages/commande?produitNom=${product.name}&price=${price.unit_amount / 100}&date=${formattedDate}`,
             automatic_tax: { enabled: true },
         });
 
@@ -519,15 +572,6 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.get('/session-status', async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-
-    res.send({
-        status: session.status,
-        customer_email: session.customer_details.email
-    });
-});
-
 app.get('/pages/administrateur', (req, res) => {
     con.query("SELECT * FROM voitures", function (err, result) {
         if (err) throw err;
@@ -536,6 +580,49 @@ app.get('/pages/administrateur', (req, res) => {
             items: result
         });
     });
+});
+
+app.post('/command', (req, res) => {
+    let uri = process.env.DB_URI;
+    let nomVoiture = req.body.nom;
+    let prixVoiture = req.body.prix;
+    let dateVoiture = req.body.date;
+    let utilisateurActive = req.body.user;
+
+    console.log(nomVoiture);
+    console.log(prixVoiture);
+    console.log(dateVoiture);
+    console.log(utilisateurActive);
+
+    const commandeInformation = {
+        nom: nomVoiture,
+        prix: prixVoiture,
+        date: dateVoiture,
+        utilisateur: utilisateurActive
+    };
+
+    try {
+        if (!client) {
+            client = connectToMongo(uri);
+        }
+
+        let database = client.db('AllNighter');
+        let collection = database.collection('voitureCommande');
+
+        collection.insertOne({ commandeInformation }, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
+
+    } catch (error) {
+        console.error("Error executing operations:", error);
+    } finally {
+        if (mongoClient) {
+            mongoClient.close(); // Close the MongoDB client
+            console.log("MongoDB connection closed.");
+        }
+    }
 });
 
 /*

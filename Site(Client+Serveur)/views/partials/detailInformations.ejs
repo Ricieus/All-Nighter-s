@@ -168,20 +168,24 @@
 
 <script>
     function dataPaiement() {
-        const marqueVoiture = document.getElementById('marqueVoiture').innerText;
-        const tauxInteret = document.getElementById('tauxInteret').value;
-        const voiturePrix = document.getElementById('prixDeVehicule').value;
+        if (sessionStorage != null){
+            const marqueVoiture = document.getElementById('marqueVoiture').innerText;
+            const tauxInteret = document.getElementById('tauxInteret').value;
+            const voiturePrix = document.getElementById('prixDeVehicule').value;
 
-        const baseURL = '/pages/paiement';
-        const queryParams = new URLSearchParams({
-            marque: marqueVoiture,
-            taux: tauxInteret,
-            price: voiturePrix
-        });
-            
-        const newPageURL = `${baseURL}?${queryParams.toString()}`;
+            const baseURL = '/pages/paiement';
+            const queryParams = new URLSearchParams({
+                marque: marqueVoiture,
+                taux: tauxInteret,
+                price: voiturePrix
+            });
+                
+            const newPageURL = `${baseURL}?${queryParams.toString()}`;
 
-        window.location.href = newPageURL;
+            window.location.href = newPageURL;
+        } else {
+            window.location.href = "http://localhost:4000/pages/connexion"
+        }
     }
 </script>
 
