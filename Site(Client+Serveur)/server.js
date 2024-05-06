@@ -670,6 +670,12 @@ app.get('/getImageVoiture', async (req, res) => {
     }
 });
 
+app.post('/ajoutVoiture', async (req, res) => {
+
+    
+    
+});
+
 /*
     Importation de Bootstrap
 */
