@@ -115,24 +115,24 @@
             <div class="product-list-form">
               <h2>Ajouter un produit</h2>
               <div class="container">
-                <form>
+                <form action="/updateProduct" method="post">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="marqueProduit">Marque :</label>
-                        <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture">
+                        <input type="text" class="form-control" id="marqueProduit"placeholder="Marque de la voiture" name="marque">
                       </div>
                       <div class="form-group">
                         <label for="modeleProduit">Modèle :</label>
-                        <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture">
+                        <input type="text" class="form-control" id="modeleProduit" name="modele" placeholder="Modèle de la voiture">
                       </div>
                       <div class="form-group">
                         <label for="voitureAnnee">Année :</label>
-                        <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture">
+                        <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture" name="annee">
                       </div>
                       <div class="form-group">
                         <label for="voiturePrix">Prix :</label>
-                        <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture">
+                        <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture" name="prix">
                       </div>
                       <div class="form-group">
                         <label for="productDescription">Description :</label>
@@ -186,6 +186,9 @@
                         </td>
                         <td>
                           <%= items[i].prix %>
+                        </td>
+                        <td>
+                          <%= items[i].annee %>
                         </td>
                         <td>
                           <button class="btn btn-warning"><i class="bi bi-pencil-fill" onchange=remplirFormulaire()></i>
@@ -259,6 +262,25 @@
     }
 
 
+  fetch('/updateProduct', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Erreur lors de la mise à jour du produit');
+    }
+    return response.json();
+  })
+  .then(data => {
+   location.reload()
+  })
+  .catch(error => {
+    console.error('Erreur lors de la mise à jour du produit:', error);
+  });
+
+
+
     function ActivationBoutonAjouter() {
       var submitBtn = document.getElementById('submitBtn');
       var marqueProduit = document.getElementById('marqueProduit').value;
@@ -300,24 +322,27 @@
     }
 
 
-    function remplirFormulaire(marque, modele, prix) {
+    function remplirFormulaire(marque, modele, prix, annee) {
       document.getElementById('marqueProduit').value = marque;
       document.getElementById('modeleProduit').value = modele;
+      document.getElementById('voitureAnnee').value = annee;
       document.getElementById('voiturePrix').value = prix;
     }
 
 
 
     var buttonsModifier = document.querySelectorAll('.btn-warning');
-    buttonsModifier.forEach(function (button) {
-      button.addEventListener('click', function (event) {
-        event.preventDefault();
-        var row = this.closest('tr');
-        var marque = row.cells[0].textContent;
-        var modele = row.cells[1].textContent;
-        var prix = row.cells[2].textContent;
+buttonsModifier.forEach(function (button) {
+  button.addEventListener('click', function (event) {
+    event.preventDefault();
+    var row = this.closest('tr');
+    var marque = row.cells[0].textContent.trim();
+    var modele = row.cells[1].textContent.trim();
+    var prix = row.cells[2].textContent.trim();
+    var annee = row.cells[3].textContent.trim();
 
-        remplirFormulaire(marque, modele, prix);
-      });
-    });
+    remplirFormulaire(marque, modele, prix, annee);
+  });
+});
+
   </script>
