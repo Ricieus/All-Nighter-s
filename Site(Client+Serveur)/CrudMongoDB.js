@@ -37,6 +37,7 @@ export async function executeOperations() {
         const voitures = [
             {
                 "_id": 1,
+                "nom": "Toyota Corolla 2021",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "4 cylindres",
@@ -54,6 +55,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 2,
+                "nom": "Honda Civic 2022",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "4 cylindres",
@@ -71,6 +73,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 3,
+                "nom": "Honda CR-V 2023",
                 "corps": "SUV",
                 "transmission": "Automatique",
                 "moteur": "4 cylindres",
@@ -88,6 +91,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 4,
+                "nom": "Tesla Model S 2021",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "500 km",
@@ -105,6 +109,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 5,
+                "nom": "Tesla Model 3 2022",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "500 km",
@@ -122,6 +127,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 6,
+                "nom": "Tesla Model X 2022",
                 "corps": "SUV",
                 "transmission": "Automatique",
                 "moteur": "500 km",
@@ -140,6 +146,7 @@ export async function executeOperations() {
 
             {
                 "_id": 7,
+                "nom": "Tesla Model Y 2022",
                 "corps": "SUV",
                 "transmission": "Automatique",
                 "moteur": "500 km",
@@ -159,6 +166,7 @@ export async function executeOperations() {
 
             {
                 "_id": 8,
+                "nom": "Chevrolet Silverado 2021",
                 "corps": "SUV",
                 "transmission": "Automatique",
                 "moteur": "6 cylindres",
@@ -176,6 +184,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 9,
+                "nom": "Chevrolet Tahoe 2023",
                 "corps": "SUV",
                 "transmission": "Automatique",
                 "moteur": "8 cylindres",
@@ -193,6 +202,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 10,
+                "nom": "Ford Mustang 2021",
                 "corps": "Coupe",
                 "transmission": "Automatique",
                 "moteur": "8 cylindres",
@@ -210,6 +220,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 11,
+                "nom": "Ford F-150 2023",
                 "corps": "Camionette",
                 "transmission": "Automatique",
                 "moteur": "8 cylindres",
@@ -227,6 +238,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 12,
+                "nom": "Audi A4 2021",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "4 cylindres",
@@ -244,6 +256,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 13,
+                "nom": "Audi A7 2022",
                 "corps": "Sportback",
                 "transmission": "Automatique",
                 "moteur": "6 cylindres",
@@ -261,6 +274,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 14,
+                "nom": "BMW 3-Series 2021",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "6 cylindres",
@@ -278,6 +292,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 15,
+                "nom": "BMW 5-Series 2023",
                 "corps": "Sedan",
                 "transmission": "Automatique",
                 "moteur": "6 cylindres",
@@ -295,6 +310,7 @@ export async function executeOperations() {
             },
             {
                 "_id": 16,
+                "nom": "Audi A6 2024",
                 "corps": "Wagon",
                 "transmission": "Automatique",
                 "moteur": "6 cylindres",
