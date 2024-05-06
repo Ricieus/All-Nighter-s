@@ -82,29 +82,33 @@
               <div class="product-list-form">
                 <h2>Ajouter un produit</h2>
                 <div class="container">
-                  <form>
+                  <form action="/updateProduct" method="post">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="marqueProduit">Marque :</label>
-                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture">
+                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture"
+                            name="marque">
                         </div>
                         <div class="form-group">
                           <label for="modeleProduit">Modèle :</label>
-                          <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture">
+                          <input type="text" class="form-control" id="modeleProduit" name="modele"
+                            placeholder="Modèle de la voiture">
                         </div>
                         <div class="form-group">
                           <label for="voitureAnnee">Année :</label>
-                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture">
+                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
+                            name="annee">
                         </div>
                         <div class="form-group">
                           <label for="voiturePrix">Prix :</label>
-                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture">
+                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
+                            name="prix">
                         </div>
                         <div class="form-group">
                           <label for="productDescription">Description :</label>
                           <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="Description de la voiture"></textarea>
+                            placeholder="Description de la voiture" style="height: 180px; resize: none;"></textarea>
                         </div>
 
                       </div>
@@ -113,24 +117,25 @@
                         <div class="image-box">
                           <div class="form-group">
                             <label for="typeCarosserie">Type de carrosserie :</label>
-                            <input type="text" class="form-control" id="typeCarosserie" placeholder="type de carosserie">
+                            <input type="text" class="form-control" id="typeCarosserie"
+                              placeholder="type de carosserie">
                           </div>
-  
+
                           <div class="form-group">
                             <label for="typeGaz">Type de gaz :</label>
                             <input type="text" class="form-control" id="typeGaz" placeholder="type de gaz">
                           </div>
-  
+
                           <div class="form-group">
                             <label for="typeMoteur">Type de moteur :</label>
                             <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur">
                           </div>
-  
+
                           <div class="form-group">
                             <label for="nombreCylindre">Nombre de cylindre :</label>
                             <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur">
                           </div>
-  
+
                           <div class="form-group">
                             <label for="typeConduit">Type de conduit :</label>
                             <input type="text" class="form-control" id="typeConduit" placeholder="type de conduit">
@@ -168,7 +173,7 @@
                         </tr>
                       </thead>
                       <% for (let i=0; i < items.length; i++) { %>
-                        <tr data-id="<%= items[i].id_voiture %>">
+                        <tr>
                           <td>
                             <%= items[i].marque %>
                           </td>
@@ -179,11 +184,13 @@
                             <%= items[i].prix %>
                           </td>
                           <td>
+                            <%= items[i].annee %>
+                          </td>
+                          <td>
                             <button class="btn btn-warning"><i class="bi bi-pencil-fill"
                                 onchange=remplirFormulaire()></i>
                               Modifier</button>
-                            <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
-                              Supprimer</button>
+                            <button class="btn btn-danger"><i class="bi bi-trash3-fill"></i> Supprimer</button>
                           </td>
                         </tr>
                         <% } %>
@@ -191,6 +198,9 @@
                   </div>
                 </div>
 
+
+
+                </form>
 
               </div>
             </div>
@@ -202,6 +212,67 @@
 
 
   <script>
+    function AfficherSectionMain() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.add('active');
+      productForm.classList.remove('active');
+      gestionClients.classList.remove('active');
+    }
+
+    function AfficherSectionProduit() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.remove('active');
+      productForm.classList.add('active');
+      gestionClients.classList.remove('active');
+    }
+
+    function AfficherSectionGestionClients() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.remove('active');
+      productForm.classList.remove('active');
+      gestionClients.classList.add('active');
+
+
+    }
+
+
+    function updateProductInMySQL(marque, modele, prix, id, annee) {
+      const formData = new FormData();
+      formData.append('id', id);
+      formData.append('marque', marque);
+      formData.append('modele', modele);
+      formData.append('prix', prix);
+      formData.append('annee', annee);
+
+      fetch('/updateProduct', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erreur lors de la mise à jour du produit');
+          }
+          return response.json();
+        })
+        .then(data => {
+          location.reload()
+        })
+        .catch(error => {
+          console.error('Erreur lors de la mise à jour du produit:', error);
+        });
+    }
+
+
+
     function ActivationBoutonAjouter() {
       var submitBtn = document.getElementById('submitBtn');
       var marqueProduit = document.getElementById('marqueProduit').value;
@@ -243,48 +314,27 @@
     }
 
 
-    function remplirFormulaire(marque, modele, prix) {
+    function remplirFormulaire(marque, modele, prix, annee) {
       document.getElementById('marqueProduit').value = marque;
       document.getElementById('modeleProduit').value = modele;
+      document.getElementById('voitureAnnee').value = annee;
       document.getElementById('voiturePrix').value = prix;
     }
 
 
-    document.querySelectorAll('.btn-warning').forEach(function (button) {
+
+    var buttonsModifier = document.querySelectorAll('.btn-warning');
+    buttonsModifier.forEach(function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault();
         var row = this.closest('tr');
-        var marque = row.cells[0].textContent;
-        var modele = row.cells[1].textContent;
-        var prix = row.cells[2].textContent;
+        var marque = row.cells[0].textContent.trim();
+        var modele = row.cells[1].textContent.trim();
+        var prix = row.cells[2].textContent.trim();
+        var annee = row.cells[3].textContent.trim();
 
-        remplirFormulaire(marque, modele, prix);
+        remplirFormulaire(marque, modele, prix, annee);
       });
     });
 
-    document.querySelectorAll('.btn-supprimer').forEach(function (button) {
-      button.addEventListener('click', function (event) {
-        event.preventDefault();
-        var row = this.closest('tr');
-        var id = row.getAttribute('data-id');
-        supprimerVoiture(id);
-      });
-    });
-
-    function supprimerVoiture(id) {
-      fetch('/delete_voiture/' + id, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => {
-          if (res.ok) {
-            location.reload();
-          }
-        })
-        .catch(err => {
-          console.error("Erreur de suppression : " + err);
-        });
-    }
   </script>
