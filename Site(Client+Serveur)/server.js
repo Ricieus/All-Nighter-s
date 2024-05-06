@@ -672,7 +672,28 @@ app.get('/getImageVoiture', async (req, res) => {
 
 app.post('/ajoutVoiture', async (req, res) => {
 
+    let marque = req.body.marque;
+    let modele = req.body.modele;
+    let annee = req.body.annee;
+    let prix = req.body.prix;
+    let utilisateurs_id_utilisateurs = 1;
+    let image = req.body.image;
     
+
+    
+
+    // Requête SQL d'insertion
+    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
+
+    // Exécuter la requête d'insertion
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur ajouter: Veuillez notifier Jad');
+        }
+        console.log("Ajout effectuée");
+        res.redirect('/pages/adinistrateur');
+    });
     
 });
 
