@@ -262,6 +262,14 @@
     }
 
 
+    function updateProductInMySQL(marque, modele, prix, id, annee) {
+  const formData = new FormData();
+  formData.append('id', id);
+  formData.append('marque', marque);
+  formData.append('modele', modele);
+  formData.append('prix', prix);
+  formData.append('annee', annee);
+
   fetch('/updateProduct', {
     method: 'POST',
     body: formData
@@ -278,6 +286,7 @@
   .catch(error => {
     console.error('Erreur lors de la mise à jour du produit:', error);
   });
+}
 
 
 
