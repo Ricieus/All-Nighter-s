@@ -587,17 +587,17 @@ app.post('/updateProduct', (req, res) => {
     let modele = req.body.modele;
     let prix = req.body.prix;
     let annee = req.body.annee;
-   
-  
+
+
     const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = 1`;
     con.query(query, [marque, modele, prix, annee], (error, results) => {
-      if (error) {
-        console.error('Erreur lors de la mise à jour du produit:', error);
-        return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
-      }
-      res.redirect('/pages/administrateur');
+        if (error) {
+            console.error('Erreur lors de la mise à jour du produit:', error);
+            return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
+        }
+        res.redirect('/pages/administrateur');
+    });
 });
-  });
 
 app.post('/command', (req, res) => {
     let uri = process.env.DB_URI;
@@ -605,7 +605,7 @@ app.post('/command', (req, res) => {
     let prixVoiture = req.body.prix;
     let dateVoiture = req.body.date;
     let utilisateurActive = req.body.user;
-    
+
 
     console.log(nomVoiture);
     console.log(prixVoiture);
@@ -651,9 +651,9 @@ app.post('/ajoutVoiture', async (req, res) => {
     let prix = req.body.prix;
     let utilisateurs_id_utilisateurs = 1;
     let image = req.body.image;
-    
 
-    
+
+
 
     // Requête SQL d'insertion
     var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
@@ -667,8 +667,34 @@ app.post('/ajoutVoiture', async (req, res) => {
         console.log("Ajout effectuée");
         res.redirect('/pages/adinistrateur');
     });
-    
+
 });
+
+app.delete('/delete_voiture/:id', async (req, res) => {
+    const idVoiture = req.params.id;
+
+    con.query("DELETE FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateur", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+
+    const collection = db.collection('voitureDetaille');
+
+    try {
+        const result = await collection.deleteOne({ _id: parseInt(idVoiture) });
+        if (result.deletedCount === 1) {
+            console.log('Car deleted successfully from MongoDB');
+        } else {
+            console.log('No car found with the provided ID in MongoDB');
+        }
+    } catch (err) {
+        console.error('Error deleting car from MongoDB:', err);
+    }
+});
+
 
 /*
     Importation de Bootstrap
