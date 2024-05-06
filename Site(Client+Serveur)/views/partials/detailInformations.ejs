@@ -66,93 +66,94 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                                <button type="button" id="btnFinancer" class="btn btn-primary mt-2"
-                                    onclick="cacherCalculatrice(); cacherMessageFinancement(); cacherMontantCalculer();">Argent
-                                    Comptant</button>
-                                <button type="button" id="btnArgent" class="btn btn-primary mt-2"
-                                    onclick="afficherCalculatrice(); afficherMessageFinancer();">Financer</button>
-                                <h3 id="messageFinancement" style="display: none;">Calculer votre financement par mois
-                                </h3>
-                                <h3 id="messageArgentComptant" style="display: none;">Le prix de votre prix est: </h3>
-                                <div class="col-md-12">
-                                    <% if (typeof carDetails !==undefined && typeof carInfo !==undefined) { %>
-                                        <% carInfo.forEach(info=> { %>
-                                            <div class="p-2 d-flex" hidden>
-                                                <div class="col-8">Voiture:</div>
-                                                <div class="ml-auto" id="marqueVoiture">
-                                                    <%= info.marque %>
-                                                        <%= info.modele %>
-                                                            <%= info.annee %>
-                                                </div>
+                            <button type="button" id="btnFinancer" class="btn btn-primary mt-2"
+                                onclick="cacherCalculatrice(); cacherMessageFinancement(); cacherMontantCalculer();">Argent
+                                Comptant</button> 
+                            <button type="button" id="btnArgent" class="btn btn-primary mt-2"
+                                onclick="afficherCalculatrice(); afficherMessageFinancer();">Financer</button>
+                            <h3 id="messageFinancement" style="display: none;">Calculer votre financement par mois
+                            </h3>
+                            <h3 id="messageArgentComptant" style="display: none;">Le prix de votre prix est: </h3>
+                            <div class="col-md-12">
+                                <% if (typeof carDetails !==undefined && typeof carInfo !==undefined) { %>
+                                    <% carInfo.forEach(info=> { %>
+                                        <div class="p-2 d-flex" hidden>
+                                            <div class="col-8">Voiture:</div>
+                                            <div class="ml-auto" id="marqueVoiture">
+                                                <%= info.marque %>
+                                                    <%= info.modele %>
+                                                        <%= info.annee %>
                                             </div>
-                                            <div id="calculatriceContainer">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group ">
-                                                            <label for="prixDeVehicule">Prix du véhicule</label>
-                                                            <input type="number" class="form-control"
-                                                                id="prixDeVehicule" placeholder="Prix véhicule" disabled
-                                                                value="<%= info.prix %>" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="tauxInteret">Taux d'intérêt</label>
-                                                            <input type="text" class="form-control" id="tauxInteret" disabled
-                                                                value="6.99" readonly>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="valeurCommerce">Commerce en valeur</label>
-                                                            <input type="number" min="0"
-                                                                oninput="this.value = Math.abs(this.value); calculerPaymentMensuel()"
-                                                                class="form-control" id="valeurCommerce" placeholder=""
-                                                                value="0">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="downPayment">Mise de fonds</label>
-                                                            <input type="number" min="0"
-                                                                oninput="this.value = Math.abs(this.value)"
-                                                                class="form-control" id="downPayment" placeholder=""
-                                                                value="0">
-                                                        </div>
+                                        </div>
+                                        <div id="calculatriceContainer">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group ">
+                                                        <label for="prixDeVehicule">Prix du véhicule</label>
+                                                        <input type="number" class="form-control" id="prixDeVehicule"
+                                                            placeholder="Prix véhicule" disabled
+                                                            value="<%= info.prix %>" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="dureeFinancement">Durée du financement</label>
-                                                            <select class="form-control wider-input"
-                                                                id="dureeFinancement" onchange="calculerTauxInteret()">
-                                                                <option value="36">36 Mois</option>
-                                                                <option value="48">48 Mois</option>
-                                                                <option value="60">60 Mois</option>
-                                                                <option value="72" selected>72 Mois</option>
-                                                            </select>
-                                                        </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="tauxInteret">Taux d'intérêt</label>
+                                                        <input type="text" class="form-control" id="tauxInteret"
+                                                            disabled value="6.99" readonly>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6 mt-2">
-                                                    <button type="button" class="btn btn-primary calcBtn"
-                                                        onclick="calculerPaymentMensuel()">Calculer</button>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="valeurCommerce">Commerce en valeur</label>
+                                                        <input type="number" min="0"
+                                                            oninput="this.value = Math.abs(this.value); calculerPaymentMensuel()"
+                                                            class="form-control" id="valeurCommerce" placeholder=""
+                                                            value="0">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="downPayment">Mise de fonds</label>
+                                                        <input type="number" min="0"
+                                                            oninput="this.value = Math.abs(this.value)"
+                                                            class="form-control" id="downPayment" placeholder=""
+                                                            value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="dureeFinancement">Durée du financement</label>
+                                                        <select class="form-control wider-input" id="dureeFinancement"
+                                                            onchange="calculerTauxInteret()">
+                                                            <option value="36">36 Mois</option>
+                                                            <option value="48">48 Mois</option>
+                                                            <option value="60">60 Mois</option>
+                                                            <option value="72" selected>72 Mois</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="row mt-3">
-                                                <div class="col-md-12">
-                                                    <button class="btn btn-primary" type="submit" onclick="dataPaiement()">Payer</button>
-                                                </div>
+                                            <div class="col-md-6 mt-2">
+                                                <button type="button" class="btn btn-primary calcBtn"
+                                                    onclick="calculerPaymentMensuel()">Calculer</button>
                                             </div>
-                                            <% }); %>
-                                                <% } %>
-                                </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary" type="submit"
+                                                    onclick="dataPaiement()">Payer</button>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } %>
+                            </div>
 
                         </div>
                         <div class="col-md-6">
@@ -161,14 +162,17 @@
                     </div>
                 </div>
             </div>
+            <p id="userFullName" style="position: fixed; top: 10px; right: 10px;"></p>
+
         </div>
     </div>
 </body>
 
 
 <script>
+    console.log(sessionStorage.getItem('userFullName'))
     function dataPaiement() {
-        if (sessionStorage != null){
+        if (sessionStorage.getItem('userFullName') != undefined) {
             const marqueVoiture = document.getElementById('marqueVoiture').innerText;
             const tauxInteret = document.getElementById('tauxInteret').value;
             const voiturePrix = document.getElementById('prixDeVehicule').value;
@@ -179,12 +183,12 @@
                 taux: tauxInteret,
                 price: voiturePrix
             });
-                
+
             const newPageURL = `${baseURL}?${queryParams.toString()}`;
 
             window.location.href = newPageURL;
         } else {
-            window.location.href = "http://localhost:4000/pages/connexion"
+            window.location.href = "/pages/connexion"
         }
     }
 </script>
