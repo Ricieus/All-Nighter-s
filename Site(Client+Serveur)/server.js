@@ -493,12 +493,14 @@ app.post('/create-checkout-session', async (req, res) => {
         let marque = req.body.marque;
         let taux = req.body.taux;
         let priceNumber = req.body.price;
+        let images = req.body.images;
 
+        // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
         });
 
-        let product;
+        let product; // Declare a new variable for the product
 
         if (productResponse.data.length === 0) {
             product = await stripe.products.create({
@@ -508,6 +510,7 @@ app.post('/create-checkout-session', async (req, res) => {
             product = productResponse.data[0];
         }
 
+        // Create or retrieve a price in Stripe
         const priceResponse = await stripe.prices.list({
             product: product.id,
             currency: 'cad',
@@ -516,11 +519,13 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let price;
         if (priceResponse.data.length > 0) {
+            // Price already exists
             price = priceResponse.data[0];
         } else {
+            // Create a new price if it doesn't exist
             price = await stripe.prices.create({
                 currency: 'cad',
-                unit_amount: priceNumber * 100,
+                unit_amount: priceNumber * 100, // Convert to cents
                 product: product.id,
             });
         }
@@ -547,6 +552,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let formattedDate = twoWeeksLater.toISOString().split('T')[0];
 
+        // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
@@ -576,97 +582,64 @@ app.get('/pages/administrateur', (req, res) => {
         });
     });
 });
-
-app.get('/pages/administrateurCommandes', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurCommandes", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
+app.post('/updateProduct', (req, res) => {
+    let marque = req.body.marque;
+    let modele = req.body.modele;
+    let prix = req.body.prix;
+    let annee = req.body.annee;
+   
+  
+    const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = 1`;
+    con.query(query, [marque, modele, prix, annee], (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la mise à jour du produit:', error);
+        return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
+      }
+      res.redirect('/pages/administrateur');
 });
+  });
 
-app.get('/pages/administrateurGestionClient', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurGestionClient", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-app.get('/pages/administrateurProduits', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurProduits", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-app.post('/command', async (req, res) => {
-    try {
-        let uri = process.env.DB_URI;
-        let nomVoiture = req.body.nom;
-        let prixVoiture = req.body.prix;
-        let dateVoiture = req.body.date;
-        let utilisateurActive = req.body.user;
-
-        if (!client) {
-            client = await connectToMongo(uri);
-        }
-
-        let database = client.db('AllNighter');
-        let voitureDetailleCollection = database.collection('voitureDetaille');
-
-        const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
-
-        if (!voitureDetaille) {
-            return res.status(404).send('Voiture non trouvée');
-        }
-
-        const image = voitureDetaille.images[0];
-
-        let voitureCommandeCollection = database.collection('voitureCommande');
-
-        const commandeInformation = {
-            nom: nomVoiture,
-            prix: prixVoiture,
-            date: dateVoiture,
-            utilisateur: utilisateurActive,
-            image: image
-        };
-
-        await voitureCommandeCollection.insertOne(commandeInformation);
-
-        res.status(200).send('Commande insérée avec succès');
-
-    } catch (error) {
-        console.error("Erreur lors de l'exécution des opérations:", error);
-        res.status(500).send('Erreur interne du serveur');
-    }
-});
-
-app.get('/getImageVoiture', async (req, res) => {
+app.post('/command', (req, res) => {
+    let uri = process.env.DB_URI;
     let nomVoiture = req.body.nom;
+    let prixVoiture = req.body.prix;
+    let dateVoiture = req.body.date;
+    let utilisateurActive = req.body.user;
+    
+
+    console.log(nomVoiture);
+    console.log(prixVoiture);
+    console.log(dateVoiture);
+    console.log(utilisateurActive);
+
+    const commandeInformation = {
+        nom: nomVoiture,
+        prix: prixVoiture,
+        date: dateVoiture,
+        utilisateur: utilisateurActive
+    };
+
     try {
-        let uri = process.env.DB_URI;
         if (!client) {
-            client = await connectToMongo(uri);
+            client = connectToMongo(uri);
         }
 
         let database = client.db('AllNighter');
-        let voitureDetailleCollection = database.collection('voitureCommande');
-        const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
+        let collection = database.collection('voitureCommande');
 
-        res.json(voitureDetaille);
+        collection.insertOne({ commandeInformation }, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
 
     } catch (error) {
-        console.error("Erreur lors de l'exécution des opérations:", error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+        console.error("Error executing operations:", error);
+    } finally {
+        if (mongoClient) {
+            mongoClient.close(); // Close the MongoDB client
+            console.log("MongoDB connection closed.");
+        }
     }
 });
 
@@ -718,3 +691,50 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("connected!");
 });
+
+
+
+// app.get('/detailee/:id_voiture', async (req, res) => {
+//     const carId = req.params.id_voiture;
+
+//     try {
+//         // Fetch basic car information from MySQL
+//         const sql = `SELECT * FROM voitures WHERE id_voiture = ${con.escape(carId)}`;
+//         const rows = await new Promise((resolve, reject) => {
+//             con.query(sql, (err, rows) => {
+//                 if (err) reject(err);
+//                 else resolve(rows);
+//             });
+//         });
+
+//         if (rows.length === 0) {
+//             console.error('Car not found in MySQL');
+//             res.status(404).send('Car not found');
+//             return;
+//         }
+
+//         const carInfo = rows; // Assuming only one row is returned
+
+//         // Fetch additional car information from MongoDB using the db variable
+//         if (!db) {
+//             console.error('MongoDB connection is not complete');
+//             res.status(500).send('Internal server error');
+//             return;
+//         }
+
+//         const collection = db.collection('voitureDetaille');
+//         const result = await collection.findOne({ _id: parseInt(carId) });
+
+//         // Check if car details are found in MongoDB
+//         if (!result) {
+//             console.error('Car details not found in MongoDB');
+//             res.status(404).send('Car details not found');
+//             return;
+//         }
+//         // Render the detailee page with car information
+//         res.render('pages/detailee', { carInfo, carDetails: [result] });
+//     } catch (err) {
+//         console.error('Error:', err);
+//         res.status(500).send('Internal server error');
+//     }
+// });

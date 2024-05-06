@@ -129,7 +129,7 @@
     var queryParams = getQueryParams();
 
     document.getElementById("nom").innerText = queryParams["produitNom"];
-    document.getElementById("prix").innerText = queryParams["price"];
+    document.getElementById("prix").innerText = parseFloat(queryParams["price"]).toLocaleString('fr-FR', { style: 'currency', currency: 'CAD' });
     document.getElementById("date").innerText = "Date de livraison estimée: " + queryParams["date"];
 </script>
 <script>
