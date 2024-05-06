@@ -42,7 +42,7 @@
     <% if (carDetails && carInfo) { %>
         <% carInfo.forEach(carInfoItem=> { %>
             <div class="d-flex justify-content-center">
-                <h1>Prix de base: <%= carInfoItem.prix.toLocaleString() %>$</h1>
+                <h1>Prix de base: <%= carInfoItem.prix.toLocaleString('fr-FR', { style: 'currency', currency: 'CAD' }); %></h1>
             </div>
             <% }); %>
 
