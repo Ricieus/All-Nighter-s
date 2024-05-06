@@ -82,41 +82,66 @@
               <div class="product-list-form">
                 <h2>Ajouter un produit</h2>
                 <div class="container">
-                  <form>
+                  <form action="/ajoutVoiture" method="POST">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="marqueProduit">Marque :</label>
-                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture">
+                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture" name="marque" value="">
                         </div>
                         <div class="form-group">
                           <label for="modeleProduit">Modèle :</label>
-                          <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture">
+                          <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture" name="modele" value="">
                         </div>
                         <div class="form-group">
                           <label for="voitureAnnee">Année :</label>
-                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture">
+                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture" name="annee" value="">
                         </div>
                         <div class="form-group">
                           <label for="voiturePrix">Prix :</label>
-                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture">
+                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture" name="prix">
                         </div>
                         <div class="form-group">
                           <label for="productDescription">Description :</label>
                           <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="Description de la voiture"></textarea>
+                            placeholder="Description de la voiture" name="Description"></textarea>
                         </div>
 
                       </div>
                       <div class="col-md-6">
 
+                        <div class="form-group">
+                          <label for="typeCarosserie">Type de carrosserie :</label>
+                          <input type="text" class="form-control" id="typeCarosserie" placeholder="type de carosserie" name="carosserie">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeGaz">Type de gaz :</label>
+                          <input type="text" class="form-control" id="typeGaz" placeholder="type de gaz" name="gaz" value="">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeMoteur">Type de moteur :</label>
+                          <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur" name="moteur" value="">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="nombreCylindre">Nombre de cylindre :</label>
+                          <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur" name="cylindre" value="">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeConduit">Type de conduit :</label>
+                          <input type="text" class="form-control" id="typeConduit" placeholder="type de conduit" name="typeConduit" value="">
+                        </div>
+                        
                         <div class="image-box">
                           <h3>Images</h3>
                           <div class="image-preview" id="imagePreview"></div>
                           <div class="form-group">
                             <label class="custom-file-upload">
                               <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
-                                style="display: none;" onchange="AfficherImagesSelectionner(this)">
+                                style="display: none;" onchange="AfficherImagesSelectionner(this)" name="image" value="">
                               Ajouter une image
                             </label>
                           </div>
