@@ -596,7 +596,31 @@ app.post('/updateProduct', (req, res) => {
             return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
         }
         res.redirect('/pages/administrateur');
+    })
+});
+app.delete('/delete_voiture/:id', async (req, res) => {
+    const idVoiture = req.params.id;
+
+    con.query("DELETE FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateur", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
     });
+
+    const collection = db.collection('voitureDetaille');
+
+    try {
+        const result = await collection.deleteOne({ _id: parseInt(idVoiture) });
+        if (result.deletedCount === 1) {
+            console.log('Car deleted successfully from MongoDB');
+        } else {
+            console.log('No car found with the provided ID in MongoDB');
+        }
+    } catch (err) {
+        console.error('Error deleting car from MongoDB:', err);
+    }
 });
 
 app.post('/command', (req, res) => {
@@ -670,32 +694,6 @@ app.post('/ajoutVoiture', async (req, res) => {
 
 });
 
-app.delete('/delete_voiture/:id', async (req, res) => {
-    const idVoiture = req.params.id;
-
-    con.query("DELETE FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateur", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-
-    const collection = db.collection('voitureDetaille');
-
-    try {
-        const result = await collection.deleteOne({ _id: parseInt(idVoiture) });
-        if (result.deletedCount === 1) {
-            console.log('Car deleted successfully from MongoDB');
-        } else {
-            console.log('No car found with the provided ID in MongoDB');
-        }
-    } catch (err) {
-        console.error('Error deleting car from MongoDB:', err);
-    }
-});
-
-
 /*
     Importation de Bootstrap
 */
@@ -717,50 +715,3 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("connected!");
 });
-
-
-
-// app.get('/detailee/:id_voiture', async (req, res) => {
-//     const carId = req.params.id_voiture;
-
-//     try {
-//         // Fetch basic car information from MySQL
-//         const sql = `SELECT * FROM voitures WHERE id_voiture = ${con.escape(carId)}`;
-//         const rows = await new Promise((resolve, reject) => {
-//             con.query(sql, (err, rows) => {
-//                 if (err) reject(err);
-//                 else resolve(rows);
-//             });
-//         });
-
-//         if (rows.length === 0) {
-//             console.error('Car not found in MySQL');
-//             res.status(404).send('Car not found');
-//             return;
-//         }
-
-//         const carInfo = rows; // Assuming only one row is returned
-
-//         // Fetch additional car information from MongoDB using the db variable
-//         if (!db) {
-//             console.error('MongoDB connection is not complete');
-//             res.status(500).send('Internal server error');
-//             return;
-//         }
-
-//         const collection = db.collection('voitureDetaille');
-//         const result = await collection.findOne({ _id: parseInt(carId) });
-
-//         // Check if car details are found in MongoDB
-//         if (!result) {
-//             console.error('Car details not found in MongoDB');
-//             res.status(404).send('Car details not found');
-//             return;
-//         }
-//         // Render the detailee page with car information
-//         res.render('pages/detailee', { carInfo, carDetails: [result] });
-//     } catch (err) {
-//         console.error('Error:', err);
-//         res.status(500).send('Internal server error');
-//     }
-// });

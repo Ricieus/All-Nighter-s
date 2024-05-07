@@ -23,48 +23,55 @@
         color: red;
     }
 </style>
+
 <body>
     <div class="content">
-    <!-- Display a payment form -->
+        <!-- Display a payment form -->
         <div id="checkout">
             <!-- Checkout will insert the payment form here -->
         </div>
     </div>
-    <div id="marqueDiv" hidden><%= marqueVoiture %></div>
-    <div id="tauxDiv" hidden><%= tauxInteret %></div>
-    <div id="priceVoitureDiv" hidden><%= prixDeVehicule %></div>
+    <div id="marqueDiv" hidden>
+        <%= marqueVoiture %>
+    </div>
+    <div id="tauxDiv" hidden>
+        <%= tauxInteret %>
+    </div>
+    <div id="priceVoitureDiv" hidden>
+        <%= prixDeVehicule %>
+    </div>
     <script>
-    // This is your test publishable API key.
-    const stripe = Stripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
-    
-    
-    initialize();
-    
-    // Create a Checkout Session
-    async function initialize() {
-        const marque = document.getElementById("marqueDiv").innerHTML;
-        const taux = document.getElementById("tauxDiv").innerHTML;
-        const price = document.getElementById("priceVoitureDiv").innerHTML;
+        // This is your test publishable API key.
+        const stripe = Stripe('pk_test_51OvpKQLJ3MC705wbHHJXK7MqOHkz1AL0UZnFdDaGo1OHl4OcXIwipzFMPrrObDMcS8ea2cBTbZbIIe4yqcv2UxmK00In6lg9Co');
 
-        const fetchClientSecret = async () => {
 
-            const response = await fetch("/create-checkout-session", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ marque, taux, price })
+        initialize();
+
+        // Create a Checkout Session
+        async function initialize() {
+            const marque = document.getElementById("marqueDiv").innerHTML;
+            const taux = document.getElementById("tauxDiv").innerHTML;
+            const price = document.getElementById("priceVoitureDiv").innerHTML;
+
+            const fetchClientSecret = async () => {
+
+                const response = await fetch("/create-checkout-session", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ marque, taux, price })
+                });
+                const { clientSecret } = await response.json();
+                return clientSecret;
+            };
+
+            const checkout = await stripe.initEmbeddedCheckout({
+                fetchClientSecret,
             });
-            const { clientSecret } = await response.json();
-            return clientSecret;
-        };
 
-        const checkout = await stripe.initEmbeddedCheckout({
-            fetchClientSecret,
-        });
-        
-        // Mount Checkout
-        checkout.mount('#checkout');
-    }
+            // Mount Checkout
+            checkout.mount('#checkout');
+        }
     </script>
 </body>
