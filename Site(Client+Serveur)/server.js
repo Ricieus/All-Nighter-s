@@ -15,7 +15,7 @@ import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
 import Stripe from 'stripe';
 
-const stripe = new Stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 config();
 
 await executeOperations();
