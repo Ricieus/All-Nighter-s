@@ -574,32 +574,124 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.get('/pages/administrateur', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateur", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
+app.get('/pages/administrateur', async (req, res) => {
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
-    });
-});
-app.post('/updateProduct/:id', (req, res) => {
-    let marque = req.body.marque;
-    let modele = req.body.modele;
-    let prix = req.body.prix;
-    let annee = req.body.annee;
-    const idVoiture = req.params.id;
-    console.log(idVoiture);
 
-    const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = ?`;
-    con.query(query, [marque, modele, prix, annee, idVoiture], (error, results) => {
-        if (error) {
-            console.error('Erreur lors de la mise à jour du produit:', error);
-            return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
         }
-        res.redirect('/pages/administrateur');
-    });
+
+        const items = rows; // Assuming only one row is returned
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const result = await cursor.toArray();
+
+
+        // Check if car details are found in MongoDB
+        if (!result) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+        // Render the detailee page with car information
+        res.render('pages/administrateur', { items, carDetails: result });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
 });
+app.post('/updateProduct/:id', async (req, res) => {
+    try {
+        let marque = req.query.marque;
+        let modele = req.query.modele;
+        let prix = req.query.prix;
+        let annee = req.query.annee;
+        const idVoiture = req.params.id;
+        console.log(idVoiture);
+
+        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = ?`;
+        con.query(query, [marque, modele, prix, annee, idVoiture], async (error, results) => {
+            if (error) {
+                console.error('Erreur lors de la mise à jour du produit:', error);
+                return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
+            }
+            res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
+
+            // Move the MongoDB query outside the MySQL callback
+            const collection = db.collection('voitureDetaille');
+            try {
+                const result = await collection.updateOne({ _id: parseInt(idVoiture) }, { $set: { marque: marque, modele: modele, prix: prix, annee: annee } });
+                if (result.modifiedCount === 1) {
+                    console.log('Car updated successfully in MongoDB');
+                } else {
+                    console.log('No car found with the provided ID in MongoDB');
+                }
+            } catch (err) {
+                console.error('Error updating car in MongoDB:', err);
+            }
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error');
+    }
+});
+
+   
+async function getCarDetailsFromMongo(id) {
+
+    try {
+      // Connexion au client MongoDB
+
+      const collection = db.collection('voitureDetaille');
+  
+      // Récupération des détails de la voiture basés sur l'ID
+      const result = await collection.findOne({ _id: parseInt(id) });
+  
+      return result;
+    } catch (err) {
+      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+      throw err; // Propagez l'erreur pour la gérer plus tard
+    } 
+    }
+  
+  
+  // Route pour récupérer les détails de la voiture depuis MongoDB
+  app.get('/getCarDetails/:id', async (req, res) => {
+    const idVoiture = req.params.id;
+  
+    try {
+      const carDetails = await getCarDetailsFromMongo(idVoiture);
+  
+      if (!carDetails) {
+        console.error('Détails de la voiture introuvables dans MongoDB');
+        return res.status(404).send('Détails de la voiture introuvables');
+      }
+  
+      res.json(carDetails); // Envoyez les détails de la voiture au frontend
+    } catch (err) {
+      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+      res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
+    }
+  });
+
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;
 
