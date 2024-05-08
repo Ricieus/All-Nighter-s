@@ -356,7 +356,6 @@ function getCarDetailsFromMongo(id) {
       return response.json();
     })
     .then(data => {
-      ReinitialiserTousLesChamps()
       console.log(data);
       document.getElementById('typeCarosserie').value = data.corps;
       document.getElementById('typeGaz').value = data.carburant;
@@ -385,6 +384,7 @@ function getCarDetailsFromMongo(id) {
     }
 
     function ReinitialiserTousLesChamps() {
+      document.getElementById('idProduit').value = null;
       document.getElementById('marqueProduit').value = null;
       document.getElementById('modeleProduit').value = null;
       document.getElementById('voitureAnnee').value = null;
@@ -396,6 +396,10 @@ function getCarDetailsFromMongo(id) {
       document.getElementById('nbrCylindre').value = null;
       document.getElementById('typeConduit').value = null;
       document.getElementById('productImage').value = null;
+      document.getElementById('img').src = '';
+      document.getElementById('img1').src = '';
+      document.getElementById('img2').src = '';
+      document.getElementById('img3').src ='';
       }
 
     function AfficherTousLesChamps() {
