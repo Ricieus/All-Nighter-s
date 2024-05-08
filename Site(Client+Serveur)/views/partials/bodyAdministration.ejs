@@ -82,7 +82,7 @@
               <div class="product-list-form">
                 <h2>Ajouter un produit</h2>
                 <div class="container">
-                  <form action="/updateProduct" method="post">
+                  <form action="/updateProduct/<%= items.id_voiture %>" method="post">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -135,7 +135,7 @@
                             <label for="nombreCylindre">Nombre de cylindre :</label>
                             <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur">
                           </div>
-
+                      
                           <div class="form-group">
                             <label for="typeConduit">Type de conduit :</label>
                             <input type="text" class="form-control" id="typeConduit" placeholder="type de conduit">
@@ -187,7 +187,7 @@
                             <%= items[i].annee %>
                           </td>
                           <td>
-                            <button class="btn btn-warning"><i class="bi bi-pencil-fill"
+                            <button class="btn btn-warning btn-modifier"><i class="bi bi-pencil-fill"
                                 onchange=remplirFormulaire()></i>
                               Modifier</button>
                             <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
@@ -245,32 +245,34 @@
 
     }
 
+    document.querySelectorAll('.btn-modifier').forEach(function (button) {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var row = this.closest('tr');
+        var id = row.getAttribute('data-id');
+      
+        updateProductInMySQL(id);
+      });
+    });
 
-    function updateProductInMySQL(marque, modele, prix, id, annee) {
-      const formData = new FormData();
-      formData.append('id', id);
-      formData.append('marque', marque);
-      formData.append('modele', modele);
-      formData.append('prix', prix);
-      formData.append('annee', annee);
-
-      fetch('/updateProduct', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du produit');
-          }
-          return response.json();
-        })
-        .then(data => {
-          location.reload()
-        })
-        .catch(error => {
-          console.error('Erreur lors de la mise à jour du produit:', error);
-        });
+    function updateProductInMySQL(id, data) {
+  fetch('/updateProduct/' + id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data) // Envoyer les données sous forme JSON
+  })
+  .then(res => {
+    if (res.ok) {
+      location.reload();
     }
+  })
+  .catch(err => {
+    console.error("Erreur de modification : " + err);
+  });
+}
+
 
 
 
@@ -344,6 +346,7 @@
         supprimerVoiture(id);
       });
     });
+
 
     function supprimerVoiture(id) {
       fetch('/delete_voiture/' + id, {
