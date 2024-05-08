@@ -166,8 +166,8 @@
                     <div class="col">
                       <button class="btn btn-primary" id="btn-effectuerAjout" style="display: none; width: auto;"
                         disabled>Ajouter</button>
-                      <button class="btn btn-primary" id="btn-modifier"
-                        style="display: none; width: auto;">Modifier</button>
+                      <button class="btn btn-primary" id="btn-modifier" style="display: none; width: auto;"
+                        onclick="RedirectModifier()">Modifier</button>
                     </div>
 
                     <div class="col">
@@ -227,6 +227,31 @@
 
 
   <script>
+    function RedirectModifier() {
+      const id = document.getElementById("idProduit").value;
+      const marque = document.getElementById("marqueProduit").value;
+      const modele = document.getElementById("modeleProduit").value;
+      const prix = document.getElementById("voiturePrix").value;
+      const annee = document.getElementById("voitureAnnee").value;
+
+      fetch('/updateProduct/' + id, {
+        method: 'POST',
+        body: JSON.stringify({ id: id, marque: marque, modele: modele, prix: prix, annee: annee })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erreur lors de la mise à jour du produit');
+          }
+          return response.json();
+        })
+        .then(data => {
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Erreur lors de la mise à jour du produit:', error);
+        });
+    }
+
     function Ajouter() {
       document.getElementById('btn-ajouter').style.display = "none";
       document.getElementById("btn-modifier").style.display = "none";
@@ -365,7 +390,8 @@
     }
 
 
-    function remplirFormulaire(marque, modele, prix, annee) {
+    function remplirFormulaire(id, marque, modele, prix, annee) {
+      document.getElementById('idProduit').value = id;
       document.getElementById('marqueProduit').value = marque;
       document.getElementById('modeleProduit').value = modele;
       document.getElementById('voitureAnnee').value = annee;
@@ -377,12 +403,13 @@
       button.addEventListener('click', function (event) {
         event.preventDefault();
         var row = this.closest('tr');
+        var id = row.getAttribute('data-id');
         var marque = row.cells[0].textContent.trim();
         var modele = row.cells[1].textContent.trim();
         var prix = row.cells[2].textContent.trim();
         var annee = row.cells[3].textContent.trim();
 
-        remplirFormulaire(marque, modele, prix, annee);
+        remplirFormulaire(id, marque, modele, prix, annee);
 
         document.getElementById("btn-modifier").style.display = "block";
         document.getElementById("btn-ajouter").style.display = "block";
