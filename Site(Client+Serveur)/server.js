@@ -2,6 +2,7 @@
     Importation des modules requis
 */
 import express from "express";
+
 import session from "express-session";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -597,7 +598,7 @@ app.post('/updateProduct/:id', (req, res) => {
             return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
         }
         res.redirect('/pages/administrateur');
-    })
+    });
 });
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;

@@ -117,4 +117,13 @@ Dans notre projet, Stripe est une interface de programmation d'application (API)
 1. Création d'un compte sur le site ([Stripe API](https://dashboard.stripe.com/register?redirect=https%3A%2F%2Fdocs.stripe.com%2Fdevelopment))
 <div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/fa1f4820-8469-4486-a79a-e9f0e912f869" /></div> <br />
 
-3. 
+2. Créer les taxes afin de l'appliquer dans le système de checkout
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/5c41c2b8-e63c-4857-93c3-9674eb550b24" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/ca3e1b33-4925-4d47-93dc-1713dbfd2c9" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/3b754e7f-76b4-4ec8-8193-ff52acdc68e6" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/34d2d615-fd3c-441f-8494-aa0882c5d679" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/6db95abe-75a6-4454-aee8-c3a708be660a" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/9b96c689-5007-45e1-a0c7-9acf47ddce10" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/42a0e0cc-a769-4bb9-b2c2-5701765e37f8" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/a223a9c0-2d85-48f4-8e6b-c8047614cc8f" /></div> <br />
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/874b55df-5d9a-4252-9af6-0fcebc4cfff2" /></div> <br />
