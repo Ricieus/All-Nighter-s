@@ -336,7 +336,7 @@
     })
     .then(data => {
       console.log("Mise à jour effectuée avec succès dans MySQL");
-      location.reload();
+      UpdateProductMongo();
     })
     .catch(error => {
       console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
@@ -371,6 +371,45 @@ function getCarDetailsFromMongo(id) {
     })
     .catch(error => {
       console.error('Erreur lors de la récupération des détails de la voiture:', error);
+    });
+}
+function UpdateProductMongo() {
+  const id = document.getElementById("idProduit").value;
+  const typeCarosserie = document.getElementById("typeCarosserie").value;
+  const typeGaz = document.getElementById("typeGaz").value;
+  const typeMoteur = document.getElementById("typeMoteur").value;
+  const productDescription = document.getElementById("productDescription").value;
+  const nbrCylindre = document.getElementById("nbrCylindre").value;
+  const typeConduit = document.getElementById("typeConduit").value;
+  const productImage = document.getElementById('productImage').value;
+  console.log(productImage);
+  fetch('/updateVoitureMongo/' + id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      typeCarosserie,
+      typeGaz,
+      typeMoteur,
+      productDescription,
+      nbrCylindre,
+      typeConduit,
+      productImage
+    })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Mise à jour effectuée avec succès dans MongoDB");
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB:', error);
     });
 }
 
