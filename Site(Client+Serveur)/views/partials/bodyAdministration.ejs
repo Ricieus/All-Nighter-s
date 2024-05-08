@@ -118,12 +118,12 @@
 
                     </div>
                     <div class="col-md-6">
-
                       <div class="image-box">
                         <div class="form-group">
                           <label for="typeCarosserie">Type de carrosserie :</label>
+
                           <input type="text" class="form-control" id="typeCarosserie" placeholder="Type de carrosserie"
-                            disabled>
+                            disabled >
                         </div>
 
                         <div class="form-group">
@@ -148,14 +148,19 @@
                             disabled>
                         </div>
                         <h3>Images</h3>
-                        <div class="image-preview" id="imagePreview"></div>
+                        <div class="image-preview" id="imagePreview">
+                          <img class="mr-2" id="img">
+                          <img class="mr-2" id="img1">
+                          <img class="mr-2" id="img2">
+                          <img class="mr-2" id="img3">
+                        </div>
                         <div class="form-group">
                           <label class="custom-file-upload">
                             <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
-                              style="display: none;" onchange="AfficherImagesSelectionner(this)" disabled>
+                              style="display: none;" onchange="AfficherImagesSelectionner(this)" disabled >
                             Ajouter une image
                           </label>
-                        </div>
+                      </div>
                       </div>
                     </div>
                   </div>
@@ -210,13 +215,15 @@
                         <%= items[i].annee %>
                       </td>
                       <td>
-                        <button class="btn btn-warning modifier"><i class="bi bi-pencil-fill"></i>
+                       <button class="btn btn-warning modifier"><i class="bi bi-pencil-fill"></i>
                           Modifier</button>
                         <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
                           Supprimer</button>
-                      </td>
-                    </tr>
-                    <% } %>
+                        </td>
+                      </tr>
+  
+                          <% } %>
+
                 </table>
               </div>
             </div>
@@ -313,23 +320,60 @@
       const prix = document.getElementById("voiturePrix").value;
       const annee = document.getElementById("voitureAnnee").value;
 
-      fetch('/updateProduct/' + id, {
-        method: 'POST',
-        body: JSON.stringify({ id: id, marque: marque, modele: modele, prix: prix, annee: annee })
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du produit');
-          }
-          return response.json();
-        })
-        .then(data => {
-          location.reload();
-        })
-        .catch(error => {
-          console.error('Erreur lors de la mise à jour du produit:', error);
-        });
+  // Envoi de la mise à jour à la base de données MySQL
+  fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ marque, modele, prix, annee })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du produit');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Mise à jour effectuée avec succès dans MySQL");
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
+    });
+}
+
+function getCarDetailsFromMongo(id) {
+  fetch('/getCarDetails/' + id, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des détails de la voiture');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      document.getElementById('typeCarosserie').value = data.corps;
+      document.getElementById('typeGaz').value = data.carburant;
+      document.getElementById('typeMoteur').value = data.pneus_bougent;
+      document.getElementById('productDescription').value = data.description;
+      document.getElementById('nbrCylindre').value = data.moteur;
+      document.getElementById('typeConduit').value = data.transmission;
+      document.getElementById('img').src = "/images/" + data.images[0];
+      document.getElementById('img1').src = "/images/" + data.images[1];
+      document.getElementById('img2').src = "/images/" + data.images[2];
+      document.getElementById('img3').src = "/images/" + data.images[3];
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des détails de la voiture:', error);
+    });
+}
+
+
 
     function Ajouter() {
       document.getElementById('btn-ajouter').style.display = "none";
@@ -340,6 +384,7 @@
     }
 
     function ReinitialiserTousLesChamps() {
+      document.getElementById('idProduit').value = null;
       document.getElementById('marqueProduit').value = null;
       document.getElementById('modeleProduit').value = null;
       document.getElementById('voitureAnnee').value = null;
@@ -351,7 +396,11 @@
       document.getElementById('nbrCylindre').value = null;
       document.getElementById('typeConduit').value = null;
       document.getElementById('productImage').value = null;
-    }
+      document.getElementById('img').src = '';
+      document.getElementById('img1').src = '';
+      document.getElementById('img2').src = '';
+      document.getElementById('img3').src ='';
+      }
 
     function AfficherTousLesChamps() {
       document.getElementById('marqueProduit').disabled = false;
@@ -398,34 +447,6 @@
 
 
     }
-
-
-    function updateProductInMySQL(marque, modele, prix, id, annee) {
-      const formData = new FormData();
-      formData.append('id', id);
-      formData.append('marque', marque);
-      formData.append('modele', modele);
-      formData.append('prix', prix);
-      formData.append('annee', annee);
-
-      fetch('/updateProduct', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du produit');
-          }
-          return response.json();
-        })
-        .then(data => {
-          location.reload()
-        })
-        .catch(error => {
-          console.error('Erreur lors de la mise à jour du produit:', error);
-        });
-    }
-
 
 
     function ActivationBoutonAjouter() {
@@ -487,15 +508,15 @@
         var modele = row.cells[1].textContent.trim();
         var prix = row.cells[2].textContent.trim();
         var annee = row.cells[3].textContent.trim();
-
         remplirFormulaire(id, marque, modele, prix, annee);
-
+        getCarDetailsFromMongo(id);
         document.getElementById("btn-modifier").style.display = "block";
         document.getElementById("btn-ajouter").style.display = "block";
         document.getElementById("btn-effectuerAjout").style.display = "none";
         AfficherTousLesChamps();
       });
     });
+
 
     document.querySelectorAll('.btn-supprimer').forEach(function (button) {
       button.addEventListener('click', function (event) {
