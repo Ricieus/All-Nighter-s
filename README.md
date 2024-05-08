@@ -73,7 +73,7 @@ SELECT * FROM (nomTable);
 ### Installation du Node.js
 1. Télécharger l'application Node.js
 2. Suivre les étapes demandés dans l'application de Node.js
-3. <br />
+<br />
 
 ### Installation de l'application Visual Studio Code
 1. Télécharger l'application Visual Studio Code
@@ -106,3 +106,15 @@ npx nodemon server.js
 node server.js
 ```
 <div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/75ab24f3-e31a-43e2-9bf9-5f526d8e7ec7" /></div> <br />
+
+## Stripe API
+Dans notre projet, Stripe est une interface de programmation d'application (API), une plateforme de paiement en ligne largement utilisée. Son objectif principal est de permettre aux développeurs d'intégrer facilement les fonctionnalités de traitement des paiements de Stripe dans leurs propres applications et sites web. De plus, il offre d'autres fonctionnalités qui sont utilisés dans noter site:
+1. Traitement des paiements
+2. Gestion des clients
+3. Rapports et analyses
+
+### Création d'un compte Stripe
+1. Création d'un compte sur le site ([Stripe API](https://dashboard.stripe.com/register?redirect=https%3A%2F%2Fdocs.stripe.com%2Fdevelopment))
+<div style="text-align:left"><img src="https://github.com/Ricieus/All-Nighter-s/assets/118473501/fa1f4820-8469-4486-a79a-e9f0e912f869" /></div> <br />
+
+3. 
