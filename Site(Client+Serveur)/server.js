@@ -634,19 +634,7 @@ app.post('/updateProduct/:id', async (req, res) => {
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-
-            // Move the MongoDB query outside the MySQL callback
-            const collection = db.collection('voitureDetaille');
-            try {
-                const result = await collection.updateOne({ _id: parseInt(idVoiture) }, { $set: { marque: marque, modele: modele, prix: prix, annee: annee } });
-                if (result.modifiedCount === 1) {
-                    console.log('Car updated successfully in MongoDB');
-                } else {
-                    console.log('No car found with the provided ID in MongoDB');
-                }
-            } catch (err) {
-                console.error('Error updating car in MongoDB:', err);
-            }
+        
         });
     } catch (err) {
         console.error('Error:', err);
