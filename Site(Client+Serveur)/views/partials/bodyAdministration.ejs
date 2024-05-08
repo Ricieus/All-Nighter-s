@@ -80,132 +80,146 @@
 
             <div class="card">
               <div class="product-list-form">
-                <h2>Ajouter un produit</h2>
+                <h3 class="m-3">Informations de la voiture</h3>
                 <div class="container">
-                  <form action="/updateProduct" method="post">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="marqueProduit">Marque :</label>
-                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture"
-                            name="marque">
-                        </div>
-                        <div class="form-group">
-                          <label for="modeleProduit">Modèle :</label>
-                          <input type="text" class="form-control" id="modeleProduit" name="modele"
-                            placeholder="Modèle de la voiture">
-                        </div>
-                        <div class="form-group">
-                          <label for="voitureAnnee">Année :</label>
-                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
-                            name="annee">
-                        </div>
-                        <div class="form-group">
-                          <label for="voiturePrix">Prix :</label>
-                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
-                            name="prix">
-                        </div>
-                        <div class="form-group">
-                          <label for="productDescription">Description :</label>
-                          <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="Description de la voiture" style="height: 180px; resize: none;"></textarea>
-                        </div>
 
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="idProduit">Id :</label>
+                        <input type="text" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
+                          disabled>
                       </div>
-                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="marqueProduit">Marque :</label>
+                        <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture"
+                          name="marque" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="modeleProduit">Modèle :</label>
+                        <input type="text" class="form-control" id="modeleProduit" name="modele"
+                          placeholder="Modèle de la voiture" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="voitureAnnee">Année :</label>
+                        <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
+                          name="annee" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="voiturePrix">Prix :</label>
+                        <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
+                          name="prix" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="productDescription">Description :</label>
+                        <textarea class="form-control" id="productDescription" rows="3"
+                          placeholder="Description de la voiture" style="height: 7rem; resize: none;"
+                          disabled></textarea>
+                      </div>
 
-                        <div class="image-box">
-                          <div class="form-group">
-                            <label for="typeCarosserie">Type de carrosserie :</label>
-                            <input type="text" class="form-control" id="typeCarosserie"
-                              placeholder="type de carosserie">
-                          </div>
+                    </div>
+                    <div class="col-md-6">
 
-                          <div class="form-group">
-                            <label for="typeGaz">Type de gaz :</label>
-                            <input type="text" class="form-control" id="typeGaz" placeholder="type de gaz">
-                          </div>
+                      <div class="image-box">
+                        <div class="form-group">
+                          <label for="typeCarosserie">Type de carrosserie :</label>
+                          <input type="text" class="form-control" id="typeCarosserie" placeholder="Type de carrosserie"
+                            disabled>
+                        </div>
 
-                          <div class="form-group">
-                            <label for="typeMoteur">Type de moteur :</label>
-                            <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur">
-                          </div>
+                        <div class="form-group">
+                          <label for="typeGaz">Type de gaz :</label>
+                          <input type="text" class="form-control" id="typeGaz" placeholder="Type de gaz" disabled>
+                        </div>
 
-                          <div class="form-group">
-                            <label for="nombreCylindre">Nombre de cylindre :</label>
-                            <input type="text" class="form-control" id="typeMoteur" placeholder="type de moteur">
-                          </div>
+                        <div class="form-group">
+                          <label for="typeMoteur">Type de moteur :</label>
+                          <input type="text" class="form-control" id="typeMoteur" placeholder="Type de moteur" disabled>
+                        </div>
 
-                          <div class="form-group">
-                            <label for="typeConduit">Type de conduit :</label>
-                            <input type="text" class="form-control" id="typeConduit" placeholder="type de conduit">
-                          </div>
-                          <h3>Images</h3>
-                          <div class="image-preview" id="imagePreview"></div>
-                          <div class="form-group">
-                            <label class="custom-file-upload">
-                              <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
-                                style="display: none;" onchange="AfficherImagesSelectionner(this)">
-                              Ajouter une image
-                            </label>
-                          </div>
+                        <div class="form-group">
+                          <label for="nombreCylindre">Nombre de cylindre :</label>
+                          <input type="text" class="form-control" id="nbrCylindre" placeholder="Type de moteur"
+                            disabled>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeConduit">Type de conduit :</label>
+                          <input type="text" class="form-control" id="typeConduit" placeholder="Type de conduit"
+                            disabled>
+                        </div>
+                        <h3>Images</h3>
+                        <div class="image-preview" id="imagePreview"></div>
+                        <div class="form-group">
+                          <label class="custom-file-upload">
+                            <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
+                              style="display: none;" onchange="AfficherImagesSelectionner(this)" disabled>
+                            Ajouter une image
+                          </label>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Ajouter</button>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="card">
-                  <h1 class="mt-5">Modifier les produits</h1>
-                  <div class="container mt-5">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Marque</th>
-                          <th scope="col">Modèle</th>
-                          <th scope="col">Prix ($)</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <% for (let i=0; i < items.length; i++) { %>
-                        <tr data-id="<%= items[i].id_voiture %>">
-                          <td>
-                            <%= items[i].marque %>
-                          </td>
-                          <td>
-                            <%= items[i].modele %>
-                          </td>
-                          <td>
-                            <%= items[i].prix %>
-                          </td>
-                          <td>
-                            <%= items[i].annee %>
-                          </td>
-                          <td>
-                            <button class="btn btn-warning"><i class="bi bi-pencil-fill"
-                                onchange=remplirFormulaire()></i>
-                              Modifier</button>
-                            <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
-                              Supprimer</button>
-                          </td>
-                        </tr>
-                        <% } %>
-                    </table>
                   </div>
+                  <div class="row mb-3">
+
+
+                    <div class="col">
+                      <button class="btn btn-primary" id="btn-effectuerAjout" style="display: none; width: auto;"
+                        disabled>Ajouter</button>
+                      <button class="btn btn-primary" id="btn-modifier"
+                        style="display: none; width: auto;">Modifier</button>
+                    </div>
+
+                    <div class="col">
+                      <button class="btn btn-primary" id="btn-ajouter" style="display: block; width: auto;"
+                        onclick="Ajouter()">
+                        Ajouter une voiture</button>
+                    </div>
+
+                  </div>
+
+
+
                 </div>
-
-
-
-                </form>
-
               </div>
             </div>
-
+            <div class="card mt-2">
+              <h3 class="m-3">Les voitures</h3>
+              <div class="container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Marque</th>
+                      <th scope="col">Modèle</th>
+                      <th scope="col">Prix ($)</th>
+                      <th scope="col">Année</th>
+                    </tr>
+                  </thead>
+                  <% for (let i=0; i < items.length; i++) { %>
+                    <tr data-id="<%= items[i].id_voiture %>">
+                      <td>
+                        <%= items[i].marque %>
+                      </td>
+                      <td>
+                        <%= items[i].modele %>
+                      </td>
+                      <td>
+                        <%= items[i].prix %>
+                      </td>
+                      <td>
+                        <%= items[i].annee %>
+                      </td>
+                      <td>
+                        <button class="btn btn-warning modifier"><i class="bi bi-pencil-fill"></i>
+                          Modifier</button>
+                        <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
+                          Supprimer</button>
+                      </td>
+                    </tr>
+                    <% } %>
+                </table>
+              </div>
+            </div>
           </div>
       </div>
     </div>
@@ -213,6 +227,42 @@
 
 
   <script>
+    function Ajouter() {
+      document.getElementById('btn-ajouter').style.display = "none";
+      document.getElementById("btn-modifier").style.display = "none";
+      AfficherTousLesChamps();
+      ReinitialiserTousLesChamps()
+      document.getElementById('btn-effectuerAjout').style.display = "block";
+    }
+
+    function ReinitialiserTousLesChamps() {
+      document.getElementById('marqueProduit').value = null;
+      document.getElementById('modeleProduit').value = null;
+      document.getElementById('voitureAnnee').value = null;
+      document.getElementById('voiturePrix').value = null;
+      document.getElementById('productDescription').value = null;
+      document.getElementById('typeCarosserie').value = null;
+      document.getElementById('typeGaz').value = null;
+      document.getElementById('typeMoteur').value = null;
+      document.getElementById('nbrCylindre').value = null;
+      document.getElementById('typeConduit').value = null;
+      document.getElementById('productImage').value = null;
+    }
+
+    function AfficherTousLesChamps() {
+      document.getElementById('marqueProduit').disabled = false;
+      document.getElementById('modeleProduit').disabled = false;
+      document.getElementById('voitureAnnee').disabled = false;
+      document.getElementById('voiturePrix').disabled = false;
+      document.getElementById('productDescription').disabled = false;
+      document.getElementById('typeCarosserie').disabled = false;
+      document.getElementById('typeGaz').disabled = false;
+      document.getElementById('typeMoteur').disabled = false;
+      document.getElementById('nbrCylindre').disabled = false;
+      document.getElementById('typeConduit').disabled = false;
+      document.getElementById('productImage').disabled = false;
+    }
+
     function AfficherSectionMain() {
       var sectionMain = document.querySelector('.sectionMain');
       var productForm = document.querySelector('.product-list-form');
@@ -275,7 +325,7 @@
 
 
     function ActivationBoutonAjouter() {
-      var submitBtn = document.getElementById('submitBtn');
+      var submitBtn = document.getElementById('btn-effectuerAjout');
       var marqueProduit = document.getElementById('marqueProduit').value;
       var modeleProduit = document.getElementById('modeleProduit').value;
       var voiturePrix = document.getElementById('voiturePrix').value;
@@ -323,7 +373,7 @@
     }
 
 
-    document.querySelectorAll('.btn-warning').forEach(function (button) {
+    document.querySelectorAll('.modifier').forEach(function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault();
         var row = this.closest('tr');
@@ -333,11 +383,14 @@
         var annee = row.cells[3].textContent.trim();
 
         remplirFormulaire(marque, modele, prix, annee);
+
+        document.getElementById("btn-modifier").style.display = "block";
+        document.getElementById("btn-ajouter").style.display = "block";
+        document.getElementById("btn-effectuerAjout").style.display = "none";
+        AfficherTousLesChamps();
       });
     });
 
-<<<<<<< Updated upstream
-=======
     document.querySelectorAll('.btn-supprimer').forEach(function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault();
@@ -363,5 +416,4 @@
           console.error("Erreur de suppression : " + err);
         });
     }
->>>>>>> Stashed changes
   </script>
