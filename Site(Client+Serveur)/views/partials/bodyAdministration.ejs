@@ -173,6 +173,7 @@
                       <button class="btn btn-primary" id="btn-modifier" style="display: none; width: auto;"
                         onclick="RedirectModifier()">Modifier</button>
                       <div class="text-danger" id="erreurSurvenue"></div>
+                      <div class="text-success" id="succes"></div>
                     </div>
 
                     <div class="col">
@@ -238,7 +239,24 @@
       var verifier = VerificationChampsRemplis();
 
       if (verifier) {
-        //ajouter
+
+
+        fetch('/ajouterProduct/' + id, {
+          method: 'POST',
+          body: JSON.stringify({})
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur lors de la mise à jour du produit');
+            }
+            return response.json();
+          })
+          .then(data => {
+            location.reload();
+          })
+          .catch(error => {
+            console.error('Erreur lors de la mise à jour du produit:', error);
+          });
       }
     }
     function VerificationChampsRemplis() {

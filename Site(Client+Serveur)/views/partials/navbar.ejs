@@ -39,9 +39,10 @@
                 style="background: transparent; width: 4rem; border: transparent">
                 <img src="/images/icons8-male-user.gif" alt="icone utilisateur" class="w-100 h-100"
                     style="display: flex; border-radius: 100%;">
-                <span id="userFullName">Profil</span>
+
             </button>
             <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <li style="text-align: center;"><span id="userFullName"></span></li>
                 <li><a class="dropdown-item" id="btnProfil" href="/pages/profile">Profil</a></li>
                 <li class="text-start"> <!-- Ajoute la classe text-start pour aligner à gauche -->
                     <a href="/pages/connexion" class="dropdown-item" id="connexionBtn">Connexion</a>
@@ -65,7 +66,7 @@
     }
 
     nav {
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        transition: 0.3s ease;
     }
 </style>
 
