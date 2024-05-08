@@ -63,13 +63,17 @@
         margin-top: 0;
         right: 0;
     }
+
+    nav {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 </style>
 
 <script>
     var nav = document.querySelector('nav');
 
     window.addEventListener('scroll', function () {
-        if (window.pageYOffset > 100) {
+        if (window.pageYOffset > 25) {
             nav.classList.add('bg-body-secondary', 'shadow');
         } else {
             nav.classList.remove('bg-body-secondary', 'shadow');

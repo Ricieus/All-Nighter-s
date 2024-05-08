@@ -140,9 +140,8 @@
                       </div>
                       <div class="form-group">
                         <label for="productDescription">Description :</label>
-                        <textarea class="form-control" id="productDescription" rows="3"
-                          placeholder="Description de la voiture" style="height: 7rem; resize: none;"
-                          disabled></textarea>
+                        <textarea class="form-control" id="productDescription" placeholder="Description de la voiture"
+                          style="height: 7rem;" disabled></textarea>
                       </div>
 
                     </div>
@@ -231,14 +230,15 @@
 
                     <div class="col">
                       <button class="btn btn-primary" id="btn-effectuerAjout" style="display: none; width: auto;"
-                        disabled>Ajouter</button>
+                        onclick="RedirectAjouter()">Ajouter</button>
                       <button class="btn btn-primary" id="btn-modifier" style="display: none; width: auto;"
                         onclick="RedirectModifier()">Modifier</button>
+                      <div class="text-danger" id="erreurSurvenue"></div>
                     </div>
 
                     <div class="col">
-                      <button class="btn btn-primary" id="btn-ajouter" style="display: block; width: auto;"
-                        onclick="Ajouter()">
+                      <button class="btn btn-primary" id="btn-ajouter"
+                        style="display: block; width: auto; float: right;" onclick="Ajouter()">
                         Ajouter une voiture</button>
                     </div>
 
@@ -293,6 +293,85 @@
 
 
   <script>
+    function RedirectAjouter() {
+      var verifier = VerificationChampsRemplis();
+
+      if (verifier) {
+        //ajouter
+      }
+    }
+    function VerificationChampsRemplis() {
+      const id = document.getElementById("idProduit").value;
+      const marque = document.getElementById("marqueProduit").value;
+      const modele = document.getElementById("modeleProduit").value;
+      const prix = document.getElementById("voiturePrix").value;
+      const annee = document.getElementById("voitureAnnee").value;
+      const productDescription = document.getElementById('productDescription').value;
+      const typeCarosserie = document.getElementById('typeCarosserie').value;
+      const typeGaz = document.getElementById('typeGaz').value;
+      const typeMoteur = document.getElementById('typeMoteur').value;
+      const nbrCylindre = document.getElementById('nbrCylindre').value;
+      const typeConduit = document.getElementById('typeConduit').value;
+      const productImage = document.getElementById('productImage').value;
+      let erreurSurvenue = document.getElementById('erreurSurvenue');
+
+      let continuer = true;
+      let message = "";
+      erreurSurvenue.innerText = message;
+      if (!marque) {
+        continuer = false;
+        message += "la marque, "
+      }
+      if (!modele) {
+        continuer = false;
+        message += "le modèle, "
+      }
+      if (!prix) {
+        continuer = false;
+        message += "le prix, "
+      }
+      if (!annee) {
+        continuer = false;
+        message += "l'année, "
+      }
+      if (!productDescription) {
+        continuer = false;
+        message += "la description, "
+      }
+      if (!typeCarosserie) {
+        continuer = false;
+        message += "le type de carrosserie, "
+      }
+      if (!typeGaz) {
+        continuer = false;
+        message += "le type de gaz, "
+      }
+      if (!typeMoteur) {
+        continuer = false;
+        message += "le type de moteur, "
+      }
+      if (!nbrCylindre) {
+        continuer = false;
+        message += "le nombre de cylindre, "
+      }
+      if (!typeConduit) {
+        continuer = false;
+        message += "le type de conduit, "
+      }
+      if (!productImage) {
+        continuer = false;
+        message += "les quatre images, "
+      }
+
+      if (continuer) {
+        return true;
+      } else {
+        message = message.trim().slice(0, -1);
+        erreurSurvenue.innerText = "Vous avez oublié de mettre : " + message + ".";
+        return false;
+      }
+    }
+
     function RedirectModifier() {
       const id = document.getElementById("idProduit").value;
       const marque = document.getElementById("marqueProduit").value;
