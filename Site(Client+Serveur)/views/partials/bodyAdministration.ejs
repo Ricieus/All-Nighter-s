@@ -80,96 +80,154 @@
 
             <div class="card">
               <div class="product-list-form">
-                <h2>Ajouter un produit</h2>
+                <h3 class="m-3">Informations de la voiture</h3>
                 <div class="container">
-                  <form>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="marqueProduit">Marque :</label>
-                          <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture">
-                        </div>
-                        <div class="form-group">
-                          <label for="modeleProduit">Modèle :</label>
-                          <input type="text" class="form-control" id="modeleProduit" placeholder="Modèle de la voiture">
-                        </div>
-                        <div class="form-group">
-                          <label for="voitureAnnee">Année :</label>
-                          <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture">
-                        </div>
-                        <div class="form-group">
-                          <label for="voiturePrix">Prix :</label>
-                          <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture">
-                        </div>
-                        <div class="form-group">
-                          <label for="productDescription">Description :</label>
-                          <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="Description de la voiture"></textarea>
-                        </div>
 
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="idProduit">Id :</label>
+                        <input type="text" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
+                          disabled>
                       </div>
-                      <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="marqueProduit">Marque :</label>
+                        <input type="text" class="form-control" id="marqueProduit" placeholder="Marque de la voiture"
+                          name="marque" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="modeleProduit">Modèle :</label>
+                        <input type="text" class="form-control" id="modeleProduit" name="modele"
+                          placeholder="Modèle de la voiture" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="voitureAnnee">Année :</label>
+                        <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
+                          name="annee" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="voiturePrix">Prix :</label>
+                        <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
+                          name="prix" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="productDescription">Description :</label>
+                        <textarea class="form-control" id="productDescription" placeholder="Description de la voiture"
+                          style="height: 7rem;" disabled></textarea>
+                      </div>
 
-                        <div class="image-box">
-                          <h3>Images</h3>
-                          <div class="image-preview" id="imagePreview"></div>
-                          <div class="form-group">
-                            <label class="custom-file-upload">
-                              <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
-                                style="display: none;" onchange="AfficherImagesSelectionner(this)">
-                              Ajouter une image
-                            </label>
-                          </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="image-box">
+                        <div class="form-group">
+                          <label for="typeCarosserie">Type de carrosserie :</label>
+
+                          <input type="text" class="form-control" id="typeCarosserie" placeholder="Type de carrosserie"
+                            disabled >
                         </div>
+
+                        <div class="form-group">
+                          <label for="typeGaz">Type de gaz :</label>
+                          <input type="text" class="form-control" id="typeGaz" placeholder="Type de gaz" disabled>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeMoteur">Type de moteur :</label>
+                          <input type="text" class="form-control" id="typeMoteur" placeholder="Type de moteur" disabled>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="nombreCylindre">Nombre de cylindre :</label>
+                          <input type="text" class="form-control" id="nbrCylindre" placeholder="Type de moteur"
+                            disabled>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="typeConduit">Type de conduit :</label>
+                          <input type="text" class="form-control" id="typeConduit" placeholder="Type de conduit"
+                            disabled>
+                        </div>
+                        <h3>Images</h3>
+                        <div class="image-preview" id="imagePreview">
+                          <img class="mr-2" id="img">
+                          <img class="mr-2" id="img1">
+                          <img class="mr-2" id="img2">
+                          <img class="mr-2" id="img3">
+                        </div>
+                        <div class="form-group">
+                          <label class="custom-file-upload">
+                            <input type="file" class="form-control-file" id="productImage" accept="image/*" multiple
+                              style="display: none;" onchange="AfficherImagesSelectionner(this)" disabled >
+                            Ajouter une image
+                          </label>
+                      </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Ajouter</button>
-                      </div>
-                    </div>
-                </div>
-
-
-                <div class="card">
-                  <h1 class="mt-5">Modifier les produits</h1>
-                  <div class="container mt-5">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Marque</th>
-                          <th scope="col">Modèle</th>
-                          <th scope="col">Prix ($)</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <% for (let i=0; i < items.length; i++) { %>
-                        <tr>
-                          <td>
-                            <%= items[i].marque %>
-                          </td>
-                          <td>
-                            <%= items[i].modele %>
-                          </td>
-                          <td>
-                            <%= items[i].prix %>
-                          </td>
-                          <td>
-                            <button class="btn btn-warning"><i class="bi bi-pencil-fill"
-                                onchange=remplirFormulaire()></i>
-                              Modifier</button>
-                            <button class="btn btn-danger"><i class="bi bi-trash3-fill"></i> Supprimer</button>
-                          </td>
-                        </tr>
-                        <% } %>
-                    </table>
                   </div>
+                  <div class="row mb-3">
+
+
+                    <div class="col">
+                      <button class="btn btn-primary" id="btn-effectuerAjout" style="display: none; width: auto;"
+                        onclick="RedirectAjouter()">Ajouter</button>
+                      <button class="btn btn-primary" id="btn-modifier" style="display: none; width: auto;"
+                        onclick="RedirectModifier()">Modifier</button>
+                      <div class="text-danger" id="erreurSurvenue"></div>
+                      <div class="text-success" id="succes"></div>
+                    </div>
+
+                    <div class="col">
+                      <button class="btn btn-primary" id="btn-ajouter"
+                        style="display: block; width: auto; float: right;" onclick="Ajouter()">
+                        Ajouter une voiture</button>
+                    </div>
+
+                  </div>
+
+
+
                 </div>
-
-
               </div>
             </div>
+            <div class="card mt-2">
+              <h3 class="m-3">Les voitures</h3>
+              <div class="container">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Marque</th>
+                      <th scope="col">Modèle</th>
+                      <th scope="col">Prix ($)</th>
+                      <th scope="col">Année</th>
+                    </tr>
+                  </thead>
+                  <% for (let i=0; i < items.length; i++) { %>
+                    <tr data-id="<%= items[i].id_voiture %>">
+                      <td>
+                        <%= items[i].marque %>
+                      </td>
+                      <td>
+                        <%= items[i].modele %>
+                      </td>
+                      <td>
+                        <%= items[i].prix %>
+                      </td>
+                      <td>
+                        <%= items[i].annee %>
+                      </td>
+                      <td>
+                       <button class="btn btn-warning modifier"><i class="bi bi-pencil-fill"></i>
+                          Modifier</button>
+                        <button class="btn btn-danger btn-supprimer"><i class="bi bi-trash3-fill"></i>
+                          Supprimer</button>
+                        </td>
+                      </tr>
+  
+                          <% } %>
 
+                </table>
+              </div>
+            </div>
           </div>
       </div>
     </div>
@@ -177,8 +235,241 @@
 
 
   <script>
+    function RedirectAjouter() {
+      var verifier = VerificationChampsRemplis();
+
+      if (verifier) {
+
+
+        fetch('/ajouterProduct/' + id, {
+          method: 'POST',
+          body: JSON.stringify({})
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur lors de la mise à jour du produit');
+            }
+            return response.json();
+          })
+          .then(data => {
+            location.reload();
+          })
+          .catch(error => {
+            console.error('Erreur lors de la mise à jour du produit:', error);
+          });
+      }
+    }
+    function VerificationChampsRemplis() {
+      const id = document.getElementById("idProduit").value;
+      const marque = document.getElementById("marqueProduit").value;
+      const modele = document.getElementById("modeleProduit").value;
+      const prix = document.getElementById("voiturePrix").value;
+      const annee = document.getElementById("voitureAnnee").value;
+      const productDescription = document.getElementById('productDescription').value;
+      const typeCarosserie = document.getElementById('typeCarosserie').value;
+      const typeGaz = document.getElementById('typeGaz').value;
+      const typeMoteur = document.getElementById('typeMoteur').value;
+      const nbrCylindre = document.getElementById('nbrCylindre').value;
+      const typeConduit = document.getElementById('typeConduit').value;
+      const productImage = document.getElementById('productImage').value;
+      let erreurSurvenue = document.getElementById('erreurSurvenue');
+
+      let continuer = true;
+      let message = "";
+      erreurSurvenue.innerText = message;
+      if (!marque) {
+        continuer = false;
+        message += "la marque, "
+      }
+      if (!modele) {
+        continuer = false;
+        message += "le modèle, "
+      }
+      if (!prix) {
+        continuer = false;
+        message += "le prix, "
+      }
+      if (!annee) {
+        continuer = false;
+        message += "l'année, "
+      }
+      if (!productDescription) {
+        continuer = false;
+        message += "la description, "
+      }
+      if (!typeCarosserie) {
+        continuer = false;
+        message += "le type de carrosserie, "
+      }
+      if (!typeGaz) {
+        continuer = false;
+        message += "le type de gaz, "
+      }
+      if (!typeMoteur) {
+        continuer = false;
+        message += "le type de moteur, "
+      }
+      if (!nbrCylindre) {
+        continuer = false;
+        message += "le nombre de cylindre, "
+      }
+      if (!typeConduit) {
+        continuer = false;
+        message += "le type de conduit, "
+      }
+      if (!productImage) {
+        continuer = false;
+        message += "les quatre images, "
+      }
+
+      if (continuer) {
+        return true;
+      } else {
+        message = message.trim().slice(0, -1);
+        erreurSurvenue.innerText = "Vous avez oublié de mettre : " + message + ".";
+        return false;
+      }
+    }
+
+    function RedirectModifier() {
+      const id = document.getElementById("idProduit").value;
+      const marque = document.getElementById("marqueProduit").value;
+      const modele = document.getElementById("modeleProduit").value;
+      const prix = document.getElementById("voiturePrix").value;
+      const annee = document.getElementById("voitureAnnee").value;
+
+  // Envoi de la mise à jour à la base de données MySQL
+  fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ marque, modele, prix, annee })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du produit');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Mise à jour effectuée avec succès dans MySQL");
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
+    });
+}
+
+function getCarDetailsFromMongo(id) {
+  fetch('/getCarDetails/' + id, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des détails de la voiture');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      document.getElementById('typeCarosserie').value = data.corps;
+      document.getElementById('typeGaz').value = data.carburant;
+      document.getElementById('typeMoteur').value = data.pneus_bougent;
+      document.getElementById('productDescription').value = data.description;
+      document.getElementById('nbrCylindre').value = data.moteur;
+      document.getElementById('typeConduit').value = data.transmission;
+      document.getElementById('img').src = "/images/" + data.images[0];
+      document.getElementById('img1').src = "/images/" + data.images[1];
+      document.getElementById('img2').src = "/images/" + data.images[2];
+      document.getElementById('img3').src = "/images/" + data.images[3];
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des détails de la voiture:', error);
+    });
+}
+
+
+
+    function Ajouter() {
+      document.getElementById('btn-ajouter').style.display = "none";
+      document.getElementById("btn-modifier").style.display = "none";
+      AfficherTousLesChamps();
+      ReinitialiserTousLesChamps()
+      document.getElementById('btn-effectuerAjout').style.display = "block";
+    }
+
+    function ReinitialiserTousLesChamps() {
+      document.getElementById('idProduit').value = null;
+      document.getElementById('marqueProduit').value = null;
+      document.getElementById('modeleProduit').value = null;
+      document.getElementById('voitureAnnee').value = null;
+      document.getElementById('voiturePrix').value = null;
+      document.getElementById('productDescription').value = null;
+      document.getElementById('typeCarosserie').value = null;
+      document.getElementById('typeGaz').value = null;
+      document.getElementById('typeMoteur').value = null;
+      document.getElementById('nbrCylindre').value = null;
+      document.getElementById('typeConduit').value = null;
+      document.getElementById('productImage').value = null;
+      document.getElementById('img').src = '';
+      document.getElementById('img1').src = '';
+      document.getElementById('img2').src = '';
+      document.getElementById('img3').src ='';
+      }
+
+    function AfficherTousLesChamps() {
+      document.getElementById('marqueProduit').disabled = false;
+      document.getElementById('modeleProduit').disabled = false;
+      document.getElementById('voitureAnnee').disabled = false;
+      document.getElementById('voiturePrix').disabled = false;
+      document.getElementById('productDescription').disabled = false;
+      document.getElementById('typeCarosserie').disabled = false;
+      document.getElementById('typeGaz').disabled = false;
+      document.getElementById('typeMoteur').disabled = false;
+      document.getElementById('nbrCylindre').disabled = false;
+      document.getElementById('typeConduit').disabled = false;
+      document.getElementById('productImage').disabled = false;
+    }
+
+    function AfficherSectionMain() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.add('active');
+      productForm.classList.remove('active');
+      gestionClients.classList.remove('active');
+    }
+
+    function AfficherSectionProduit() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.remove('active');
+      productForm.classList.add('active');
+      gestionClients.classList.remove('active');
+    }
+
+    function AfficherSectionGestionClients() {
+      var sectionMain = document.querySelector('.sectionMain');
+      var productForm = document.querySelector('.product-list-form');
+      var gestionClients = document.querySelector('.gestion-clients');
+
+      sectionMain.classList.remove('active');
+      productForm.classList.remove('active');
+      gestionClients.classList.add('active');
+
+
+    }
+
+
     function ActivationBoutonAjouter() {
-      var submitBtn = document.getElementById('submitBtn');
+      var submitBtn = document.getElementById('btn-effectuerAjout');
       var marqueProduit = document.getElementById('marqueProduit').value;
       var modeleProduit = document.getElementById('modeleProduit').value;
       var voiturePrix = document.getElementById('voiturePrix').value;
@@ -218,24 +509,57 @@
     }
 
 
-    function remplirFormulaire(marque, modele, prix) {
+    function remplirFormulaire(id, marque, modele, prix, annee) {
+      document.getElementById('idProduit').value = id;
       document.getElementById('marqueProduit').value = marque;
       document.getElementById('modeleProduit').value = modele;
+      document.getElementById('voitureAnnee').value = annee;
       document.getElementById('voiturePrix').value = prix;
     }
 
 
-
-    var buttonsModifier = document.querySelectorAll('.btn-warning');
-    buttonsModifier.forEach(function (button) {
+    document.querySelectorAll('.modifier').forEach(function (button) {
       button.addEventListener('click', function (event) {
         event.preventDefault();
         var row = this.closest('tr');
-        var marque = row.cells[0].textContent;
-        var modele = row.cells[1].textContent;
-        var prix = row.cells[2].textContent;
-
-        remplirFormulaire(marque, modele, prix);
+        var id = row.getAttribute('data-id');
+        var marque = row.cells[0].textContent.trim();
+        var modele = row.cells[1].textContent.trim();
+        var prix = row.cells[2].textContent.trim();
+        var annee = row.cells[3].textContent.trim();
+        remplirFormulaire(id, marque, modele, prix, annee);
+        getCarDetailsFromMongo(id);
+        document.getElementById("btn-modifier").style.display = "block";
+        document.getElementById("btn-ajouter").style.display = "block";
+        document.getElementById("btn-effectuerAjout").style.display = "none";
+        AfficherTousLesChamps();
       });
     });
+
+
+    document.querySelectorAll('.btn-supprimer').forEach(function (button) {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        var row = this.closest('tr');
+        var id = row.getAttribute('data-id');
+        supprimerVoiture(id);
+      });
+    });
+
+    function supprimerVoiture(id) {
+      fetch('/delete_voiture/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => {
+          if (res.ok) {
+            location.reload();
+          }
+        })
+        .catch(err => {
+          console.error("Erreur de suppression : " + err);
+        });
+    }
   </script>

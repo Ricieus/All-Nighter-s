@@ -2,6 +2,7 @@
     Importation des modules requis
 */
 import express from "express";
+
 import session from "express-session";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -493,12 +494,14 @@ app.post('/create-checkout-session', async (req, res) => {
         let marque = req.body.marque;
         let taux = req.body.taux;
         let priceNumber = req.body.price;
+        let images = req.body.images;
 
+        // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
         });
 
-        let product;
+        let product; // Declare a new variable for the product
 
         if (productResponse.data.length === 0) {
             product = await stripe.products.create({
@@ -508,6 +511,7 @@ app.post('/create-checkout-session', async (req, res) => {
             product = productResponse.data[0];
         }
 
+        // Create or retrieve a price in Stripe
         const priceResponse = await stripe.prices.list({
             product: product.id,
             currency: 'cad',
@@ -516,11 +520,13 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let price;
         if (priceResponse.data.length > 0) {
+            // Price already exists
             price = priceResponse.data[0];
         } else {
+            // Create a new price if it doesn't exist
             price = await stripe.prices.create({
                 currency: 'cad',
-                unit_amount: priceNumber * 100,
+                unit_amount: priceNumber * 100, // Convert to cents
                 product: product.id,
             });
         }
@@ -547,6 +553,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let formattedDate = twoWeeksLater.toISOString().split('T')[0];
 
+        // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
@@ -567,107 +574,206 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.get('/pages/administrateur', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
+app.get('/pages/administrateur', async (req, res) => {
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        const items = rows; // Assuming only one row is returned
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const result = await cursor.toArray();
+
+
+        // Check if car details are found in MongoDB
+        if (!result) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+        // Render the detailee page with car information
+        res.render('pages/administrateur', { items, carDetails: result });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
+});
+app.post('/updateProduct/:id', async (req, res) => {
+    try {
+        let marque = req.query.marque;
+        let modele = req.query.modele;
+        let prix = req.query.prix;
+        let annee = req.query.annee;
+        const idVoiture = req.params.id;
+        console.log(idVoiture);
+
+        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = ?`;
+        con.query(query, [marque, modele, prix, annee, idVoiture], async (error, results) => {
+            if (error) {
+                console.error('Erreur lors de la mise à jour du produit:', error);
+                return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
+            }
+            res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
+        
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error');
+    }
+});
+
+   
+async function getCarDetailsFromMongo(id) {
+
+    try {
+      // Connexion au client MongoDB
+
+      const collection = db.collection('voitureDetaille');
+  
+      // Récupération des détails de la voiture basés sur l'ID
+      const result = await collection.findOne({ _id: parseInt(id) });
+  
+      return result;
+    } catch (err) {
+      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+      throw err; // Propagez l'erreur pour la gérer plus tard
+    } 
+    }
+  
+  
+  // Route pour récupérer les détails de la voiture depuis MongoDB
+  app.get('/getCarDetails/:id', async (req, res) => {
+    const idVoiture = req.params.id;
+  
+    try {
+      const carDetails = await getCarDetailsFromMongo(idVoiture);
+  
+      if (!carDetails) {
+        console.error('Détails de la voiture introuvables dans MongoDB');
+        return res.status(404).send('Détails de la voiture introuvables');
+      }
+  
+      res.json(carDetails); // Envoyez les détails de la voiture au frontend
+    } catch (err) {
+      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+      res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
+    }
+  });
+
+app.delete('/delete_voiture/:id', async (req, res) => {
+    const idVoiture = req.params.id;
+
+    con.query("DELETE FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
         if (err) throw err;
         res.render("pages/administrateur", {
             pageTitle: "Concessionnaire Rubious",
             items: result
         });
     });
-});
 
-app.get('/pages/administrateurCommandes', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurCommandes", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
+    const collection = db.collection('voitureDetaille');
 
-app.get('/pages/administrateurGestionClient', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurGestionClient", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-app.get('/pages/administrateurProduits', (req, res) => {
-    con.query("SELECT * FROM voitures", function (err, result) {
-        if (err) throw err;
-        res.render("pages/administrateurProduits", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
-    });
-});
-
-app.post('/command', async (req, res) => {
     try {
-        let uri = process.env.DB_URI;
-        let nomVoiture = req.body.nom;
-        let prixVoiture = req.body.prix;
-        let dateVoiture = req.body.date;
-        let utilisateurActive = req.body.user;
-
-        if (!client) {
-            client = await connectToMongo(uri);
+        const result = await collection.deleteOne({ _id: parseInt(idVoiture) });
+        if (result.deletedCount === 1) {
+            console.log('Car deleted successfully from MongoDB');
+        } else {
+            console.log('No car found with the provided ID in MongoDB');
         }
-
-        let database = client.db('AllNighter');
-        let voitureDetailleCollection = database.collection('voitureDetaille');
-
-        const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
-
-        if (!voitureDetaille) {
-            return res.status(404).send('Voiture non trouvée');
-        }
-
-        const image = voitureDetaille.images[0];
-
-        let voitureCommandeCollection = database.collection('voitureCommande');
-
-        const commandeInformation = {
-            nom: nomVoiture,
-            prix: prixVoiture,
-            date: dateVoiture,
-            utilisateur: utilisateurActive,
-            image: image
-        };
-
-        await voitureCommandeCollection.insertOne(commandeInformation);
-
-        res.status(200).send('Commande insérée avec succès');
-
-    } catch (error) {
-        console.error("Erreur lors de l'exécution des opérations:", error);
-        res.status(500).send('Erreur interne du serveur');
+    } catch (err) {
+        console.error('Error deleting car from MongoDB:', err);
     }
 });
 
-app.get('/getImageVoiture', async (req, res) => {
+app.post('/command', (req, res) => {
+    let uri = process.env.DB_URI;
     let nomVoiture = req.body.nom;
+    let prixVoiture = req.body.prix;
+    let dateVoiture = req.body.date;
+    let utilisateurActive = req.body.user;
+
+
+    console.log(nomVoiture);
+    console.log(prixVoiture);
+    console.log(dateVoiture);
+    console.log(utilisateurActive);
+
+    const commandeInformation = {
+        nom: nomVoiture,
+        prix: prixVoiture,
+        date: dateVoiture,
+        utilisateur: utilisateurActive
+    };
+
     try {
-        let uri = process.env.DB_URI;
         if (!client) {
-            client = await connectToMongo(uri);
+            client = connectToMongo(uri);
         }
 
         let database = client.db('AllNighter');
-        let voitureDetailleCollection = database.collection('voitureCommande');
-        const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
+        let collection = database.collection('voitureCommande');
 
-        res.json(voitureDetaille);
+        collection.insertOne({ commandeInformation }, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
 
     } catch (error) {
-        console.error("Erreur lors de l'exécution des opérations:", error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+        console.error("Error executing operations:", error);
+    } finally {
+        if (mongoClient) {
+            mongoClient.close(); // Close the MongoDB client
+            console.log("MongoDB connection closed.");
+        }
     }
+});
+
+app.post('/ajoutVoiture', async (req, res) => {
+
+    let marque = req.body.marque;
+    let modele = req.body.modele;
+    let annee = req.body.annee;
+    let prix = req.body.prix;
+    let utilisateurs_id_utilisateurs = 1;
+    let image = req.body.image;
+
+
+
+
+    // Requête SQL d'insertion
+    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
+
+    // Exécuter la requête d'insertion
+    con.query(sql, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('Erreur ajouter: Veuillez notifier Jad');
+        }
+        console.log("Ajout effectuée");
+        res.redirect('/pages/adinistrateur');
+    });
+
 });
 
 /*

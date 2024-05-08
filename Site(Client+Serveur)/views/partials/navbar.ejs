@@ -26,7 +26,7 @@
                 </li>
                 <li class="nav-item m-2">
                     <div class="border border-light rounded-pill justify-content-center bg-light shadow-sm"
-                        style="width: 7rem">
+                        style="width: 8rem">
                         <a href="/pages/administrateur" class="nav-link text-center">Administrateur</a>
                     </div>
                 </li>
@@ -39,9 +39,10 @@
                 style="background: transparent; width: 4rem; border: transparent">
                 <img src="/images/icons8-male-user.gif" alt="icone utilisateur" class="w-100 h-100"
                     style="display: flex; border-radius: 100%;">
-                <span id="userFullName">Profil</span>
+
             </button>
             <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
+                <li style="text-align: center;"><span id="userFullName"></span></li>
                 <li><a class="dropdown-item" id="btnProfil" href="/pages/profile">Profil</a></li>
                 <li class="text-start"> <!-- Ajoute la classe text-start pour aligner à gauche -->
                     <a href="/pages/connexion" class="dropdown-item" id="connexionBtn">Connexion</a>
@@ -63,13 +64,17 @@
         margin-top: 0;
         right: 0;
     }
+
+    nav {
+        transition: 0.3s ease;
+    }
 </style>
 
 <script>
     var nav = document.querySelector('nav');
 
     window.addEventListener('scroll', function () {
-        if (window.pageYOffset > 100) {
+        if (window.pageYOffset > 25) {
             nav.classList.add('bg-body-secondary', 'shadow');
         } else {
             nav.classList.remove('bg-body-secondary', 'shadow');
