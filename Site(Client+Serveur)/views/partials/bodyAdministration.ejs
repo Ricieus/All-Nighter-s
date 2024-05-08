@@ -354,6 +354,7 @@
     })
     .then(data => {
       console.log("Mise à jour effectuée avec succès dans MySQL");
+      location.reload();
     })
     .catch(error => {
       console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
