@@ -58,7 +58,9 @@
                             <h5 class="bold" id="nom"></h5>
                             <p id="prix"></p>
                             <h4>Autre détails</h4>
-                            <p id="date"></p>
+                            <p>Date de livraison estimée: <br>
+                                <p id="date"></p>
+                            </p>
                         </div>
                         <div id="imageVoiture">
                             
@@ -130,7 +132,7 @@
 
     document.getElementById("nom").innerText = queryParams["produitNom"];
     document.getElementById("prix").innerText = parseFloat(queryParams["price"]).toLocaleString('fr-FR', { style: 'currency', currency: 'CAD' });
-    document.getElementById("date").innerText = "Date de livraison estimée: " + queryParams["date"];
+    document.getElementById("date").innerText = queryParams["date"];
 </script>
 <script>
     window.addEventListener('load', function() {
@@ -155,27 +157,33 @@
         .catch(error => {
             console.error('Erreur dans l`insertion : ', error);
         });
-
+    });
+</script>
+<script>
+    window.addEventListener('load', function() {
+        let nomVoiture = document.getElementById("nom").innerHTML;
+        console.log(nomVoiture);
         fetch('/getImageVoiture', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ nom: nomVoiture})
-        })
-            .then(response => response.json())
-            .then(data => {
-                const voitureImage = document.getElementById('imageVoiture');
-                if (data) {
-                    voitureImage.innerHTML = `
-                        <img src="${data.images[0]}" alt="Car Image">
-                    `;
-                } else {
-                    voitureImage.innerHTML = '<p>Image manquante</p>';
-                }
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nom: nomVoiture})
             })
-            .catch(error => {
-                console.error('Error fetching car details:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    const voitureImage = document.getElementById('imageVoiture');
+                    if (data) {
+                        console.log(data);
+                        voitureImage.innerHTML = `
+                            <img src="../images/${data}" alt="Car Image" style="width: 90%; float: right; ">
+                        `;
+                    } else {
+                        voitureImage.innerHTML = '<p>Image manquante</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching car details:', error);
+                });
     });
 </script>
