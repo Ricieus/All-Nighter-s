@@ -74,10 +74,15 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <%- include ('../partials/administrateurSidePanel.ejs') %>
-          <div class="col-lg-8 content-area">
-            <h1>Administrateur</h1>
+        <div class="col-lg-4 sidebar">
 
+          <h3>Menu</h3>
+          <ul class="nav flex-column">
+              <li class="nav-item"><a class="nav-link" href="#">Main</a></li>
+              <li class="nav-item"><a class="nav-link" href="/pages/administrateur">CRUD Voitures</a></li>
+          </ul>
+        </div>
+          <div class="col-lg-8 content-area" id="adminVoiture"> <!--  -->
             <div class="card">
               <div class="product-list-form">
                 <h3 class="m-3">Informations de la voiture</h3>
@@ -228,6 +233,9 @@
                 </table>
               </div>
             </div>
+          </div>
+          <div id="mainAdmin">
+
           </div>
       </div>
     </div>
