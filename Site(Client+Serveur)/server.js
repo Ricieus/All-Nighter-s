@@ -748,12 +748,6 @@ app.post('/command', (req, res) => {
     let dateVoiture = req.body.date;
     let utilisateurActive = req.body.user;
 
-
-    console.log(nomVoiture);
-    console.log(prixVoiture);
-    console.log(dateVoiture);
-    console.log(utilisateurActive);
-
     const commandeInformation = {
         nom: nomVoiture,
         prix: prixVoiture,
@@ -762,12 +756,7 @@ app.post('/command', (req, res) => {
     };
 
     try {
-        if (!client) {
-            client = connectToMongo(uri);
-        }
-
-        let database = client.db('AllNighter');
-        let collection = database.collection('voitureCommande');
+        let collection = db.collection('voitureCommande');
 
         collection.insertOne({ commandeInformation }, (err, result) => {
             if (err) {
@@ -777,11 +766,25 @@ app.post('/command', (req, res) => {
 
     } catch (error) {
         console.error("Error executing operations:", error);
-    } finally {
-        if (mongoClient) {
-            mongoClient.close(); // Close the MongoDB client
-            console.log("MongoDB connection closed.");
-        }
+    } 
+    // finally {
+    //     if (mongoClient) {
+    //         mongoClient.close(); // Close the MongoDB client
+    //         console.log("MongoDB connection closed.");
+    //     }
+    // }
+});
+
+app.post('/getImageVoiture', async (req, res) => {
+    let nomVoiture = req.body.nom;
+    try {
+        let voitureDetailleCollection = db.collection('voitureCommande');
+        const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
+        res.json(voitureDetaille.image);
+
+    } catch (error) {
+        console.error("Erreur lors de l'exécution des opérations:", error);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 });
 
