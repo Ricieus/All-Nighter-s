@@ -1,11 +1,11 @@
 -- Ce code permet de créer l'environnement de la base de données
-CREATE DATABASE ALLNIGHTER;
+CREATE DATABASE AllNighter;
 
 use AllNighter; -- Après la création de l'environnement, ce code permet d'accéder dans l'environnement
 
 -- Dans les prochanes lignes, veuillez copier et coller dans le terminal du docker les prochaines code un par un (séparer par un "---")
 ------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE UTILISATEURS (
+CREATE TABLE utilisateurs (
     ID_UTILISATEURS INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     NOM VARCHAR(100) NOT NULL,
     PRENOM VARCHAR(100) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE UTILISATEURS (
     ADRESSE VARCHAR(200) NOT NULL
 );
 
-INSERT INTO UTILISATEURS (
+INSERT INTO utilisateurs (
     NOM,
     PRENOM,
     EMAIL,
@@ -31,7 +31,7 @@ INSERT INTO UTILISATEURS (
     '123 Main Street, Anytown, Canada'
 );
 
-INSERT INTO UTILISATEURS (
+INSERT INTO utilisateurs (
     NOM,
     PRENOM,
     EMAIL,
@@ -48,7 +48,7 @@ INSERT INTO UTILISATEURS (
 );
 
 ------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE VOITURES (
+CREATE TABLE voitures (
     ID_VOITURE INT NOT NULL PRIMARY KEY,
     MARQUE VARCHAR(150) NOT NULL,
     MODELE VARCHAR(200) NOT NULL,
@@ -56,10 +56,10 @@ CREATE TABLE VOITURES (
     PRIX DECIMAL(10, 2) NOT NULL,
     UTILISATEURS_ID_UTILISATEURS INT NOT NULL,
     IMAGE VARCHAR(255),
-    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES UTILISATEURS (ID_UTILISATEURS)
+    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES utilisateurs (ID_UTILISATEURS)
 );
 
-INSERT INTO VOITURES (
+INSERT INTO voitures (
     ID_VOITURE,
     MARQUE,
     MODELE,
@@ -213,7 +213,7 @@ INSERT INTO VOITURES (
 );
 
 ---------------------------------------------------------------------------------------------------------------------
-CREATE TABLE CONTACT (
+CREATE TABLE contact (
     ID_CONTACT INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     PRENOM VARCHAR(100) NOT NULL,
     NOM VARCHAR(100) NOT NULL,
@@ -222,10 +222,10 @@ CREATE TABLE CONTACT (
     DATERENDEZVOUS DATE NOT NULL,
     RAISONRENDEZVOUS VARCHAR(100),
     UTILISATEURS_ID_UTILISATEURS INT NOT NULL,
-    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES UTILISATEURS (ID_UTILISATEURS)
+    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES utilisateurs (ID_UTILISATEURS)
 );
 
-INSERT INTO CONTACT (
+INSERT INTO contact (
     PRENOM,
     NOM,
     COURRIEL,
