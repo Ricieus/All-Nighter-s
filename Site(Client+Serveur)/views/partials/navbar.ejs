@@ -50,6 +50,9 @@
                 <li>
                     <button id="deconnexionBtn" class="dropdown-item">Déconnexion</button>
                 </li>
+                <li id="liAdmin" style="display: none;">
+                    <a href="/pages/administrateur" class="dropdown-item" id="adminBtn">Administrateur</a>
+                </li>
             </ul>
         </li>
     </ul>
@@ -86,12 +89,18 @@
         const btnDeconnexion = document.getElementById('deconnexionBtn');
         const connexionBtn = document.getElementById('connexionBtn');
         const btnProfil = document.getElementById('btnProfil');
+        const btnAdmin = document.getElementById('liAdmin');
 
         if (userFullName) {
             document.getElementById('userFullName').innerText = userFullName;
             btnDeconnexion.style.display = 'block'; // Activer le bouton de déconnexion
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
             btnProfil.style.display = 'block'; // Activer le bouton de profil
+
+            if(userFullName == "John Doe"){
+                btnAdmin.style.display = 'block';
+            }
+
         } else {
             document.getElementById('userFullName').innerText = ''; // Effacer le nom d'utilisateur affiché
             btnDeconnexion.style.display = 'none'; // Désactiver le bouton de déconnexion
@@ -116,4 +125,6 @@
             location.reload();
         });
     });
+
+
 </script>
