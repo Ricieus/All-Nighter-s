@@ -53,7 +53,7 @@ INSERT INTO voitures (
     'Civic',
     2022,
     23000,
-    2,
+    1,
     'honda_civic.avif'
 ),
 (
@@ -80,7 +80,7 @@ INSERT INTO voitures (
     'Model 3',
     2022,
     50000,
-    2,
+    1,
     'Tesla3.jpeg'
 ),
 (
@@ -89,7 +89,7 @@ INSERT INTO voitures (
     'Model X',
     2022,
     90000,
-    2,
+    1,
     'teslaX.jpeg'
 ),
 (
@@ -116,7 +116,7 @@ INSERT INTO voitures (
     'Tahoe',
     2023,
     55000,
-    2,
+    1,
     'chevrolet-tahoe.avif'
 ),
 (
@@ -134,7 +134,7 @@ INSERT INTO voitures (
     'F150',
     2023,
     45000,
-    2,
+    1,
     'f150.png'
 ),
 (
@@ -179,7 +179,7 @@ INSERT INTO voitures (
     'A6',
     2024,
     60000,
-    2,
+    1,
     'a6.jpeg'
 );
 
@@ -220,7 +220,7 @@ INSERT INTO contact (
     '5149744492',
     '2024-03-02',
     'Je veux réserver un essai routier',
-    2
+    1
 ),
 (
     'Charlie',
