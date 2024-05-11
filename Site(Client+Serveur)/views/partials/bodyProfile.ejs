@@ -107,22 +107,30 @@
                         <div class="col-md-12">
                             <h5>Changer votre mot de passe</h5>
                         </div>
-                        <div class="col-md-12">
-                            <label for="motDePasse">Ancien mot de passe</label>
-                            <input id="motDePasseAncien" type="password" class="form-control"
-                                placeholder="Entrez votre mot de passe" name="motDePasse">
-                            <div id="ancienMotDePasseError" class="error-message"></div>
+                        <div class="d-flex">
+                            <label for="choixChangerPass">Voulez-vous changer votre mot de passe?</label>
+                            <input class="m-2" id="choixChangerPass" type="checkbox" onclick="toggleAfficheChamps()">
                         </div>
-                        <div class="col-md-12">
-                            <label for="motDePasse">Nouveau mot de passe</label>
-                            <input id="motDePasse" type="password" class="form-control"
-                                placeholder="Entrez votre mot de passe" name="motDePasse1">
-                            <div id="motdepasseError" class="error-message"></div>
-                            <div class="checkbox">
-                                <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()">
-                                <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                        <div class="mt-3">
+                            <div class="col-md-12">
+                                <label for="motDePasse">Ancien mot de passe</label>
+                                <input id="motDePasseAncien" type="password" class="form-control"
+                                    placeholder="Entrez votre mot de passe" name="motDePasse" disabled>
+                                <div id="ancienMotDePasseError" class="error-message"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="motDePasse">Nouveau mot de passe</label>
+                                <input id="motDePasse" type="password" class="form-control"
+                                    placeholder="Entrez votre mot de passe" name="motDePasse1" disabled>
+                                <div id="motdepasseError" class="error-message"></div>
+                                <div class="checkbox">
+                                    <input type="checkbox" id="showPasswordCheckbox" onchange="afficherMotDePasse()"
+                                        disabled>
+                                    <label for="showPasswordCheckbox" class="label">Afficher mot de passe</label>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
@@ -229,7 +237,6 @@
             isValid = false;
         }
 
-        console.log("session storage mot de passe : " + sessionStorage.getItem('userMotDePasse'));
         if (!ancienMotdepasse.value && motdepasse.value) {
             document.getElementById('ancienMotDePasseError').innerText = 'Ce mot de passe est incorrect.';
             document.getElementById('ancienMotDePasseError').style.display = 'block';
@@ -255,6 +262,8 @@
             // Vérifier si l'email existe déjà
             const emailExists = await checkEmailExists(courriel.value);
 
+            console.log("session storage == courriel : " + (courriel.value != sessionStorage.getItem('userCourriel')))
+            console.log("est checked : " + document.getElementById('choixChangerPass').checked);
             if (emailExists || courriel.value != sessionStorage.getItem('userCourriel')) {
                 document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
                 document.getElementById('courrielError').style.display = 'block';
@@ -270,7 +279,7 @@
                 sessionStorage.setItem('userTelephone', telephone.value);
                 sessionStorage.setItem('userAdresse', adresse.value);
                 sessionStorage.setItem('userMotDePasse', motdepasse.value);
-                
+
             }
         }
     });
@@ -283,22 +292,38 @@
 
     // Fonction pour vérifier si l'email existe déjà
     async function checkEmailExists(email) {
-    try {
-        const response = await fetch('/checkEmailExists1', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email })
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok.');
+        try {
+            const response = await fetch('/checkEmailExists1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
         }
-        const data = await response.json();
-        return data.exists;
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
     }
-}
+
+    function toggleAfficheChamps() {
+        const afficherChamps = document.getElementById('choixChangerPass');
+        const ancienMotdepasse = document.getElementById('motDePasseAncien');
+        const motdepasse = document.getElementById('motDePasse');
+        const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+        if (afficherChamps.checked) {
+            ancienMotdepasse.disabled = false;
+            motdepasse.disabled = false;
+            showPasswordCheckbox.disabled = false;
+        } else {
+            ancienMotdepasse.disabled = true;
+            motdepasse.disabled = true;
+            showPasswordCheckbox.disabled = true;
+        }
+    }
 </script>
