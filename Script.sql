@@ -6,67 +6,40 @@ use AllNighter; -- Après la création de l'environnement, ce code permet d'acc�
 -- Dans les prochanes lignes, veuillez copier et coller dans le terminal du docker les prochaines code un par un (séparer par un "---")
 ------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE utilisateurs (
-    ID_UTILISATEURS INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    NOM VARCHAR(100) NOT NULL,
-    PRENOM VARCHAR(100) NOT NULL,
-    EMAIL VARCHAR(200) NOT NULL,
-    MOTDEPASSE VARCHAR(150) NOT NULL,
-    TELEPHONE BIGINT NOT NULL,
-    ADRESSE VARCHAR(200) NOT NULL
+    id_utilisateurs INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    email VARCHAR(200) NOT NULL,
+    motdepasse VARCHAR(150) NOT NULL,
+    telephone BIGINT NOT NULL,
+    adresse VARCHAR(200) NOT NULL
 );
 
-INSERT INTO utilisateurs (
-    NOM,
-    PRENOM,
-    EMAIL,
-    MOTDEPASSE,
-    TELEPHONE,
-    ADRESSE
-) VALUES (
-    'Doe',
-    'John',
-    'johndoe@example.com',
-    'password123',
-    1234567890,
-    '123 Main Street, Anytown, Canada'
-);
-
-INSERT INTO utilisateurs (
-    NOM,
-    PRENOM,
-    EMAIL,
-    MOTDEPASSE,
-    TELEPHONE,
-    ADRESSE
-) VALUES (
-    'Smith',
-    'Jane',
-    'janesmith@example.com',
-    'secret789',
-    0987654321,
-    '456 Elm Street, Anycity, Canada'
-);
+INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse)
+VALUES ('Doe', 'John', 'johndoe@example.com', 'password123', 1234567890, '123 Main Street, Anytown, Canada');
+INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse)
+VALUES ('Smith', 'Jane', 'janesmith@example.com', 'secret789', 0987654321, '456 Elm Street, Anycity, Canada');
 
 ------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE voitures (
-    ID_VOITURE INT NOT NULL PRIMARY KEY,
-    MARQUE VARCHAR(150) NOT NULL,
-    MODELE VARCHAR(200) NOT NULL,
-    ANNEE INT NOT NULL,
-    PRIX DECIMAL(10, 2) NOT NULL,
-    UTILISATEURS_ID_UTILISATEURS INT NOT NULL,
-    IMAGE VARCHAR(255),
-    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES utilisateurs (ID_UTILISATEURS)
+    id_voiture INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    marque VARCHAR(150) NOT NULL,
+    modele VARCHAR(200) NOT NULL,
+    annee INT NOT NULL,
+    prix DECIMAL(10, 2) NOT NULL,
+    utilisateurs_id_utilisateurs INT NOT NULL,
+    image VARCHAR(255),
+    FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
 
 INSERT INTO voitures (
-    ID_VOITURE,
-    MARQUE,
-    MODELE,
-    ANNEE,
-    PRIX,
-    UTILISATEURS_ID_UTILISATEURS,
-    IMAGE
+    id_voiture,
+    marque, 
+    modele, 
+    annee, 
+    prix, 
+    utilisateurs_id_utilisateurs, 
+    image
 ) VALUES (
     1,
     'Toyota',
@@ -214,25 +187,25 @@ INSERT INTO voitures (
 
 ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE contact (
-    ID_CONTACT INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    PRENOM VARCHAR(100) NOT NULL,
-    NOM VARCHAR(100) NOT NULL,
-    COURRIEL VARCHAR(100) NOT NULL,
-    TELEPHONE VARCHAR(100) NOT NULL,
-    DATERENDEZVOUS DATE NOT NULL,
-    RAISONRENDEZVOUS VARCHAR(100),
-    UTILISATEURS_ID_UTILISATEURS INT NOT NULL,
-    FOREIGN KEY (UTILISATEURS_ID_UTILISATEURS) REFERENCES utilisateurs (ID_UTILISATEURS)
+    id_contact INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prenom VARCHAR(100) NOT NULL,
+    nom VARCHAR(100) NOT NULL,
+    courriel VARCHAR(100) NOT NULL,
+    telephone VARCHAR(100) NOT NULL,
+    dateRendezVous DATE NOT NULL,
+    raisonRendezVous VARCHAR(100),
+    utilisateurs_id_utilisateurs INT NOT NULL,
+    FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
 
 INSERT INTO contact (
-    PRENOM,
-    NOM,
-    COURRIEL,
-    TELEPHONE,
-    DATERENDEZVOUS,
-    RAISONRENDEZVOUS,
-    UTILISATEURS_ID_UTILISATEURS
+    prenom, 
+    nom, 
+    courriel, 
+    telephone, 
+    dateRendezVous, 
+    raisonRendezVous, 
+    utilisateurs_id_utilisateurs
 ) VALUES (
     'Alice',
     'Smith',
