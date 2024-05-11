@@ -634,7 +634,7 @@ app.post('/updateProduct/:id', async (req, res) => {
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-        
+
         });
     } catch (err) {
         console.error('Error:', err);
@@ -642,43 +642,43 @@ app.post('/updateProduct/:id', async (req, res) => {
     }
 });
 
-   
+
 async function getCarDetailsFromMongo(id) {
 
     try {
-      // Connexion au client MongoDB
+        // Connexion au client MongoDB
 
-      const collection = db.collection('voitureDetaille');
-  
-      // Récupération des détails de la voiture basés sur l'ID
-      const result = await collection.findOne({ _id: parseInt(id) });
-  
-      return result;
+        const collection = db.collection('voitureDetaille');
+
+        // Récupération des détails de la voiture basés sur l'ID
+        const result = await collection.findOne({ _id: parseInt(id) });
+
+        return result;
     } catch (err) {
-      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
-      throw err; // Propagez l'erreur pour la gérer plus tard
-    } 
+        console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+        throw err; // Propagez l'erreur pour la gérer plus tard
     }
-  
-  
-  // Route pour récupérer les détails de la voiture depuis MongoDB
-  app.get('/getCarDetails/:id', async (req, res) => {
+}
+
+
+// Route pour récupérer les détails de la voiture depuis MongoDB
+app.get('/getCarDetails/:id', async (req, res) => {
     const idVoiture = req.params.id;
-  
+
     try {
-      const carDetails = await getCarDetailsFromMongo(idVoiture);
-  
-      if (!carDetails) {
-        console.error('Détails de la voiture introuvables dans MongoDB');
-        return res.status(404).send('Détails de la voiture introuvables');
-      }
-  
-      res.json(carDetails); // Envoyez les détails de la voiture au frontend
+        const carDetails = await getCarDetailsFromMongo(idVoiture);
+
+        if (!carDetails) {
+            console.error('Détails de la voiture introuvables dans MongoDB');
+            return res.status(404).send('Détails de la voiture introuvables');
+        }
+
+        res.json(carDetails); // Envoyez les détails de la voiture au frontend
     } catch (err) {
-      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
-      res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
+        console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+        res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
     }
-  });
+});
 
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;
@@ -730,7 +730,7 @@ app.post('/command', (req, res) => {
 
     } catch (error) {
         console.error("Error executing operations:", error);
-    } 
+    }
     // finally {
     //     if (mongoClient) {
     //         mongoClient.close(); // Close the MongoDB client

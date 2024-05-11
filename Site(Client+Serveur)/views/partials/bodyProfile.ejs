@@ -156,7 +156,6 @@
         const userTelephone = sessionStorage.getItem('userTelephone');
         const userAdresse = sessionStorage.getItem('userAdresse');
         const userMotDePasse = sessionStorage.getItem('userMotDePasse');
-        console.log(userMotDePasse);
         const userId = sessionStorage.getItem('userId');
         const fullName = sessionStorage.getItem('userFullName');
         document.getElementById('nom').value = userNom;
@@ -262,8 +261,6 @@
             // Vérifier si l'email existe déjà
             const emailExists = await checkEmailExists(courriel.value);
 
-            console.log("session storage == courriel : " + (courriel.value != sessionStorage.getItem('userCourriel')))
-            console.log("est checked : " + document.getElementById('choixChangerPass').checked);
             if (emailExists || courriel.value != sessionStorage.getItem('userCourriel')) {
                 document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
                 document.getElementById('courrielError').style.display = 'block';
@@ -279,7 +276,6 @@
                 sessionStorage.setItem('userTelephone', telephone.value);
                 sessionStorage.setItem('userAdresse', adresse.value);
                 sessionStorage.setItem('userMotDePasse', motdepasse.value);
-
             }
         }
     });
