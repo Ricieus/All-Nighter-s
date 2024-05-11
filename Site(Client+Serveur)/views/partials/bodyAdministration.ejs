@@ -444,8 +444,10 @@ function UpdateProductMongo() {
   const productDescription = document.getElementById("productDescription").value;
   const nbrCylindre = document.getElementById("nbrCylindre").value;
   const typeConduit = document.getElementById("typeConduit").value;
-  const productImage = document.getElementById('productImage').value;
-  console.log(productImage);
+  const productImageInput = document.getElementById('productImage');
+  
+  const productImages = Array.from(productImageInput.files).map(file => file.name);
+  
   fetch('/updateVoitureMongo/' + id, {
     method: 'POST',
     headers: {
@@ -458,7 +460,7 @@ function UpdateProductMongo() {
       productDescription,
       nbrCylindre,
       typeConduit,
-      productImage
+      productImages 
     })
   })
     .then(response => {
@@ -475,6 +477,9 @@ function UpdateProductMongo() {
       console.error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB:', error);
     });
 }
+
+
+
 
 
 
