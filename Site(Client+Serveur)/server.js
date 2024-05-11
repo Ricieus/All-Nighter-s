@@ -596,7 +596,9 @@ app.post('/updateProduct/:id', async (req, res) => {
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-        
+
+            // Move the MongoDB query outside the MySQL callback
+          
         });
     } catch (err) {
         console.error('Error:', err);
@@ -640,7 +642,41 @@ async function getCarDetailsFromMongo(id) {
       console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
       res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
     }
+    
   });
+
+  app.post('/updateVoitureMongo/:id', async (req, res) => {
+    let typeCarosserie = req.body.typeCarosserie;
+    console.log(typeCarosserie);
+    let typeGaz = req.body.typeGaz;
+    let typeMoteur = req.body.typeMoteur;
+    let productDescription = req.body.productDescription;
+    let nbrCylindre = req.body.nbrCylindre;
+    let typeConduit = req.body.typeConduit;
+    let productImage = req.body.productImage;
+    
+    const idVoiture = req.params.id;  
+    const collection = db.collection('voitureDetaille');
+    try {
+      const result = await collection.updateOne(
+        { _id: parseInt(idVoiture) },
+        { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeMoteur, description: productDescription,moteur:nbrCylindre, pneus_bougent: typeConduit, images:productImage  } }
+      );
+  
+      if (result.modifiedCount === 1) {
+        console.log('Voiture mise à jour avec succès dans MongoDB');
+        res.status(200).json({ success: true, message: 'Voiture mise à jour avec succès' });
+      } else {
+        console.log('Aucune voiture trouvée avec l\'ID fourni dans MongoDB');
+        res.status(404).json({ success: false, message: 'Voiture non trouvée dans MongoDB' });
+      }
+    } catch (err) {
+      console.error('Erreur lors de la mise à jour de la voiture dans MongoDB:', err);
+      res.status(500).json({ success: false, error: 'Erreur serveur lors de la mise à jour de la voiture' });
+    }
+  });
+  
+
 
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;
