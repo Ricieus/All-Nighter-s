@@ -16,9 +16,7 @@ CREATE TABLE utilisateurs (
 );
 
 INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse)
-VALUES ('Doe', 'John', 'johndoe@example.com', 'password123', 1234567890, '123 Main Street, Anytown, Canada');
-INSERT INTO utilisateurs (nom, prenom, email, motdepasse, telephone, adresse)
-VALUES ('Smith', 'Jane', 'janesmith@example.com', 'secret789', 0987654321, '456 Elm Street, Anycity, Canada');
+VALUES ('Doe', 'John', 'johndoe@example.com', '$2b$10$NjEEzFRmZFYbqzLzI71VreCMdKEPCIdX/rtbxUF2b5ILKp/XKg6r.', 1234567890, '123 Main Street, Anytown, Canada'); -- Le password est "password1234"
 
 ------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE voitures (

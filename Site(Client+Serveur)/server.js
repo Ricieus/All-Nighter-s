@@ -125,22 +125,14 @@ app.get('/detailee/:id_voiture', async (req, res) => {
 
 
 app.get('/pages/connexion', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/connexion", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/connexion", {
+        pageTitle: "Concessionnaire Rubious"
     });
 });
 
 app.get('/pages/inscription', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/inscription", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/inscription", {
+        pageTitle: "Concessionnaire Rubious"
     });
 })
 
@@ -152,12 +144,8 @@ app.get('pages/connexion', (req, res) => {
 })
 
 app.get('/pages/contact', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/contact", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/contact", {
+        pageTitle: "Concessionnaire Rubious"
     });
 });
 
@@ -198,9 +186,6 @@ app.post('/connexion/submit_connexion', async (req, res) => {
     }
 });
 
-
-
-
 app.post('/checkEmailExists', (req, res) => {
     const email = req.body.email;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
@@ -216,6 +201,7 @@ app.post('/checkEmailExists', (req, res) => {
         }
     });
 });
+
 app.post('/checkEmailExists1', (req, res) => {
     const email1 = req.body.courriel;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
@@ -366,6 +352,7 @@ app.get('/pages/profile', (req, res) => {
         });
     });
 });
+
 app.post('/profile/submit_profil', async (req, res) => {
     // Récupérer les données du formulaire
     let prenom = req.body.prenom;
@@ -390,10 +377,6 @@ app.post('/profile/submit_profil', async (req, res) => {
         res.redirect('/pages/profile');
     });
 });
-
-
-
-
 
 app.get('/pages/catalogue', (req, res) => {
     con.query("SELECT * FROM voitures", (err, results) => {
@@ -473,9 +456,7 @@ app.get('/get_modeles', (req, res) => {
 });
 const DOMAIN = 'http://localhost:4000';
 
-//Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-
     const marqueVoiture = req.query.marque;
     const prixDeVehicule = parseFloat(req.query.price);
     const tauxInteret = parseFloat(req.query.taux);
@@ -496,12 +477,11 @@ app.post('/create-checkout-session', async (req, res) => {
         let priceNumber = req.body.price;
         let images = req.body.images;
 
-        // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
         });
 
-        let product; // Declare a new variable for the product
+        let product;
 
         if (productResponse.data.length === 0) {
             product = await stripe.products.create({
@@ -511,7 +491,6 @@ app.post('/create-checkout-session', async (req, res) => {
             product = productResponse.data[0];
         }
 
-        // Create or retrieve a price in Stripe
         const priceResponse = await stripe.prices.list({
             product: product.id,
             currency: 'cad',
@@ -520,13 +499,11 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let price;
         if (priceResponse.data.length > 0) {
-            // Price already exists
             price = priceResponse.data[0];
         } else {
-            // Create a new price if it doesn't exist
             price = await stripe.prices.create({
                 currency: 'cad',
-                unit_amount: priceNumber * 100, // Convert to cents
+                unit_amount: priceNumber * 100,
                 product: product.id,
             });
         }
@@ -537,7 +514,6 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let formattedDate = twoWeeksLater.toISOString().split('T')[0];
 
-        // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
@@ -602,6 +578,8 @@ app.get('/pages/administrateur', async (req, res) => {
         res.status(500).send('Internal server error' + err);
     }
 });
+
+
 app.post('/updateProduct/:id', async (req, res) => {
     try {
         let marque = req.query.marque;
