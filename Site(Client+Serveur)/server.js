@@ -125,22 +125,14 @@ app.get('/detailee/:id_voiture', async (req, res) => {
 
 
 app.get('/pages/connexion', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/connexion", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/connexion", {
+        pageTitle: "Concessionnaire Rubious"
     });
 });
 
 app.get('/pages/inscription', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/inscription", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/inscription", {
+        pageTitle: "Concessionnaire Rubious"
     });
 })
 
@@ -152,12 +144,8 @@ app.get('pages/connexion', (req, res) => {
 })
 
 app.get('/pages/contact', (req, res) => {
-    con.query("SELECT * FROM utilisateurs", function (err, result) {
-        if (err) throw err;
-        res.render("pages/contact", {
-            pageTitle: "Concessionnaire Rubious",
-            items: result
-        });
+    res.render("pages/contact", {
+        pageTitle: "Concessionnaire Rubious"
     });
 });
 
@@ -198,9 +186,6 @@ app.post('/connexion/submit_connexion', async (req, res) => {
     }
 });
 
-
-
-
 app.post('/checkEmailExists', (req, res) => {
     const email = req.body.email;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
@@ -216,6 +201,7 @@ app.post('/checkEmailExists', (req, res) => {
         }
     });
 });
+
 app.post('/checkEmailExists1', (req, res) => {
     const email1 = req.body.courriel;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
@@ -366,6 +352,7 @@ app.get('/pages/profile', (req, res) => {
         });
     });
 });
+
 app.post('/profile/submit_profil', async (req, res) => {
     // Récupérer les données du formulaire
     let prenom = req.body.prenom;
@@ -391,18 +378,47 @@ app.post('/profile/submit_profil', async (req, res) => {
     });
 });
 
-
-
-
-
-app.get('/pages/catalogue', (req, res) => {
-    con.query("SELECT * FROM voitures", (err, results) => {
-        if (err) throw err;
-        res.render("pages/catalogue", {
-            pageTitle: "Concessionnaire Rubious",
-            items: results
+app.get('/pages/catalogue', async (req, res) => {
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
-    });
+
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const carDetails = await cursor.toArray();
+
+        // Check if car details are found in MongoDB
+        if (!carDetails) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+
+        // Render the detailee page with car information
+        res.render('pages/catalogue', { items: rows, carDetails });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
 });
 
 app.post('/catalogue/submit_catalogue', (req, res) => {
@@ -473,12 +489,10 @@ app.get('/get_modeles', (req, res) => {
 });
 const DOMAIN = 'http://localhost:4000';
 
-//Test pour page paiement:
 app.get('/pages/paiement', (req, res) => {
-
     const marqueVoiture = req.query.marque;
-    const prixDeVehicule = parseFloat(req.query.taux);
-    const tauxInteret = parseFloat(req.query.price);
+    const prixDeVehicule = parseFloat(req.query.price);
+    const tauxInteret = parseFloat(req.query.taux);
 
 
     res.render('pages/paiement', {
@@ -496,12 +510,11 @@ app.post('/create-checkout-session', async (req, res) => {
         let priceNumber = req.body.price;
         let images = req.body.images;
 
-        // Create or retrieve a product in Stripe
         const productResponse = await stripe.products.search({
             query: `name:'${marque}'`,
         });
 
-        let product; // Declare a new variable for the product
+        let product;
 
         if (productResponse.data.length === 0) {
             product = await stripe.products.create({
@@ -511,7 +524,6 @@ app.post('/create-checkout-session', async (req, res) => {
             product = productResponse.data[0];
         }
 
-        // Create or retrieve a price in Stripe
         const priceResponse = await stripe.prices.list({
             product: product.id,
             currency: 'cad',
@@ -520,32 +532,14 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let price;
         if (priceResponse.data.length > 0) {
-            // Price already exists
             price = priceResponse.data[0];
         } else {
-            // Create a new price if it doesn't exist
             price = await stripe.prices.create({
                 currency: 'cad',
-                unit_amount: priceNumber * 100, // Convert to cents
+                unit_amount: priceNumber * 100,
                 product: product.id,
             });
         }
-
-        // Create or retrieve a customer in Stripe
-        // let customer;
-        // const customerResponse = await stripe.customers.list({
-        //     email: customerEmail,
-        // });
-
-        // if (customerResponse.data.length > 0) {
-        //     // Customer already exists
-        //     customer = customerResponse.data[0];
-        // } else {
-        //     // Create a new customer if it doesn't exist
-        //     customer = await stripe.customers.create({
-        //         email: customerEmail,
-        //     });
-        // }
 
         let currentDate = new Date();
 
@@ -553,7 +547,6 @@ app.post('/create-checkout-session', async (req, res) => {
 
         let formattedDate = twoWeeksLater.toISOString().split('T')[0];
 
-        // Create a checkout session
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: [
@@ -612,12 +605,14 @@ app.get('/pages/administrateur', async (req, res) => {
             return;
         }
         // Render the detailee page with car information
-        res.render('pages/administrateur', { items, carDetails: result });
+        res.render('pages/administrateur', { items, carDetails: [result] });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send('Internal server error' + err);
     }
 });
+
+
 app.post('/updateProduct/:id', async (req, res) => {
     try {
         let marque = req.query.marque;
@@ -634,6 +629,8 @@ app.post('/updateProduct/:id', async (req, res) => {
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
+
+            // Move the MongoDB query outside the MySQL callback
 
         });
     } catch (err) {
@@ -678,7 +675,41 @@ app.get('/getCarDetails/:id', async (req, res) => {
         console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
         res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
     }
+
 });
+
+app.post('/updateVoitureMongo/:id', async (req, res) => {
+    let typeCarosserie = req.body.typeCarosserie;
+    console.log(typeCarosserie);
+    let typeGaz = req.body.typeGaz;
+    let typeMoteur = req.body.typeMoteur;
+    let productDescription = req.body.productDescription;
+    let nbrCylindre = req.body.nbrCylindre;
+    let typeConduit = req.body.typeConduit;
+    let productImage = req.body.productImages;
+
+    const idVoiture = req.params.id;
+    const collection = db.collection('voitureDetaille');
+    try {
+        const result = await collection.updateOne(
+            { _id: parseInt(idVoiture) },
+            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeMoteur, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeConduit, images: productImage } }
+        );
+
+        if (result.modifiedCount === 1) {
+            console.log('Voiture mise à jour avec succès dans MongoDB');
+            res.status(200).json({ success: true, message: 'Voiture mise à jour avec succès' });
+        } else {
+            console.log('Aucune voiture trouvée avec l\'ID fourni dans MongoDB');
+            res.status(404).json({ success: false, message: 'Voiture non trouvée dans MongoDB' });
+        }
+    } catch (err) {
+        console.error('Erreur lors de la mise à jour de la voiture dans MongoDB:', err);
+        res.status(500).json({ success: false, error: 'Erreur serveur lors de la mise à jour de la voiture' });
+    }
+});
+
+
 
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;
@@ -742,9 +773,9 @@ app.post('/command', (req, res) => {
 app.post('/getImageVoiture', async (req, res) => {
     let nomVoiture = req.body.nom;
     try {
-        let voitureDetailleCollection = db.collection('voitureCommande');
+        let voitureDetailleCollection = db.collection('voitureDetaille');
         const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
-        res.json(voitureDetaille.image);
+        res.json(voitureDetaille.images[0]);
 
     } catch (error) {
         console.error("Erreur lors de l'exécution des opérations:", error);
