@@ -378,14 +378,47 @@ app.post('/profile/submit_profil', async (req, res) => {
     });
 });
 
-app.get('/pages/catalogue', (req, res) => {
-    con.query("SELECT * FROM voitures", (err, results) => {
-        if (err) throw err;
-        res.render("pages/catalogue", {
-            pageTitle: "Concessionnaire Rubious",
-            items: results
+app.get('/pages/catalogue', async (req, res) => {
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
-    });
+
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const carDetails = await cursor.toArray();
+
+        // Check if car details are found in MongoDB
+        if (!carDetails) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+
+        // Render the detailee page with car information
+        res.render('pages/catalogue', { items: rows, carDetails });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
 });
 
 app.post('/catalogue/submit_catalogue', (req, res) => {
@@ -572,7 +605,7 @@ app.get('/pages/administrateur', async (req, res) => {
             return;
         }
         // Render the detailee page with car information
-        res.render('pages/administrateur', { items, carDetails: result });
+        res.render('pages/administrateur', { items, carDetails: [result] });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send('Internal server error' + err);
@@ -653,7 +686,7 @@ async function getCarDetailsFromMongo(id) {
     let productDescription = req.body.productDescription;
     let nbrCylindre = req.body.nbrCylindre;
     let typeConduit = req.body.typeConduit;
-    let productImage = req.body.productImage;
+    let productImage = req.body.productImages;
     
     const idVoiture = req.params.id;  
     const collection = db.collection('voitureDetaille');
