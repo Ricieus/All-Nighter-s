@@ -477,8 +477,8 @@ const DOMAIN = 'http://localhost:4000';
 app.get('/pages/paiement', (req, res) => {
 
     const marqueVoiture = req.query.marque;
-    const prixDeVehicule = parseFloat(req.query.taux);
-    const tauxInteret = parseFloat(req.query.price);
+    const prixDeVehicule = parseFloat(req.query.price);
+    const tauxInteret = parseFloat(req.query.taux);
 
 
     res.render('pages/paiement', {
@@ -530,22 +530,6 @@ app.post('/create-checkout-session', async (req, res) => {
                 product: product.id,
             });
         }
-
-        // Create or retrieve a customer in Stripe
-        // let customer;
-        // const customerResponse = await stripe.customers.list({
-        //     email: customerEmail,
-        // });
-
-        // if (customerResponse.data.length > 0) {
-        //     // Customer already exists
-        //     customer = customerResponse.data[0];
-        // } else {
-        //     // Create a new customer if it doesn't exist
-        //     customer = await stripe.customers.create({
-        //         email: customerEmail,
-        //     });
-        // }
 
         let currentDate = new Date();
 
@@ -742,9 +726,9 @@ app.post('/command', (req, res) => {
 app.post('/getImageVoiture', async (req, res) => {
     let nomVoiture = req.body.nom;
     try {
-        let voitureDetailleCollection = db.collection('voitureCommande');
+        let voitureDetailleCollection = db.collection('voitureDetaille');
         const voitureDetaille = await voitureDetailleCollection.findOne({ nom: nomVoiture });
-        res.json(voitureDetaille.image);
+        res.json(voitureDetaille.images[0]);
 
     } catch (error) {
         console.error("Erreur lors de l'exécution des opérations:", error);
