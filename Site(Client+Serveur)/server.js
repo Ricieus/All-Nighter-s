@@ -724,44 +724,43 @@ app.post('/ajoutVoiture', async (req, res) => {
     let typeGaz = req.body.typeGaz;
     let typeTraction = req.body.typeTraction;
     let nbrCylindre = req.body.nbrCylindre;
-    let typeConduit = req.body.typeCondui;
-    let utilisateurs_id_utilisateurs = 1;
+    let typeConduit = req.body.typeConduit;
     let images = req.body.images;
 
     console.log("value got");
 
     let collection = db.collection('voitureDetaille');
-        let lastItem = await collection.find().sort([['_id', -1]]).limit(1).toArray();
-        console.log(lastItem);
-        let newId = parseInt(lastItem) + 1
-        console.log(newId);
-        const ajoutInformation = {
-            _id: newId,
-            nom: `${marque + " " + modele + " " + annee}`,
-            corps: typeCarosserie,
-            transmission: typeConduit,
-            moteur: nbrCylindre,
-            annee: annee,
-            carburant: typeGaz,
-            description: productDescription,
-            pneus_bougent: typeTraction,
-            tauxInteret: null,
-            images: images
-        };
 
-        try {
-            collection.insertOne({ ajoutInformation }, (err, result) => {
-                if (err) {
-                    return res.status(500).send('Erreur insertion');
-                }
-            });
-    
-        } catch (error) {
-            console.error("Error executing operations:", error);
-        } 
+    // Trouver le dernier document pour obtenir l'ID le plus élevé
+    let lastItem = await collection.find().sort({ _id: -1 }).limit(1).toArray();
+    let lastId = lastItem.length < 0 ? lastItem[0]._id + 1 : 17; // Commence à 17 si la collection est vide
+
+    const ajoutInformation = {
+        _id: lastId,
+        nom: `${marque} ${modele} ${annee}`,
+        corps: typeCarosserie,
+        transmission: typeConduit,
+        moteur: nbrCylindre,
+        annee: annee,
+        carburant: typeGaz,
+        description: productDescription,
+        pneus_bougent: typeTraction,
+        images: images
+    };
+
+    try {
+        collection.insertOne(ajoutInformation, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
+
+    } catch (error) {
+        console.error("Error executing operations:", error);
+    }
 
     // Requête SQL d'insertion
-    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + images[0] + "')";
+    var sql = "INSERT INTO voitures (id_voiture, marque, modele, annee, prix, image) VALUES ('" + lastId + "','" + marque + "','" + modele + "','" + annee + "','" + prix + "','" + images[0] + "')";
 
     // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
@@ -774,6 +773,8 @@ app.post('/ajoutVoiture', async (req, res) => {
     });
 
 });
+
+
 
 /*
     Importation de Bootstrap

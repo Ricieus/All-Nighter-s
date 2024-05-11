@@ -244,6 +244,7 @@
 
   <script>
     function RedirectAjouter() {
+      const id = document.getElementById("idProduit").value;
       const marque = document.getElementById("marqueProduit").value;
       const modele = document.getElementById("modeleProduit").value;
       const prix = document.getElementById("voiturePrix").value;
@@ -263,6 +264,7 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
+            id: id,
             marque: marque,
             modele: modele,
             prix: prix,
@@ -477,6 +479,7 @@
       document.getElementById('btn-effectuerAjout').style.display = "block";
       document.getElementById('btn-ajouter').style.display = "none";
       document.getElementById("btn-modifier").style.display = "none";
+      document.getElementById('idProduit').disabled = false;
       AfficherTousLesChamps();
       ReinitialiserTousLesChamps()
     }
@@ -622,6 +625,7 @@
         var annee = row.cells[3].textContent.trim();
         remplirFormulaire(id, marque, modele, prix, annee);
         getCarDetailsFromMongo(id);
+        document.getElementById('idProduit').disabled = true;
         document.getElementById("btn-modifier").style.display = "block";
         document.getElementById("btn-ajouter").style.display = "block";
         document.getElementById("btn-effectuerAjout").style.display = "none";
