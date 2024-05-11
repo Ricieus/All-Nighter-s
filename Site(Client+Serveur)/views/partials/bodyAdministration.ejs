@@ -137,8 +137,8 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="typeMoteur">Type de moteur :</label>
-                          <input type="text" class="form-control" id="typeMoteur" placeholder="Type de moteur" disabled>
+                          <label for="typeTraction">Type de moteur :</label>
+                          <input type="text" class="form-control" id="typeTraction" placeholder="Type de traction" disabled>
                         </div>
 
                         <div class="form-group">
@@ -251,17 +251,17 @@
       const productDescription = document.getElementById('productDescription').value;
       const typeCarosserie = document.getElementById('typeCarosserie').value;
       const typeGaz = document.getElementById('typeGaz').value;
-      const typeMoteur = document.getElementById('typeMoteur').value;
+      const typeTraction = document.getElementById('typeTraction').value;
       const nbrCylindre = document.getElementById('nbrCylindre').value;
       const typeConduit = document.getElementById('typeConduit').value;
-
-      if (VerificationChampsRemplis()) {
-        BloquerTousLesChamps();
-
-        CompteARebours(5, "Enregistrement", document.getElementById('succes'));
-
-        fetch('/ajouterProduct/', {
+      const imageInput = document.getElementById("productImage");
+      const productImages = Array.from(imageInput.files).map(file => file.name);
+      
+      fetch('/ajoutVoiture', {
           method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({
             marque: marque,
             modele: modele,
@@ -270,9 +270,10 @@
             productDescription: productDescription,
             typeCarosserie: typeCarosserie,
             typeGaz: typeGaz,
-            typeMoteur: typeMoteur,
+            typeTraction: typeTraction,
             nbrCylindre: nbrCylindre,
-            typeConduit: typeConduit
+            typeConduit: typeConduit,
+            images: productImages
           })
         })
           .then(response => {
@@ -287,7 +288,41 @@
           .catch(error => {
             console.error('Erreur lors de l\'ajout du produit : ', error);
           });
-      }
+
+      // if (VerificationChampsRemplis()) {
+      //   BloquerTousLesChamps();
+
+      //   CompteARebours(5, "Enregistrement", document.getElementById('succes'));
+
+      //   fetch('/ajoutVoiture', {
+      //     method: 'POST',
+      //     body: JSON.stringify({
+      //       marque: marque,
+      //       modele: modele,
+      //       prix: prix,
+      //       annee: annee,
+      //       productDescription: productDescription,
+      //       typeCarosserie: typeCarosserie,
+      //       typeGaz: typeGaz,
+      //       typeTraction: typeTraction,
+      //       nbrCylindre: nbrCylindre,
+      //       typeConduit: typeConduit,
+      //       images: images
+      //     })
+      //   })
+      //     .then(response => {
+      //       if (!response.ok) {
+      //         throw new Error('Erreur lors de l\'ajout du produit');
+      //       }
+      //       return response.json();
+      //     })
+      //     .then(data => {
+      //       document.getElementById("idProduit").value = data[0];
+      //     })
+      //     .catch(error => {
+      //       console.error('Erreur lors de l\'ajout du produit : ', error);
+      //     });
+      // }
     }
 
     function CompteARebours(temps, message, place) {
@@ -305,7 +340,6 @@
     }
 
     function VerificationChampsRemplis() {
-      const id = document.getElementById("idProduit").value;
       const marque = document.getElementById("marqueProduit").value;
       const modele = document.getElementById("modeleProduit").value;
       const prix = document.getElementById("voiturePrix").value;
@@ -313,7 +347,7 @@
       const productDescription = document.getElementById('productDescription').value;
       const typeCarosserie = document.getElementById('typeCarosserie').value;
       const typeGaz = document.getElementById('typeGaz').value;
-      const typeMoteur = document.getElementById('typeMoteur').value;
+      const typeTraction = document.getElementById('typeTraction').value;
       const nbrCylindre = document.getElementById('nbrCylindre').value;
       const typeConduit = document.getElementById('typeConduit').value;
       const productImage = document.getElementById('productImage').value;
@@ -350,7 +384,7 @@
         continuer = false;
         message += "le type de gaz, "
       }
-      if (!typeMoteur) {
+      if (!typeTraction) {
         continuer = false;
         message += "le type de moteur, "
       }
@@ -423,7 +457,7 @@
           console.log(data);
           document.getElementById('typeCarosserie').value = data.corps;
           document.getElementById('typeGaz').value = data.carburant;
-          document.getElementById('typeMoteur').value = data.pneus_bougent;
+          document.getElementById('typeTraction').value = data.pneus_bougent;
           document.getElementById('productDescription').value = data.description;
           document.getElementById('nbrCylindre').value = data.moteur;
           document.getElementById('typeConduit').value = data.transmission;
@@ -440,11 +474,11 @@
 
 
     function Ajouter() {
+      document.getElementById('btn-effectuerAjout').style.display = "block";
       document.getElementById('btn-ajouter').style.display = "none";
       document.getElementById("btn-modifier").style.display = "none";
       AfficherTousLesChamps();
       ReinitialiserTousLesChamps()
-      document.getElementById('btn-effectuerAjout').style.display = "block";
     }
 
     function ReinitialiserTousLesChamps() {
@@ -456,7 +490,7 @@
       document.getElementById('productDescription').value = null;
       document.getElementById('typeCarosserie').value = null;
       document.getElementById('typeGaz').value = null;
-      document.getElementById('typeMoteur').value = null;
+      document.getElementById('typeTraction').value = null;
       document.getElementById('nbrCylindre').value = null;
       document.getElementById('typeConduit').value = null;
       document.getElementById('productImage').value = null;
@@ -474,7 +508,7 @@
       document.getElementById('productDescription').disabled = false;
       document.getElementById('typeCarosserie').disabled = false;
       document.getElementById('typeGaz').disabled = false;
-      document.getElementById('typeMoteur').disabled = false;
+      document.getElementById('typeTraction').disabled = false;
       document.getElementById('nbrCylindre').disabled = false;
       document.getElementById('typeConduit').disabled = false;
       document.getElementById('productImage').disabled = false;
@@ -488,7 +522,7 @@
       document.getElementById('productDescription').disabled = true;
       document.getElementById('typeCarosserie').disabled = true;
       document.getElementById('typeGaz').disabled = true;
-      document.getElementById('typeMoteur').disabled = true;
+      document.getElementById('typeTraction').disabled = true;
       document.getElementById('nbrCylindre').disabled = true;
       document.getElementById('typeConduit').disabled = true;
       document.getElementById('productImage').disabled = true;

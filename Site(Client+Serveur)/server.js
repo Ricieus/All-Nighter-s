@@ -715,19 +715,53 @@ app.post('/getImageVoiture', async (req, res) => {
 });
 
 app.post('/ajoutVoiture', async (req, res) => {
-
     let marque = req.body.marque;
     let modele = req.body.modele;
-    let annee = req.body.annee;
     let prix = req.body.prix;
+    let annee = req.body.annee;
+    let productDescription = req.body.productDescription;
+    let typeCarosserie = req.body.typeCarosserie;
+    let typeGaz = req.body.typeGaz;
+    let typeTraction = req.body.typeTraction;
+    let nbrCylindre = req.body.nbrCylindre;
+    let typeConduit = req.body.typeCondui;
     let utilisateurs_id_utilisateurs = 1;
-    let image = req.body.image;
+    let images = req.body.images;
 
+    console.log("value got");
 
+    let collection = db.collection('voitureDetaille');
+        let lastItem = await collection.find().sort([['_id', -1]]).limit(1).toArray();
+        console.log(lastItem);
+        let newId = parseInt(lastItem) + 1
+        console.log(newId);
+        const ajoutInformation = {
+            _id: newId,
+            nom: `${marque + " " + modele + " " + annee}`,
+            corps: typeCarosserie,
+            transmission: typeConduit,
+            moteur: nbrCylindre,
+            annee: annee,
+            carburant: typeGaz,
+            description: productDescription,
+            pneus_bougent: typeTraction,
+            tauxInteret: null,
+            images: images
+        };
 
+        try {
+            collection.insertOne({ ajoutInformation }, (err, result) => {
+                if (err) {
+                    return res.status(500).send('Erreur insertion');
+                }
+            });
+    
+        } catch (error) {
+            console.error("Error executing operations:", error);
+        } 
 
     // Requête SQL d'insertion
-    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
+    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + images[0] + "')";
 
     // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
@@ -735,8 +769,8 @@ app.post('/ajoutVoiture', async (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur ajouter: Veuillez notifier Jad');
         }
-        console.log("Ajout effectuée");
-        res.redirect('/pages/adinistrateur');
+        console.log("complet");
+        res.redirect('/pages/administrateur');
     });
 
 });
