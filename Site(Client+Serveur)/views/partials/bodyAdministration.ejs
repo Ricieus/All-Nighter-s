@@ -301,59 +301,103 @@
       const prix = document.getElementById("voiturePrix").value;
       const annee = document.getElementById("voitureAnnee").value;
 
-      // Envoi de la mise à jour à la base de données MySQL
-      fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ marque, modele, prix, annee })
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du produit');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("Mise à jour effectuée avec succès dans MySQL");
-          location.reload();
-        })
-        .catch(error => {
-          console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
-        });
-    }
+  // Envoi de la mise à jour à la base de données MySQL
+  fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ marque, modele, prix, annee })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du produit');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Mise à jour effectuée avec succès dans MySQL");
+      UpdateProductMongo();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
+    });
+}
 
-    function getCarDetailsFromMongo(id) {
-      fetch('/getCarDetails/' + id, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des détails de la voiture');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log(data);
-          document.getElementById('typeCarosserie').value = data.corps;
-          document.getElementById('typeGaz').value = data.carburant;
-          document.getElementById('typeMoteur').value = data.pneus_bougent;
-          document.getElementById('productDescription').value = data.description;
-          document.getElementById('nbrCylindre').value = data.moteur;
-          document.getElementById('typeConduit').value = data.transmission;
-          document.getElementById('img').src = "/images/" + data.images[0];
-          document.getElementById('img1').src = "/images/" + data.images[1];
-          document.getElementById('img2').src = "/images/" + data.images[2];
-          document.getElementById('img3').src = "/images/" + data.images[3];
-        })
-        .catch(error => {
-          console.error('Erreur lors de la récupération des détails de la voiture:', error);
-        });
+function getCarDetailsFromMongo(id) {
+  fetch('/getCarDetails/' + id, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
     }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des détails de la voiture');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      document.getElementById('typeCarosserie').value = data.corps;
+      document.getElementById('typeGaz').value = data.carburant;
+      document.getElementById('typeMoteur').value = data.pneus_bougent;
+      document.getElementById('productDescription').value = data.description;
+      document.getElementById('nbrCylindre').value = data.moteur;
+      document.getElementById('typeConduit').value = data.transmission;
+      document.getElementById('img').src = "/images/" + data.images[0];
+      document.getElementById('img1').src = "/images/" + data.images[1];
+      document.getElementById('img2').src = "/images/" + data.images[2];
+      document.getElementById('img3').src = "/images/" + data.images[3];
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des détails de la voiture:', error);
+    });
+}
+function UpdateProductMongo() {
+  const id = document.getElementById("idProduit").value;
+  const typeCarosserie = document.getElementById("typeCarosserie").value;
+  const typeGaz = document.getElementById("typeGaz").value;
+  const typeMoteur = document.getElementById("typeMoteur").value;
+  const productDescription = document.getElementById("productDescription").value;
+  const nbrCylindre = document.getElementById("nbrCylindre").value;
+  const typeConduit = document.getElementById("typeConduit").value;
+  const productImageInput = document.getElementById('productImage');
+  
+  const productImages = Array.from(productImageInput.files).map(file => file.name);
+  
+  fetch('/updateVoitureMongo/' + id, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      typeCarosserie,
+      typeGaz,
+      typeMoteur,
+      productDescription,
+      nbrCylindre,
+      typeConduit,
+      productImages 
+    })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Mise à jour effectuée avec succès dans MongoDB");
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB:', error);
+    });
+}
+
+
+
 
 
 
