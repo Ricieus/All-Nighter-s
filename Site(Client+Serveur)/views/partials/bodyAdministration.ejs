@@ -1,87 +1,7 @@
-<style>
-  .content {
-    margin-top: 90px;
-    display: flex;
-  }
-
-  .sidebar {
-    width: 15%;
-    background-color: #343a40;
-    color: #fff;
-    padding: 20px;
-    min-height: 100vh;
-  }
-
-  .sidebar h3 {
-    margin-bottom: 20px;
-  }
-
-  .content-area {
-    padding: 20px;
-    flex-grow: 1;
-  }
-
-  .sidebar .nav-link {
-    color: #fff;
-    transition: color 0.3s;
-    cursor: pointer;
-  }
-
-  .sidebar .nav-link:hover {
-    color: #ffc107;
-  }
-
-  .image-box {
-    border: 1px solid #dee2e6;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-
-  .image-preview {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  .image-preview img {
-    max-width: 100px;
-    max-height: 100px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-
-  .add-image-btn {
-    margin-bottom: 10px;
-  }
-
-  .custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
-  }
-
-  .custom-file-upload:hover {
-    background-color: #0056b3;
-  }
-</style>
-
-<body>
-
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-4 sidebar">
-
-          <h3>Menu</h3>
-          <ul class="nav flex-column">
-              <li class="nav-item"><a class="nav-link" href="#">Main</a></li>
-              <li class="nav-item"><a class="nav-link" href="/pages/administrateur">CRUD Voitures</a></li>
-          </ul>
-        </div>
+        <%- include ("../partials/sectionMenuAdministrateur.ejs") %>
           <div class="col-lg-8 content-area" id="adminVoiture"> <!--  -->
             <div class="card">
               <div class="product-list-form">
@@ -234,15 +154,13 @@
               </div>
             </div>
           </div>
-          <div id="mainAdmin">
-
-          </div>
       </div>
     </div>
   </div>
 
 
   <script>
+
     function RedirectAjouter() {
       const marque = document.getElementById("marqueProduit").value;
       const modele = document.getElementById("modeleProduit").value;
@@ -494,37 +412,7 @@
       document.getElementById('productImage').disabled = true;
     }
 
-    function AfficherSectionMain() {
-      var sectionMain = document.querySelector('.sectionMain');
-      var productForm = document.querySelector('.product-list-form');
-      var gestionClients = document.querySelector('.gestion-clients');
-
-      sectionMain.classList.add('active');
-      productForm.classList.remove('active');
-      gestionClients.classList.remove('active');
-    }
-
-    function AfficherSectionProduit() {
-      var sectionMain = document.querySelector('.sectionMain');
-      var productForm = document.querySelector('.product-list-form');
-      var gestionClients = document.querySelector('.gestion-clients');
-
-      sectionMain.classList.remove('active');
-      productForm.classList.add('active');
-      gestionClients.classList.remove('active');
-    }
-
-    function AfficherSectionGestionClients() {
-      var sectionMain = document.querySelector('.sectionMain');
-      var productForm = document.querySelector('.product-list-form');
-      var gestionClients = document.querySelector('.gestion-clients');
-
-      sectionMain.classList.remove('active');
-      productForm.classList.remove('active');
-      gestionClients.classList.add('active');
-
-
-    }
+    
 
 
     function ActivationBoutonAjouter() {

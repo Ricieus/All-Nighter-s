@@ -580,6 +580,18 @@ app.get('/pages/administrateur', async (req, res) => {
 });
 
 
+
+app.get('/pages/administrateurMain', (req, res) => {
+    con.query("SELECT * FROM utilisateurs", function (err, result) {
+        if (err) throw err;
+        res.render("pages/administrateurMain", {
+            pageTitle: "Concessionnaire Rubious",
+            items: result
+        });
+    });
+});
+
+
 app.post('/updateProduct/:id', async (req, res) => {
     try {
         let marque = req.query.marque;
