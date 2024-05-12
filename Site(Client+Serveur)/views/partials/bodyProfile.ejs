@@ -263,6 +263,7 @@
             const emailExists = await checkEmailExists(courriel.value);
 
             console.log(emailExists);
+            console.log(courriel.value != sessionStorage.getItem('userCourriel'));
             if (emailExists && courriel.value != sessionStorage.getItem('userCourriel')) {
                 document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
                 document.getElementById('courrielError').style.display = 'block';

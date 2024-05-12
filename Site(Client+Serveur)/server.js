@@ -194,8 +194,8 @@ app.post('/checkEmailExists', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-
-        if (result) {
+        console.log("result : " + result);
+        if (result.length > 0) {
             return res.json({ exists: true });
         } else {
             return res.json({ exists: false });
