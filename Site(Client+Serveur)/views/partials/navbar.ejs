@@ -37,6 +37,9 @@
             </button>
             <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
                 <li style="text-align: center;"><span id="userFullName"></span></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
                 <li><a class="dropdown-item" id="btnProfil" href="/pages/profile">Profil</a></li>
                 <li class="text-start"> <!-- Ajoute la classe text-start pour aligner à gauche -->
                     <a href="/pages/connexion" class="dropdown-item" id="connexionBtn">Connexion</a>
@@ -91,7 +94,7 @@
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
             btnProfil.style.display = 'block'; // Activer le bouton de profil
 
-            if(userFullName == "John Doe"){
+            if (userFullName == "John Doe") {
                 btnAdmin.style.display = 'block';
             }
 
