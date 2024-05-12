@@ -353,7 +353,6 @@ app.post('/profile/submit_profil', async (req, res) => {
     if (motdePasse) {
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-        console.log("test");
         var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
 
         // Exécuter la requête SQL avec les valeurs mises à jour

@@ -137,8 +137,8 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="typeMoteur">Type de moteur :</label>
-                          <input type="text" class="form-control" id="typeMoteur" placeholder="Type de moteur" disabled>
+                          <label for="typeTraction">Type de moteur :</label>
+                          <input type="text" class="form-control" id="typeTraction" placeholder="Type de traction" disabled>
                         </div>
 
                         <div class="form-group">
@@ -244,6 +244,7 @@
 
   <script>
     function RedirectAjouter() {
+      const id = document.getElementById("idProduit").value;
       const marque = document.getElementById("marqueProduit").value;
       const modele = document.getElementById("modeleProduit").value;
       const prix = document.getElementById("voiturePrix").value;
@@ -251,18 +252,19 @@
       const productDescription = document.getElementById('productDescription').value;
       const typeCarosserie = document.getElementById('typeCarosserie').value;
       const typeGaz = document.getElementById('typeGaz').value;
-      const typeMoteur = document.getElementById('typeMoteur').value;
+      const typeTraction = document.getElementById('typeTraction').value;
       const nbrCylindre = document.getElementById('nbrCylindre').value;
       const typeConduit = document.getElementById('typeConduit').value;
-
-      if (VerificationChampsRemplis()) {
-        BloquerTousLesChamps();
-
-        CompteARebours(5, "Enregistrement", document.getElementById('succes'));
-
-        fetch('/ajouterProduct/', {
+      const imageInput = document.getElementById("productImage");
+      const productImages = Array.from(imageInput.files).map(file => file.name);
+      
+      fetch('/ajoutVoiture', {
           method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({
+            id: id,
             marque: marque,
             modele: modele,
             prix: prix,
@@ -270,9 +272,10 @@
             productDescription: productDescription,
             typeCarosserie: typeCarosserie,
             typeGaz: typeGaz,
-            typeMoteur: typeMoteur,
+            typeTraction: typeTraction,
             nbrCylindre: nbrCylindre,
-            typeConduit: typeConduit
+            typeConduit: typeConduit,
+            images: productImages
           })
         })
           .then(response => {
@@ -287,7 +290,41 @@
           .catch(error => {
             console.error('Erreur lors de l\'ajout du produit : ', error);
           });
-      }
+
+      // if (VerificationChampsRemplis()) {
+      //   BloquerTousLesChamps();
+
+      //   CompteARebours(5, "Enregistrement", document.getElementById('succes'));
+
+      //   fetch('/ajoutVoiture', {
+      //     method: 'POST',
+      //     body: JSON.stringify({
+      //       marque: marque,
+      //       modele: modele,
+      //       prix: prix,
+      //       annee: annee,
+      //       productDescription: productDescription,
+      //       typeCarosserie: typeCarosserie,
+      //       typeGaz: typeGaz,
+      //       typeTraction: typeTraction,
+      //       nbrCylindre: nbrCylindre,
+      //       typeConduit: typeConduit,
+      //       images: images
+      //     })
+      //   })
+      //     .then(response => {
+      //       if (!response.ok) {
+      //         throw new Error('Erreur lors de l\'ajout du produit');
+      //       }
+      //       return response.json();
+      //     })
+      //     .then(data => {
+      //       document.getElementById("idProduit").value = data[0];
+      //     })
+      //     .catch(error => {
+      //       console.error('Erreur lors de l\'ajout du produit : ', error);
+      //     });
+      // }
     }
 
     function CompteARebours(temps, message, place) {
@@ -305,7 +342,6 @@
     }
 
     function VerificationChampsRemplis() {
-      const id = document.getElementById("idProduit").value;
       const marque = document.getElementById("marqueProduit").value;
       const modele = document.getElementById("modeleProduit").value;
       const prix = document.getElementById("voiturePrix").value;
@@ -313,7 +349,7 @@
       const productDescription = document.getElementById('productDescription').value;
       const typeCarosserie = document.getElementById('typeCarosserie').value;
       const typeGaz = document.getElementById('typeGaz').value;
-      const typeMoteur = document.getElementById('typeMoteur').value;
+      const typeTraction = document.getElementById('typeTraction').value;
       const nbrCylindre = document.getElementById('nbrCylindre').value;
       const typeConduit = document.getElementById('typeConduit').value;
       const productImage = document.getElementById('productImage').value;
@@ -350,7 +386,7 @@
         continuer = false;
         message += "le type de gaz, "
       }
-      if (!typeMoteur) {
+      if (!typeTraction) {
         continuer = false;
         message += "le type de moteur, "
       }
@@ -383,112 +419,69 @@
       const prix = document.getElementById("voiturePrix").value;
       const annee = document.getElementById("voitureAnnee").value;
 
-  // Envoi de la mise à jour à la base de données MySQL
-  fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ marque, modele, prix, annee })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour du produit');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Mise à jour effectuée avec succès dans MySQL");
-      UpdateProductMongo();
-    })
-    .catch(error => {
-      console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
-    });
-}
-
-function getCarDetailsFromMongo(id) {
-  fetch('/getCarDetails/' + id, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+      // Envoi de la mise à jour à la base de données MySQL
+      fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ marque, modele, prix, annee })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erreur lors de la mise à jour du produit');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Mise à jour effectuée avec succès dans MySQL");
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
+        });
     }
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des détails de la voiture');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      document.getElementById('typeCarosserie').value = data.corps;
-      document.getElementById('typeGaz').value = data.carburant;
-      document.getElementById('typeMoteur').value = data.pneus_bougent;
-      document.getElementById('productDescription').value = data.description;
-      document.getElementById('nbrCylindre').value = data.moteur;
-      document.getElementById('typeConduit').value = data.transmission;
-      document.getElementById('img').src = "/images/" + data.images[0];
-      document.getElementById('img1').src = "/images/" + data.images[1];
-      document.getElementById('img2').src = "/images/" + data.images[2];
-      document.getElementById('img3').src = "/images/" + data.images[3];
-    })
-    .catch(error => {
-      console.error('Erreur lors de la récupération des détails de la voiture:', error);
-    });
-}
-function UpdateProductMongo() {
-  const id = document.getElementById("idProduit").value;
-  const typeCarosserie = document.getElementById("typeCarosserie").value;
-  const typeGaz = document.getElementById("typeGaz").value;
-  const typeMoteur = document.getElementById("typeMoteur").value;
-  const productDescription = document.getElementById("productDescription").value;
-  const nbrCylindre = document.getElementById("nbrCylindre").value;
-  const typeConduit = document.getElementById("typeConduit").value;
-  const productImageInput = document.getElementById('productImage');
-  
-  const productImages = Array.from(productImageInput.files).map(file => file.name);
-  
-  fetch('/updateVoitureMongo/' + id, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      typeCarosserie,
-      typeGaz,
-      typeMoteur,
-      productDescription,
-      nbrCylindre,
-      typeConduit,
-      productImages 
-    })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Mise à jour effectuée avec succès dans MongoDB");
-      location.reload();
-    })
-    .catch(error => {
-      console.error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB:', error);
-    });
-}
 
-
-
+    function getCarDetailsFromMongo(id) {
+      fetch('/getCarDetails/' + id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des détails de la voiture');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          document.getElementById('typeCarosserie').value = data.corps;
+          document.getElementById('typeGaz').value = data.carburant;
+          document.getElementById('typeTraction').value = data.pneus_bougent;
+          document.getElementById('productDescription').value = data.description;
+          document.getElementById('nbrCylindre').value = data.moteur;
+          document.getElementById('typeConduit').value = data.transmission;
+          document.getElementById('img').src = "/images/" + data.images[0];
+          document.getElementById('img1').src = "/images/" + data.images[1];
+          document.getElementById('img2').src = "/images/" + data.images[2];
+          document.getElementById('img3').src = "/images/" + data.images[3];
+        })
+        .catch(error => {
+          console.error('Erreur lors de la récupération des détails de la voiture:', error);
+        });
+    }
 
 
 
     function Ajouter() {
+      document.getElementById('btn-effectuerAjout').style.display = "block";
       document.getElementById('btn-ajouter').style.display = "none";
       document.getElementById("btn-modifier").style.display = "none";
+      document.getElementById('idProduit').disabled = false;
       AfficherTousLesChamps();
       ReinitialiserTousLesChamps()
-      document.getElementById('btn-effectuerAjout').style.display = "block";
     }
 
     function ReinitialiserTousLesChamps() {
@@ -500,7 +493,7 @@ function UpdateProductMongo() {
       document.getElementById('productDescription').value = null;
       document.getElementById('typeCarosserie').value = null;
       document.getElementById('typeGaz').value = null;
-      document.getElementById('typeMoteur').value = null;
+      document.getElementById('typeTraction').value = null;
       document.getElementById('nbrCylindre').value = null;
       document.getElementById('typeConduit').value = null;
       document.getElementById('productImage').value = null;
@@ -518,7 +511,7 @@ function UpdateProductMongo() {
       document.getElementById('productDescription').disabled = false;
       document.getElementById('typeCarosserie').disabled = false;
       document.getElementById('typeGaz').disabled = false;
-      document.getElementById('typeMoteur').disabled = false;
+      document.getElementById('typeTraction').disabled = false;
       document.getElementById('nbrCylindre').disabled = false;
       document.getElementById('typeConduit').disabled = false;
       document.getElementById('productImage').disabled = false;
@@ -532,7 +525,7 @@ function UpdateProductMongo() {
       document.getElementById('productDescription').disabled = true;
       document.getElementById('typeCarosserie').disabled = true;
       document.getElementById('typeGaz').disabled = true;
-      document.getElementById('typeMoteur').disabled = true;
+      document.getElementById('typeTraction').disabled = true;
       document.getElementById('nbrCylindre').disabled = true;
       document.getElementById('typeConduit').disabled = true;
       document.getElementById('productImage').disabled = true;
@@ -632,6 +625,7 @@ function UpdateProductMongo() {
         var annee = row.cells[3].textContent.trim();
         remplirFormulaire(id, marque, modele, prix, annee);
         getCarDetailsFromMongo(id);
+        document.getElementById('idProduit').disabled = true;
         document.getElementById("btn-modifier").style.display = "block";
         document.getElementById("btn-ajouter").style.display = "block";
         document.getElementById("btn-effectuerAjout").style.display = "none";

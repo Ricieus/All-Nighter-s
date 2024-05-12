@@ -156,12 +156,10 @@
 
 <div class="container mt-5">
     <div class="row row-cols-4">
-        <% for (let i = 0; i < items.length; i++) { %>
+        <% for (let i=0; i < items.length; i++) { %>
             <div class="col">
-                <%- include('../partials/containerVoiture.ejs', { voiture: items[i], carDetail1s: carDetails[i] }) %>
+                <%- include ('../partials/containerVoiture.ejs', { voiture: items[i] }) %>
             </div>
-        <% } %>
-    </div>
+            <% } %>
 </div>
-
 </div>
