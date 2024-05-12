@@ -25,7 +25,7 @@ CREATE TABLE voitures (
     modele VARCHAR(200) NOT NULL,
     annee INT NOT NULL,
     prix DECIMAL(10, 2) NOT NULL,
-    image VARCHAR(255),
+    image VARCHAR(255)
 );
 
 INSERT INTO voitures (
@@ -172,7 +172,7 @@ CREATE TABLE contact (
     courriel VARCHAR(100) NOT NULL,
     telephone VARCHAR(100) NOT NULL,
     dateRendezVous DATE NOT NULL,
-    raisonRendezVous VARCHAR(100),
+    raisonRendezVous VARCHAR(100)
 );
 
 INSERT INTO contact (
@@ -181,14 +181,14 @@ INSERT INTO contact (
     courriel, 
     telephone, 
     dateRendezVous, 
-    raisonRendezVous, 
+    raisonRendezVous
 ) VALUES (
     'Alice',
     'Smith',
     'alice.smith@example.com',
     '1234567891',
     '2024-03-01',
-    'Je veux me plaindre',
+    'Je veux me plaindre'
 ),
 (
     'Bob',
@@ -196,7 +196,7 @@ INSERT INTO contact (
     'bob.johnson@example.com',
     '5149744492',
     '2024-03-02',
-    'Je veux réserver un essai routier',
+    'Je veux réserver un essai routier'
 ),
 (
     'Charlie',
@@ -204,5 +204,5 @@ INSERT INTO contact (
     'charlie.brown@example.com',
     '4508901284',
     '2024-03-03',
-    'Je veux laisser un commentaire',
+    'Je veux laisser un commentaire'
 );
