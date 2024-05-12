@@ -187,30 +187,15 @@ app.post('/connexion/submit_connexion', async (req, res) => {
 });
 
 app.post('/checkEmailExists', (req, res) => {
-    const email = req.body.email;
+    const email = req.body.courriel;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
     con.query(checkEmailQuery, [email], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-        if (result.length > 0) {
-            return res.json({ exists: true });
-        } else {
-            return res.json({ exists: false });
-        }
-    });
-});
 
-app.post('/checkEmailExists1', (req, res) => {
-    const email1 = req.body.courriel;
-    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
-    con.query(checkEmailQuery, [email1], (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
-        }
-        if (result.length > 0) {
+        if (result) {
             return res.json({ exists: true });
         } else {
             return res.json({ exists: false });
@@ -362,30 +347,82 @@ app.post('/profile/submit_profil', async (req, res) => {
     let motdePasse = req.body.motDePasse1;
     let adresse = req.body.adresse;
     let userId = req.body.userId1;
-    const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
+
 
     // Construire la requête SQL pour la mise à jour du profil
-    var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+    if (motdePasse) {
+        const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-    // Exécuter la requête SQL avec les valeurs mises à jour
-    con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
-        if (err) {
-            console.error('Erreur lors de la mise à jour du profil :', err);
-            return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
-        }
-        // Redirection vers la page de profil après la mise à jour
-        res.redirect('/pages/profile');
-    });
+        var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+
+        // Exécuter la requête SQL avec les valeurs mises à jour
+        con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
+            if (err) {
+                console.error('Erreur lors de la mise à jour du profil :', err);
+                return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+            }
+            // Redirection vers la page de profil après la mise à jour
+            res.redirect('/pages/profile');
+        });
+    } else {
+        var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ? WHERE id_utilisateurs = ?";
+
+        // Exécuter la requête SQL avec les valeurs mises à jour
+        con.query(sql, [nom, prenom, courriel, telephone, adresse, userId], function (err, result) {
+            if (err) {
+                console.error('Erreur lors de la mise à jour du profil :', err);
+                return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+            }
+            // Redirection vers la page de profil après la mise à jour
+            res.redirect('/pages/profile');
+        });
+    }
+
+
+
 });
 
-app.get('/pages/catalogue', (req, res) => {
-    con.query("SELECT * FROM voitures", (err, results) => {
-        if (err) throw err;
-        res.render("pages/catalogue", {
-            pageTitle: "Concessionnaire Rubious",
-            items: results
+app.get('/pages/catalogue', async (req, res) => {
+    try {
+        // Fetch basic car information from MySQL
+        const sql = `SELECT * FROM voitures`;
+        const rows = await new Promise((resolve, reject) => {
+            con.query(sql, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
         });
-    });
+
+        if (rows.length === 0) {
+            console.error('Car not found in MySQL');
+            res.status(404).send('Car not found');
+            return;
+        }
+
+        // Fetch additional car information from MongoDB using the db variable
+        if (!db) {
+            console.error('MongoDB connection is not complete');
+            res.status(500).send('Internal server error');
+            return;
+        }
+
+        const collection = db.collection('voitureDetaille');
+        const cursor = collection.find({});
+        const carDetails = await cursor.toArray();
+
+        // Check if car details are found in MongoDB
+        if (!carDetails) {
+            console.error('Car details not found in MongoDB');
+            res.status(404).send('Car details not found');
+            return;
+        }
+
+        // Render the detailee page with car information
+        res.render('pages/catalogue', { items: rows, carDetails });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).send('Internal server error' + err);
+    }
 });
 
 app.post('/catalogue/submit_catalogue', (req, res) => {
@@ -572,7 +609,7 @@ app.get('/pages/administrateur', async (req, res) => {
             return;
         }
         // Render the detailee page with car information
-        res.render('pages/administrateur', { items, carDetails: result });
+        res.render('pages/administrateur', { items, carDetails: [result] });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send('Internal server error' + err);
@@ -596,7 +633,9 @@ app.post('/updateProduct/:id', async (req, res) => {
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-        
+
+            // Move the MongoDB query outside the MySQL callback
+
         });
     } catch (err) {
         console.error('Error:', err);
@@ -604,43 +643,77 @@ app.post('/updateProduct/:id', async (req, res) => {
     }
 });
 
-   
+
 async function getCarDetailsFromMongo(id) {
 
     try {
-      // Connexion au client MongoDB
+        // Connexion au client MongoDB
 
-      const collection = db.collection('voitureDetaille');
-  
-      // Récupération des détails de la voiture basés sur l'ID
-      const result = await collection.findOne({ _id: parseInt(id) });
-  
-      return result;
+        const collection = db.collection('voitureDetaille');
+
+        // Récupération des détails de la voiture basés sur l'ID
+        const result = await collection.findOne({ _id: parseInt(id) });
+
+        return result;
     } catch (err) {
-      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
-      throw err; // Propagez l'erreur pour la gérer plus tard
-    } 
+        console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+        throw err; // Propagez l'erreur pour la gérer plus tard
     }
-  
-  
-  // Route pour récupérer les détails de la voiture depuis MongoDB
-  app.get('/getCarDetails/:id', async (req, res) => {
+}
+
+
+// Route pour récupérer les détails de la voiture depuis MongoDB
+app.get('/getCarDetails/:id', async (req, res) => {
     const idVoiture = req.params.id;
-  
+
     try {
-      const carDetails = await getCarDetailsFromMongo(idVoiture);
-  
-      if (!carDetails) {
-        console.error('Détails de la voiture introuvables dans MongoDB');
-        return res.status(404).send('Détails de la voiture introuvables');
-      }
-  
-      res.json(carDetails); // Envoyez les détails de la voiture au frontend
+        const carDetails = await getCarDetailsFromMongo(idVoiture);
+
+        if (!carDetails) {
+            console.error('Détails de la voiture introuvables dans MongoDB');
+            return res.status(404).send('Détails de la voiture introuvables');
+        }
+
+        res.json(carDetails); // Envoyez les détails de la voiture au frontend
     } catch (err) {
-      console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
-      res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
+        console.error('Erreur lors de la récupération des détails de la voiture depuis MongoDB:', err);
+        res.status(500).send('Erreur serveur lors de la récupération des détails de la voiture depuis MongoDB');
     }
-  });
+
+});
+
+app.post('/updateVoitureMongo/:id', async (req, res) => {
+    let typeCarosserie = req.body.typeCarosserie;
+    console.log(typeCarosserie);
+    let typeGaz = req.body.typeGaz;
+    let typeMoteur = req.body.typeMoteur;
+    let productDescription = req.body.productDescription;
+    let nbrCylindre = req.body.nbrCylindre;
+    let typeConduit = req.body.typeConduit;
+    let productImage = req.body.productImages;
+
+    const idVoiture = req.params.id;
+    const collection = db.collection('voitureDetaille');
+    try {
+        const result = await collection.updateOne(
+            { _id: parseInt(idVoiture) },
+            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeMoteur, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeConduit, images: productImage } }
+        );
+
+        if (result.modifiedCount === 1) {
+            console.log('Voiture mise à jour avec succès dans MongoDB');
+            res.status(200).json({ success: true, message: 'Voiture mise à jour avec succès' });
+        } else {
+            console.log('Aucune voiture trouvée avec l\'ID fourni dans MongoDB');
+            res.status(404).json({ success: false, message: 'Voiture non trouvée dans MongoDB' });
+        }
+    } catch (err) {
+        console.error('Erreur lors de la mise à jour de la voiture dans MongoDB:', err);
+        res.status(500).json({ success: false, error: 'Erreur serveur lors de la mise à jour de la voiture' });
+    }
+});
+
+
 
 app.delete('/delete_voiture/:id', async (req, res) => {
     const idVoiture = req.params.id;
@@ -692,7 +765,7 @@ app.post('/command', (req, res) => {
 
     } catch (error) {
         console.error("Error executing operations:", error);
-    } 
+    }
     // finally {
     //     if (mongoClient) {
     //         mongoClient.close(); // Close the MongoDB client
@@ -715,52 +788,19 @@ app.post('/getImageVoiture', async (req, res) => {
 });
 
 app.post('/ajoutVoiture', async (req, res) => {
+
     let marque = req.body.marque;
     let modele = req.body.modele;
-    let prix = req.body.prix;
     let annee = req.body.annee;
-    let productDescription = req.body.productDescription;
-    let typeCarosserie = req.body.typeCarosserie;
-    let typeGaz = req.body.typeGaz;
-    let typeTraction = req.body.typeTraction;
-    let nbrCylindre = req.body.nbrCylindre;
-    let typeConduit = req.body.typeConduit;
-    let images = req.body.images;
+    let prix = req.body.prix;
+    let utilisateurs_id_utilisateurs = 1;
+    let image = req.body.image;
 
-    console.log("value got");
 
-    let collection = db.collection('voitureDetaille');
 
-    // Trouver le dernier document pour obtenir l'ID le plus élevé
-    let lastItem = await collection.find().sort({ _id: -1 }).limit(1).toArray();
-    let lastId = lastItem.length < 0 ? lastItem[0]._id + 1 : 17; // Commence à 17 si la collection est vide
-
-    const ajoutInformation = {
-        _id: lastId,
-        nom: `${marque} ${modele} ${annee}`,
-        corps: typeCarosserie,
-        transmission: typeConduit,
-        moteur: nbrCylindre,
-        annee: annee,
-        carburant: typeGaz,
-        description: productDescription,
-        pneus_bougent: typeTraction,
-        images: images
-    };
-
-    try {
-        collection.insertOne(ajoutInformation, (err, result) => {
-            if (err) {
-                return res.status(500).send('Erreur insertion');
-            }
-        });
-
-    } catch (error) {
-        console.error("Error executing operations:", error);
-    }
 
     // Requête SQL d'insertion
-    var sql = "INSERT INTO voitures (id_voiture, marque, modele, annee, prix, image) VALUES ('" + lastId + "','" + marque + "','" + modele + "','" + annee + "','" + prix + "','" + images[0] + "')";
+    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
 
     // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
@@ -768,13 +808,11 @@ app.post('/ajoutVoiture', async (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur ajouter: Veuillez notifier Jad');
         }
-        console.log("complet");
-        res.redirect('/pages/administrateur');
+        console.log("Ajout effectuée");
+        res.redirect('/pages/adinistrateur');
     });
 
 });
-
-
 
 /*
     Importation de Bootstrap
