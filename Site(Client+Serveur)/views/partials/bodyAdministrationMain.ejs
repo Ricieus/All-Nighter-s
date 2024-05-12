@@ -1,3 +1,44 @@
+<!--Source pour animation voiture: https://stackoverflow.com/questions/69234745/car-animation-from-left-to-right-and-then-hide-car-image-->
+<style>
+    .car-movement {
+        overflow: hidden;
+        font-size: 40px;
+        height: 50px;
+    }
+
+    .car-movement>.car {
+        position: relative;
+        display: inline-block;
+        animation: linear infinite;
+        animation-name: run;
+        animation-duration: 5s;
+    }
+
+
+    @keyframes run {
+        0% {
+            transform: rotateY(180deg);
+            left: -100px;
+        }
+
+        50% {
+            transform: rotateY(180deg);
+            left: 100%;
+        }
+
+        51% {
+            transform: rotateY(0deg);
+            left: calc(100% + 100px);
+        }
+
+        100% {
+            transform: rotateY(0deg);
+            left: -100px;
+        }
+    }
+</style>
+
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -20,12 +61,10 @@
                                     <span>Developpeur frontend</span>
 
                                     <div class="px-4 mt-1">
-                                        <p class="fonts">Consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                            ut
-                                            labore
-                                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                                            ullamco
-                                            laboris nisi ut aliquip ex ea commodo consequat. </p>
+                                        <p class="fonts">Je me suis occupé de faire le développement majeure de l'interface de notre site web.
+                                             J'ai fais le frontend de la page contact, connexion, administrateur
+                                              et commande. De temps en temps, j'ai codé un peu le backend pour altérer 
+                                              et avoir de connaissance dans cela.   </p>
                                     </div>
                                 </div>
 
@@ -105,6 +144,20 @@
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+
+                    <div class="car-movement mt-5">
+                        <div class="car">
+                            <img src="../images/lambo.png" style="width: 9rem;">
+                        </div>
+                    </div>
+
+                    
+                    
                 </div>
         </div>
     </div>
