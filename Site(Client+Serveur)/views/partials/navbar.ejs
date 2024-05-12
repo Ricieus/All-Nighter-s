@@ -83,6 +83,7 @@
 
     function gestionDeconnexion() {
         const userFullName = sessionStorage.getItem('userFullName');
+        const userId = sessionStorage.getItem('userId');
         const btnDeconnexion = document.getElementById('deconnexionBtn');
         const connexionBtn = document.getElementById('connexionBtn');
         const btnProfil = document.getElementById('btnProfil');
@@ -94,7 +95,7 @@
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
             btnProfil.style.display = 'block'; // Activer le bouton de profil
 
-            if (userFullName == "John Doe") {
+            if (userId == 1) {
                 btnAdmin.style.display = 'block';
             }
 
