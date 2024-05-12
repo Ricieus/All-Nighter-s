@@ -20,14 +20,12 @@ VALUES ('Doe', 'John', 'johndoe@example.com', '$2b$10$NjEEzFRmZFYbqzLzI71VreCMdK
 
 ------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE voitures (
-    id_voiture INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_voiture INT NOT NULL PRIMARY KEY,
     marque VARCHAR(150) NOT NULL,
     modele VARCHAR(200) NOT NULL,
     annee INT NOT NULL,
     prix DECIMAL(10, 2) NOT NULL,
-    utilisateurs_id_utilisateurs INT NOT NULL,
     image VARCHAR(255),
-    FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
 
 INSERT INTO voitures (
@@ -36,7 +34,6 @@ INSERT INTO voitures (
     modele, 
     annee, 
     prix, 
-    utilisateurs_id_utilisateurs, 
     image
 ) VALUES (
     1,
@@ -44,7 +41,6 @@ INSERT INTO voitures (
     'Corolla',
     2021,
     25000,
-    1,
     'toyota_corolla.png'
 ),
 (
@@ -53,7 +49,6 @@ INSERT INTO voitures (
     'Civic',
     2022,
     23000,
-    1,
     'honda_civic.avif'
 ),
 (
@@ -62,7 +57,6 @@ INSERT INTO voitures (
     'CRV',
     2023,
     45000,
-    1,
     'honda_CRV.avif'
 ),
 (
@@ -71,7 +65,6 @@ INSERT INTO voitures (
     'Model S',
     2021,
     75000,
-    1,
     'teslaS.jpeg'
 ),
 (
@@ -80,7 +73,6 @@ INSERT INTO voitures (
     'Model 3',
     2022,
     50000,
-    1,
     'Tesla3.jpeg'
 ),
 (
@@ -89,7 +81,6 @@ INSERT INTO voitures (
     'Model X',
     2022,
     90000,
-    1,
     'teslaX.jpeg'
 ),
 (
@@ -98,7 +89,6 @@ INSERT INTO voitures (
     'Model Y',
     2023,
     55000,
-    1,
     'teslaY.jpeg'
 ),
 (
@@ -107,7 +97,6 @@ INSERT INTO voitures (
     'Silverado',
     2021,
     30000,
-    1,
     'chevSilver.avif'
 ),
 (
@@ -116,7 +105,6 @@ INSERT INTO voitures (
     'Tahoe',
     2023,
     55000,
-    1,
     'chevrolet-tahoe.avif'
 ),
 (
@@ -125,7 +113,6 @@ INSERT INTO voitures (
     'Mustang',
     2021,
     40000,
-    1,
     'mustang.png'
 ),
 (
@@ -134,7 +121,6 @@ INSERT INTO voitures (
     'F150',
     2023,
     45000,
-    1,
     'f150.png'
 ),
 (
@@ -143,7 +129,6 @@ INSERT INTO voitures (
     'A4',
     2021,
     35000,
-    1,
     'a4.jpeg'
 ),
 (
@@ -152,7 +137,6 @@ INSERT INTO voitures (
     'A7',
     2022,
     85000,
-    1,
     'a7.jpeg'
 ),
 (
@@ -161,7 +145,6 @@ INSERT INTO voitures (
     '3-Series',
     2021,
     50000,
-    1,
     'bmw_3.png'
 ),
 (
@@ -170,7 +153,6 @@ INSERT INTO voitures (
     '5-Series',
     2023,
     70000,
-    1,
     'bmw_5.png'
 ),
 (
@@ -179,7 +161,6 @@ INSERT INTO voitures (
     'A6',
     2024,
     60000,
-    1,
     'a6.jpeg'
 );
 
@@ -192,8 +173,6 @@ CREATE TABLE contact (
     telephone VARCHAR(100) NOT NULL,
     dateRendezVous DATE NOT NULL,
     raisonRendezVous VARCHAR(100),
-    utilisateurs_id_utilisateurs INT NOT NULL,
-    FOREIGN KEY (utilisateurs_id_utilisateurs) REFERENCES utilisateurs (id_utilisateurs)
 );
 
 INSERT INTO contact (
@@ -203,7 +182,6 @@ INSERT INTO contact (
     telephone, 
     dateRendezVous, 
     raisonRendezVous, 
-    utilisateurs_id_utilisateurs
 ) VALUES (
     'Alice',
     'Smith',
@@ -211,7 +189,6 @@ INSERT INTO contact (
     '1234567891',
     '2024-03-01',
     'Je veux me plaindre',
-    1
 ),
 (
     'Bob',
@@ -220,7 +197,6 @@ INSERT INTO contact (
     '5149744492',
     '2024-03-02',
     'Je veux réserver un essai routier',
-    1
 ),
 (
     'Charlie',
@@ -229,5 +205,4 @@ INSERT INTO contact (
     '4508901284',
     '2024-03-03',
     'Je veux laisser un commentaire',
-    1
 );
