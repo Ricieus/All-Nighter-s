@@ -187,30 +187,15 @@ app.post('/connexion/submit_connexion', async (req, res) => {
 });
 
 app.post('/checkEmailExists', (req, res) => {
-    const email = req.body.email;
+    const email = req.body.courriel;
     const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
     con.query(checkEmailQuery, [email], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-        if (result.length > 0) {
-            return res.json({ exists: true });
-        } else {
-            return res.json({ exists: false });
-        }
-    });
-});
 
-app.post('/checkEmailExists1', (req, res) => {
-    const email1 = req.body.courriel;
-    const checkEmailQuery = 'SELECT * FROM utilisateurs WHERE email = ?';
-    con.query(checkEmailQuery, [email1], (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
-        }
-        if (result.length > 0) {
+        if (result) {
             return res.json({ exists: true });
         } else {
             return res.json({ exists: false });
@@ -362,20 +347,40 @@ app.post('/profile/submit_profil', async (req, res) => {
     let motdePasse = req.body.motDePasse1;
     let adresse = req.body.adresse;
     let userId = req.body.userId1;
-    const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
+
 
     // Construire la requête SQL pour la mise à jour du profil
-    var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+    if (motdePasse) {
+        const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-    // Exécuter la requête SQL avec les valeurs mises à jour
-    con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
-        if (err) {
-            console.error('Erreur lors de la mise à jour du profil :', err);
-            return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
-        }
-        // Redirection vers la page de profil après la mise à jour
-        res.redirect('/pages/profile');
-    });
+        console.log("test");
+        var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ?, motdepasse = ? WHERE id_utilisateurs = ?";
+
+        // Exécuter la requête SQL avec les valeurs mises à jour
+        con.query(sql, [nom, prenom, courriel, telephone, adresse, hashedPassword, userId], function (err, result) {
+            if (err) {
+                console.error('Erreur lors de la mise à jour du profil :', err);
+                return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+            }
+            // Redirection vers la page de profil après la mise à jour
+            res.redirect('/pages/profile');
+        });
+    } else {
+        var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ? WHERE id_utilisateurs = ?";
+
+        // Exécuter la requête SQL avec les valeurs mises à jour
+        con.query(sql, [nom, prenom, courriel, telephone, adresse, userId], function (err, result) {
+            if (err) {
+                console.error('Erreur lors de la mise à jour du profil :', err);
+                return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
+            }
+            // Redirection vers la page de profil après la mise à jour
+            res.redirect('/pages/profile');
+        });
+    }
+
+
+
 });
 
 app.get('/pages/catalogue', async (req, res) => {

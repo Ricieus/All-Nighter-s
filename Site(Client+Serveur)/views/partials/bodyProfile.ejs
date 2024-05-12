@@ -187,6 +187,7 @@
         const adresse = document.getElementById('adresse');
         const ancienMotdepasse = document.getElementById('motDePasseAncien');
         const motdepasse = document.getElementById('motDePasse');
+        const afficherChamps = document.getElementById('choixChangerPass');
 
         // Réinitialiser les messages d'erreur et les bordures
         document.querySelectorAll('.error-message').forEach(function (element) {
@@ -236,21 +237,21 @@
             isValid = false;
         }
 
-        if (!ancienMotdepasse.value && motdepasse.value) {
+        if (afficherChamps.checked && (!ancienMotdepasse.value && motdepasse.value)) {
             document.getElementById('ancienMotDePasseError').innerText = 'Ce mot de passe est incorrect.';
             document.getElementById('ancienMotDePasseError').style.display = 'block';
             ancienMotdepasse.classList.add('error-border');
             isValid = false;
         }
 
-        if (ancienMotdepasse.value && ancienMotdepasse.value != sessionStorage.getItem('userMotDePasse')) {
+        if (afficherChamps.checked && (ancienMotdepasse.value && ancienMotdepasse.value != sessionStorage.getItem('userMotDePasse'))) {
             document.getElementById('ancienMotDePasseError').innerText = 'Ce mot de passe est incorrect.';
             document.getElementById('ancienMotDePasseError').style.display = 'block';
             ancienMotdepasse.classList.add('error-border');
             isValid = false;
         }
 
-        if (ancienMotdepasse.value && (!motdepasse.value || motdepasse.value.length < 8)) {
+        if (afficherChamps.checked && (ancienMotdepasse.value && (!motdepasse.value || motdepasse.value.length < 8))) {
             document.getElementById('motdepasseError').innerText = 'Le mot de passe doit contenir au moins 8 caractères';
             document.getElementById('motdepasseError').style.display = 'block';
             motdepasse.classList.add('error-border');
@@ -261,7 +262,8 @@
             // Vérifier si l'email existe déjà
             const emailExists = await checkEmailExists(courriel.value);
 
-            if (emailExists || courriel.value != sessionStorage.getItem('userCourriel')) {
+            console.log(emailExists);
+            if (emailExists && courriel.value != sessionStorage.getItem('userCourriel')) {
                 document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
                 document.getElementById('courrielError').style.display = 'block';
                 courriel.classList.add('error-border');
@@ -275,7 +277,11 @@
                 sessionStorage.setItem('userCourriel', courriel.value);
                 sessionStorage.setItem('userTelephone', telephone.value);
                 sessionStorage.setItem('userAdresse', adresse.value);
-                sessionStorage.setItem('userMotDePasse', motdepasse.value);
+
+                if (afficherChamps.checked) {
+                    sessionStorage.setItem('userMotDePasse', motdepasse.value);
+                }
+
             }
         }
     });
@@ -289,12 +295,12 @@
     // Fonction pour vérifier si l'email existe déjà
     async function checkEmailExists(email) {
         try {
-            const response = await fetch('/checkEmailExists1', {
+            const response = await fetch('/checkEmailExists', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email })
+                body: JSON.stringify({ courriel: email })
             });
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
