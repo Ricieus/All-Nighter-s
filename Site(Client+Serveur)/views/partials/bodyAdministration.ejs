@@ -338,6 +338,7 @@
     const modele = document.getElementById("modeleProduit").value;
     const prix = document.getElementById("voiturePrix").value;
     const annee = document.getElementById("voitureAnnee").value;
+    const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
 
 
@@ -430,7 +431,6 @@
       })
       .then(data => {
         console.log("Mise à jour effectuée avec succès dans MongoDB");
-        location.reload();
       })
       .catch(error => {
         console.error('Erreur lors de la mise à jour des détails de la voiture dans MongoDB:', error);
@@ -572,10 +572,13 @@
       var annee = row.cells[3].textContent.trim();
       remplirFormulaire(id, marque, modele, prix, annee);
       getCarDetailsFromMongo(id);
+      document.getElementById('idProduit').disabled = true;
       document.getElementById("btn-modifier").style.display = "block";
       document.getElementById("btn-ajouter").style.display = "block";
       document.getElementById("btn-effectuerAjout").style.display = "none";
       AfficherTousLesChamps();
+      document.getElementById('idProduit').disabled = true;
+
     });
   });
 
