@@ -635,11 +635,11 @@ app.post('/updateProduct/:id', async (req, res) => {
         let modele = req.query.modele;
         let prix = req.query.prix;
         let annee = req.query.annee;
+        let images = req.body.productImages;
         const idVoiture = req.params.id;
-        console.log(idVoiture);
 
-        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = ?`;
-        con.query(query, [marque, modele, prix, annee, idVoiture], async (error, results) => {
+        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ?, image = ? WHERE id_voiture = ?`;
+        con.query(query, [marque, modele, prix, annee, images[0], idVoiture], async (error, results) => {
             if (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
@@ -655,6 +655,15 @@ app.post('/updateProduct/:id', async (req, res) => {
     }
 });
 
+app.get('/getCarId/:id', (req, res) => {
+    const idVoiture = req.params.id;
+
+    con.query("SELECT * FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
+        if (err) throw err;
+        console.log("resultat : " + result);
+        res.json(result);
+    });
+})
 
 async function getCarDetailsFromMongo(id) {
 
@@ -698,7 +707,7 @@ app.post('/updateVoitureMongo/:id', async (req, res) => {
     let typeCarosserie = req.body.typeCarosserie;
     console.log(typeCarosserie);
     let typeGaz = req.body.typeGaz;
-    let typeMoteur = req.body.typeMoteur;
+    let typeTraction = req.body.typeTraction;
     let productDescription = req.body.productDescription;
     let nbrCylindre = req.body.nbrCylindre;
     let typeConduit = req.body.typeConduit;
@@ -709,7 +718,7 @@ app.post('/updateVoitureMongo/:id', async (req, res) => {
     try {
         const result = await collection.updateOne(
             { _id: parseInt(idVoiture) },
-            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeMoteur, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeConduit, images: productImage } }
+            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeConduit, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeTraction, images: productImage } }
         );
 
         if (result.modifiedCount === 1) {
@@ -813,11 +822,9 @@ app.post('/ajoutVoiture', async (req, res) => {
     let typeConduit = req.body.typeConduit;
     let images = req.body.images;
 
-    console.log("value got");
-
     let collection = db.collection('voitureDetaille');
 
-    // Trouver le dernier document pour obtenir l'ID le plus élevé
+
     const ajoutInformation = {
         _id: id,
         nom: `${marque} ${modele} ${annee}`,
