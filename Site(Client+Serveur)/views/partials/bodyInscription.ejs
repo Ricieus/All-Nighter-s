@@ -204,17 +204,41 @@
                 document.getElementById('courrielError').style.display = 'block';
                 courriel.classList.add('error-border');
             } else {
-                this.submit();
-                document.getElementById('userFullName').innerText = prenom + " " + nom;
-                // Après une connexion réussie
-                sessionStorage.setItem('userFullName', prenom + " " + nom);
-                sessionStorage.setItem('userNom', nom);
-                sessionStorage.setItem('userPrenom', prenom);
-                sessionStorage.setItem('userCourriel', courriel.value);
-                sessionStorage.setItem('userTelephone', telephone.value);
-                sessionStorage.setItem('userAdresse', adresse.value);
-                sessionStorage.setItem('userMotDePasse', motdepasse.value);
-                gestionDeconnexion(); // Activer le bouton de déconnexion
+                const response = await fetch('/inscription/submit_inscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prenom: prenom,
+                        nom: nom,
+                        courriel: courriel.value,
+                        telephone: telephone.value,
+                        adresse: adresse.value,
+                        motdepasse: motdepasse.value,
+                        confirmerMotPasse: confirmerMotPasse.value
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'inscription');
+                } else {
+                    const data = await response.json();
+                    const userId = data.userId;
+
+                    document.getElementById('userFullName').innerText = prenom + " " + nom;
+                    // Après une connexion réussie
+                    sessionStorage.setItem('userId', userId);
+                    sessionStorage.setItem('userFullName', prenom + " " + nom);
+                    sessionStorage.setItem('userNom', nom);
+                    sessionStorage.setItem('userPrenom', prenom);
+                    sessionStorage.setItem('userCourriel', courriel.value);
+                    sessionStorage.setItem('userTelephone', telephone.value);
+                    sessionStorage.setItem('userAdresse', adresse.value);
+                    sessionStorage.setItem('userMotDePasse', motdepasse.value);
+                    gestionDeconnexion(); // Activer le bouton de déconnexion
+                    window.location.href = '/';
+                }
             }
         }
     });
