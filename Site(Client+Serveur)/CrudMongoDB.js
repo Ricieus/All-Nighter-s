@@ -30,7 +30,7 @@ export async function executeOperations() {
         if (!mongoClient) {
             mongoClient = await connectToMongo(uri);
         }
-
+        
         const database = mongoClient.db('AllNighter');
         const collection = database.collection('voitureDetaille');
 
@@ -328,6 +328,13 @@ export async function executeOperations() {
             }
 
         ];
+
+        for (const voiture of voitures) {
+            let result = await collection.deleteOne({ "_id": voiture._id });
+        }
+
+        // Insérer les nouveaux documents
+        await collection.insertMany(voitures);
 
     } catch (error) {
         console.error("Error executing operations:", error);
