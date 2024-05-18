@@ -297,7 +297,7 @@ app.get('/pages/index', async (req, res) => {
         }
 
         const collection = db.collection('voitureDetaille');
-        const cursor = collection.find({});
+        const cursor = collection.find({}).sort({ _id: 1 });
         const result = await cursor.toArray();
 
 
