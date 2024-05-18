@@ -259,7 +259,6 @@ app.post('/contact/submit_contact', (req, res) => {
             return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
         }
         console.log("Insertion effectuée");
-        res.redirect('/pages/contact');
     });
 });
 

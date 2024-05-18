@@ -130,6 +130,8 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Envoyer" />
     </form>
+    <div id="bonjourMessage" class="text-success" style=" margin-top: 2rem;"></div>
+
 </div>
 <script>
 
@@ -138,5 +140,25 @@
         const re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        const prenom = document.getElementById("prenom").value;
+        const nomFamille = document.getElementById("nomFamille").value;
+        const daterendezvous = document.getElementById("daterendezvous").value;
+        CompteARebours(15, "Bonjour " + prenom + " " + nomFamille + ", Merci d'avoir pris un rendez-vous!! Nous allons vous contacter sur votre numéro de téléphone le " + daterendezvous + "!", document.getElementById("bonjourMessage"));
 
+    });
+
+    function CompteARebours(temps, message, place) {
+        let compteur = temps;
+
+        const intervalID = setInterval(function () {
+            place.innerText = message;
+            compteur--;
+            if (compteur < 0) {
+                clearInterval(intervalID);
+                place.innerText = "";
+                location.reload();
+            }
+        }, 1000);
+    }
 </script>
