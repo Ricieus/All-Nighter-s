@@ -801,8 +801,9 @@ app.post('/ajoutVoiture', async (req, res) => {
     let typeTraction = req.body.typeTraction;
     let nbrCylindre = req.body.nbrCylindre;
     let typeConduit = req.body.typeConduit;
-    let images = req.body.images;
+    let images = req.body.image;
 
+    console.log(images);
     let collection = db.collection('voitureDetaille');
 
 

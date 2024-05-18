@@ -209,11 +209,8 @@
     const typeTraction = document.getElementById('typeTraction').value;
     const nbrCylindre = document.getElementById('nbrCylindre').value;
     const typeConduit = document.getElementById('typeConduit').value;
-    const productImageInput = document.getElementById('productImage');
-
-    const existingImages = document.getElementById("imagesExistante").value.split(',');
-    const newImages = Array.from(productImageInput.files).map(file => file.name);
-    const productImages = newImages.length > 0 ? newImages : existingImages;
+    const imageInput = document.getElementById("productImage");
+    const productImages = Array.from(imageInput.files).map(file => file.name);
     
 
     let idExiste = await CheckSiIdExiste();
@@ -239,7 +236,7 @@
                 typeTraction: typeTraction,
                 nbrCylindre: nbrCylindre,
                 typeConduit: typeConduit,
-                image: productImages  // Utiliser uniquement la première image
+                image: productImages 
             })
         })
         .then(response => {
