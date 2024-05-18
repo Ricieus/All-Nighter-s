@@ -14,7 +14,7 @@
                       <label for="idProduit">Id :</label>
                       <input type="text" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
                         disabled>
-                      <div class="text-danger" id="textIdVoiture"></div>
+                      <div class="text-danger" id="textDejaPris"></div>
                     </div>
                     <div class="form-group">
                       <label for="marqueProduit">Marque :</label>
@@ -30,11 +30,13 @@
                       <label for="voitureAnnee">Année :</label>
                       <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
                         name="annee" disabled>
+                      <div class="text-danger" id="voitureAnneeText"></div>
                     </div>
                     <div class="form-group">
                       <label for="voiturePrix">Prix :</label>
                       <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
                         name="prix" disabled>
+                      <div class="text-danger" id="voiturePrixText"></div>
                     </div>
                     <div class="form-group">
                       <label for="productDescription">Description :</label>
@@ -174,14 +176,10 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
-
+    console.log(productImages);
     let idExiste = await CheckSiIdExiste();
 
-    if (idExiste) {
-      document.getElementById('textIdVoiture').innerText = "Le id est déjà pris.";
-    }
-
-    if (VerificationChampsRemplis() && !idExiste) {
+    if (VerificationChampsRemplis(idExiste)) {
       BloquerTousLesChamps();
       CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
@@ -218,8 +216,6 @@
           console.error('Erreur lors de l\'ajout du produit : ', error);
         });
     }
-
-
   }
 
   function CompteARebours(temps, message, place) {
@@ -236,7 +232,7 @@
     }, 1000);
   }
 
-  function VerificationChampsRemplis() {
+  function VerificationChampsRemplis(idExiste) {
     const id = document.getElementById("idProduit").value;
     const marque = document.getElementById("marqueProduit").value;
     const modele = document.getElementById("modeleProduit").value;
@@ -250,15 +246,24 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const productImage = document.getElementById('productImage').value;
     let erreurSurvenue = document.getElementById('erreurSurvenue');
-    let textIdVoiture = document.getElementById('textIdVoiture');
+    let prixText = document.getElementById("voiturePrixText");
+    let anneeText = document.getElementById("voitureAnneeText");
+    let textDejaPris = document.getElementById('textDejaPris');
 
     let continuer = true;
     let message = "";
+    prixText.innerText = "";
+    anneeText.innerText = "";
+    textDejaPris.innerText = "";
     erreurSurvenue.innerText = message;
-    textIdVoiture.innerText = "";
     if (!id) {
       continuer = false;
       message += "le id, "
+    }
+
+    if (idExiste) {
+      continuer = false;
+      textDejaPris.innerText = "Le id est déjà pris.";
     }
 
     if (!marque) {
@@ -304,6 +309,16 @@
     if (!productImage) {
       continuer = false;
       message += "les quatre images, "
+    }
+
+    if (isNaN(parseInt(prix))) {
+      prixText.innerText = "Le prix doit être un nombre.";
+      continuer = false;
+    }
+
+    if (isNaN(parseInt(annee))) {
+      anneeText.innerText = "L'année doit être un nombre.";
+      continuer = false;
     }
 
     if (continuer) {
@@ -449,16 +464,11 @@
       });
   }
 
-
-
-
-
-
   function Ajouter() {
     document.getElementById('btn-ajouter').style.display = "none";
     document.getElementById("btn-modifier").style.display = "none";
     AfficherTousLesChamps();
-    ReinitialiserTousLesChamps()
+    ReinitialiserTousLesChamps();
     document.getElementById('btn-effectuerAjout').style.display = "block";
   }
 
@@ -480,6 +490,10 @@
     document.getElementById('img1').src = '';
     document.getElementById('img2').src = '';
     document.getElementById('img3').src = '';
+    document.getElementById('erreurSurvenue').innerText = "";
+    document.getElementById('textDejaPris').innerText = "";
+    document.getElementById("voiturePrixText").innerText = "";
+    document.getElementById("voitureAnneeText").innerText = "";
   }
 
   function AfficherTousLesChamps() {
@@ -512,15 +526,7 @@
     document.getElementById('productImage').disabled = true;
   }
 
-  function AfficherSectionMain() {
-    var sectionMain = document.querySelector('.sectionMain');
-    var productForm = document.querySelector('.product-list-form');
-    var gestionClients = document.querySelector('.gestion-clients');
 
-    sectionMain.classList.add('active');
-    productForm.classList.remove('active');
-    gestionClients.classList.remove('active');
-  }
 
 
   function ActivationBoutonAjouter() {
@@ -575,6 +581,7 @@
 
   document.querySelectorAll('.modifier').forEach(function (button) {
     button.addEventListener('click', function (event) {
+      ReinitialiserTousLesChamps();
       event.preventDefault();
       var row = this.closest('tr');
       var id = row.getAttribute('data-id');

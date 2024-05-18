@@ -658,7 +658,6 @@ app.get('/getCarId/:id', (req, res) => {
 
     con.query("SELECT * FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
         if (err) throw err;
-        console.log("resultat : " + result);
         res.json(result);
     });
 })
