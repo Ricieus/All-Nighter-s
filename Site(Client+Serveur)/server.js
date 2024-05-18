@@ -242,22 +242,17 @@ app.post('/inscription/submit_inscription', async (req, res) => {
     }
 });
 
-//INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
     let nom = req.body.nomFamille;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
     let raisonRendezVous = req.body.raison;
-    let utilisateurs_id_utilisateurs = 1;
 
-    // Date de rendez-vous
     let dateRendezVous = req.body.daterendezvous ? "'" + req.body.daterendezvous + "'" : 'NULL';
 
-    // Requête SQL d'insertion
-    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "'," + dateRendezVous + ",'" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
+    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "'," + dateRendezVous + ",'" + raisonRendezVous + "')";
 
-    // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
         if (err) {
             console.log(err);
