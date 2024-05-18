@@ -96,6 +96,7 @@
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
             btnProfil.style.display = 'block'; // Activer le bouton de profil
 
+            console.log(userId);
             if (userId == 1) {
                 btnAdmin.style.display = 'block';
             }
@@ -105,6 +106,7 @@
             btnDeconnexion.style.display = 'none'; // Désactiver le bouton de déconnexion
             connexionBtn.style.display = 'block'; // Afficher le bouton de connexion
             btnProfil.style.display = 'none'; // Désactiver le bouton de profil
+            btnAdmin.style.display = 'none';
         }
     }
 
