@@ -160,7 +160,7 @@
 
 
 <script>
-  function RedirectAjouter() {
+  async function RedirectAjouter() {
     const id = document.getElementById("idProduit").value;
     const marque = document.getElementById("marqueProduit").value;
     const modele = document.getElementById("modeleProduit").value;
@@ -175,7 +175,13 @@
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
 
-    if (VerificationChampsRemplis()) {
+    let idExiste = await CheckSiIdExiste();
+
+    if (idExiste) {
+      document.getElementById('textIdVoiture').innerText = "Le id est déjà pris.";
+    }
+
+    if (VerificationChampsRemplis() && !idExiste) {
       BloquerTousLesChamps();
       CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
@@ -301,29 +307,6 @@
     }
 
     if (continuer) {
-
-      fetch('/getCarId/' + id, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de la récupération du id de la voiture');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.length > 0) {
-            console.log("data : " + data);
-            document.getElementById('textIdVoiture').innerText = "Le id est déjà pris";
-            return false;
-          }
-        })
-        .catch(error => {
-          console.error('Erreur lors de la récupération des détails de la voiture:', error);
-        });
       return true;
     } else {
       message = message.trim().slice(0, -1);
@@ -331,6 +314,35 @@
       return false;
     }
   }
+
+  async function CheckSiIdExiste() {
+    const id = document.getElementById("idProduit").value;
+    let idExiste = false;
+
+    try {
+      const response = await fetch('/getCarId/' + id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération du id de la voiture');
+      }
+
+      const data = await response.json();
+
+      if (data.length > 0) {
+        idExiste = true;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des détails de la voiture:', error);
+    }
+
+    return idExiste;
+  }
+
 
   function RedirectModifier() {
     const id = document.getElementById("idProduit").value;

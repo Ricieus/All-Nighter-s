@@ -194,7 +194,6 @@ app.post('/checkEmailExists', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-        console.log("result : " + result);
         if (result.length > 0) {
             return res.json({ exists: true });
         } else {
@@ -215,8 +214,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-        console.log(hashedPassword);
-
         // Vérifier si l'email existe déjà
         var checkEmailQuery = "SELECT * FROM utilisateurs WHERE email = ?";
         con.query(checkEmailQuery, [courriel], function (err, rows) {
@@ -235,7 +232,8 @@ app.post('/inscription/submit_inscription', async (req, res) => {
                     console.log(err);
                     return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
                 }
-                setTimeout(function () { res.redirect('/'); }, 4000);
+                const userId = result.insertId; // Récupérer l'ID de l'utilisateur inséré automatiquement
+                res.status(201).json({ userId: userId });
             });
         });
     } catch (error) {
