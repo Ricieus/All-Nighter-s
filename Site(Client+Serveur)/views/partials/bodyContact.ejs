@@ -145,7 +145,7 @@
         const prenom = document.getElementById("prenom").value;
         const nomFamille = document.getElementById("nomFamille").value;
         const daterendezvous = document.getElementById("daterendezvous").value;
-        CompteARebours(15, "Bonjour " + prenom + " " + nomFamille + ", Merci d'avoir pris un rendez-vous!! Nous allons vous contacter sur votre numéro de téléphone le " + daterendezvous + "!", document.getElementById("bonjourMessage"));
+        CompteARebours(10, "Bonjour " + prenom + " " + nomFamille + ", Merci d'avoir pris un rendez-vous!! Nous allons vous contacter sur votre numéro de téléphone le " + daterendezvous + "!", document.getElementById("bonjourMessage"));
 
     });
 
@@ -163,6 +163,7 @@
         }, 1000);
     }
 
+    //source : https://stackoverflow.com/questions/13952686/how-to-make-html-input-tag-only-accept-numerical-values#:~:text=You%20can%20use%20an%20%3Cinput%20type%3D%22number%22%20%2F%3E.%20This,type%3D%22number%22%20tag%20is%20only%20supported%20in%20newer%20browsers
     function AllowOnlyNumbers(e) {
         e = (e) ? e : window.event;
 

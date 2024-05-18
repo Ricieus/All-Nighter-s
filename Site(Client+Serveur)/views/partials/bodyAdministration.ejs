@@ -12,8 +12,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="idProduit">Id :</label>
-                      <input type="number" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
-                        disabled>
+                      <input type="text" class="form-control" name="id" autocomplete="off" id="idProduit"
+                        onkeypress="return AllowOnlyNumbers(event);" placeholder="Id de la voiture" disabled />
                       <div class="text-danger" id="textDejaPris"></div>
                     </div>
                     <div class="form-group">
@@ -42,8 +42,9 @@
                     </div>
                     <div class="form-group">
                       <label for="voiturePrix">Prix :</label>
-                      <input type="number" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
-                        name="prix" disabled>
+                      <input type="text" class="form-control" name="prix" autocomplete="off" id="voiturePrix"
+                        onkeypress="return AllowOnlyNumbers(event);" placeholder="Prix de la voiture" maxlength="8"
+                        disabled />
                       <div class="text-danger" id="voiturePrixText"></div>
                     </div>
                     <div class="form-group">
@@ -211,48 +212,48 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
-    
+
 
     let idExiste = await CheckSiIdExiste();
 
     if (VerificationChampsRemplis(idExiste)) {
-        BloquerTousLesChamps();
-        CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
+      BloquerTousLesChamps();
+      CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
-        fetch('/ajoutVoiture', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: id,
-                marque: marque,
-                modele: modele,
-                prix: prix,
-                annee: annee,
-                productDescription: productDescription,
-                typeCarosserie: typeCarosserie,
-                typeGaz: typeGaz,
-                typeTraction: typeTraction,
-                nbrCylindre: nbrCylindre,
-                typeConduit: typeConduit,
-                image: productImages 
-            })
+      fetch('/ajoutVoiture', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: id,
+          marque: marque,
+          modele: modele,
+          prix: prix,
+          annee: annee,
+          productDescription: productDescription,
+          typeCarosserie: typeCarosserie,
+          typeGaz: typeGaz,
+          typeTraction: typeTraction,
+          nbrCylindre: nbrCylindre,
+          typeConduit: typeConduit,
+          image: productImages
         })
+      })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur lors de l\'ajout du produit');
-            }
-            return response.json();
+          if (!response.ok) {
+            throw new Error('Erreur lors de l\'ajout du produit');
+          }
+          return response.json();
         })
         .then(data => {
-            document.getElementById("idProduit").value = data[0];
+          document.getElementById("idProduit").value = data[0];
         })
         .catch(error => {
-            console.error('Erreur lors de l\'ajout du produit : ', error);
+          console.error('Erreur lors de l\'ajout du produit : ', error);
         });
     }
-}
+  }
 
   function CompteARebours(temps, message, place) {
     let compteur = temps;
@@ -410,25 +411,25 @@
     CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
     try {
-        const response = await fetch(`/updateProduct/${id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ marque, modele, prix, annee, firstImage })
-        });
+      const response = await fetch(`/updateProduct/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ marque, modele, prix, annee, firstImage })
+      });
 
-        if (!response.ok) {
-            throw new Error('Erreur lors de la mise à jour du produit');
-        }
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du produit');
+      }
 
-        const data = await response.json();
-        console.log("Mise à jour effectuée avec succès dans MySQL");
-        UpdateProductMongo();
+      const data = await response.json();
+      console.log("Mise à jour effectuée avec succès dans MySQL");
+      UpdateProductMongo();
     } catch (error) {
-        console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
+      console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
     }
-}
+  }
 
 
 
@@ -716,5 +717,17 @@
       .catch(err => {
         console.error("Erreur de suppression : " + err);
       });
+  }
+
+
+  //source : https://stackoverflow.com/questions/13952686/how-to-make-html-input-tag-only-accept-numerical-values#:~:text=You%20can%20use%20an%20%3Cinput%20type%3D%22number%22%20%2F%3E.%20This,type%3D%22number%22%20tag%20is%20only%20supported%20in%20newer%20browsers
+  function AllowOnlyNumbers(e) {
+    e = (e) ? e : window.event;
+
+    var clipboardData = e.clipboardData ? e.clipboardData : window.clipboardData;
+    var key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+    var str = (e.type && e.type == "paste") ? clipboardData.getData('Text') : String.fromCharCode(key);
+
+    return (/^\d+$/.test(str));
   }
 </script>
