@@ -259,7 +259,6 @@ app.post('/contact/submit_contact', (req, res) => {
             return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
         }
         console.log("Insertion effectuée");
-        res.redirect('/pages/contact');
     });
 });
 
@@ -354,8 +353,6 @@ app.post('/profile/submit_profil', async (req, res) => {
                 console.error('Erreur lors de la mise à jour du profil :', err);
                 return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
             }
-            // Redirection vers la page de profil après la mise à jour
-            res.redirect('/pages/profile');
         });
     } else {
         var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ? WHERE id_utilisateurs = ?";
@@ -366,8 +363,6 @@ app.post('/profile/submit_profil', async (req, res) => {
                 console.error('Erreur lors de la mise à jour du profil :', err);
                 return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
             }
-            // Redirection vers la page de profil après la mise à jour
-            res.redirect('/pages/profile');
         });
     }
 
