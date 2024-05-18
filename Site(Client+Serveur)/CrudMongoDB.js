@@ -30,7 +30,7 @@ export async function executeOperations() {
         if (!mongoClient) {
             mongoClient = await connectToMongo(uri);
         }
-        
+
         const database = mongoClient.db('AllNighter');
         const collection = database.collection('voitureDetaille');
 
@@ -94,7 +94,7 @@ export async function executeOperations() {
                 "nom": "Tesla Model S 2021",
                 "corps": "Sedan",
                 "transmission": "Automatique",
-                "moteur": "500 km",
+                "moteur": "N/A",
                 "annee": 2021,
                 "carburant": "Électrique",
                 "description": "La Tesla Model S est une berline électrique haut de gamme offrant des performances impressionnantes, une autonomie étendue et un intérieur luxueux. Elle est souvent saluée pour ses caractéristiques de conduite semi-autonome et son design avant-gardiste.",
@@ -112,7 +112,7 @@ export async function executeOperations() {
                 "nom": "Tesla Model 3 2022",
                 "corps": "Sedan",
                 "transmission": "Automatique",
-                "moteur": "500 km",
+                "moteur": "N/A",
                 "annee": 2022,
                 "carburant": "Électrique",
                 "description": "La Tesla Model 3 est une berline électrique de taille moyenne offrant une autonomie compétitive, des performances rapides et une multitude de fonctionnalités de conduite assistée. Son design épuré et son interface utilisateur minimaliste la distinguent sur le marché.",
@@ -130,7 +130,7 @@ export async function executeOperations() {
                 "nom": "Tesla Model X 2022",
                 "corps": "SUV",
                 "transmission": "Automatique",
-                "moteur": "500 km",
+                "moteur": "N/A",
                 "annee": 2022,
                 "carburant": "Électrique",
                 "description": "Le Tesla Model X est un SUV électrique de luxe offrant une autonomie impressionnante, des performances de pointe et des portes arrière à ouverture falcon-wing distinctives. Son intérieur spacieux et ses fonctionnalités de sécurité avancées en font un choix prisé pour les familles.",
@@ -149,7 +149,7 @@ export async function executeOperations() {
                 "nom": "Tesla Model Y 2022",
                 "corps": "SUV",
                 "transmission": "Automatique",
-                "moteur": "500 km",
+                "moteur": "N/A",
                 "annee": 2022,
                 "carburant": "Électrique",
                 "description": "Le Tesla Model Y est un SUV électrique compact offrant une combinaison de performances électriques, d'autonomie et de polyvalence. Avec une conception similaire à la Model 3 mais avec plus d'espace intérieur et une hauteur de conduite surélevée, il attire les conducteurs à la recherche d'un véhicule familial moderne.",

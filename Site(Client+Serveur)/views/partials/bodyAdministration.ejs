@@ -28,15 +28,16 @@
                     </div>
                     <div class="form-group">
                       <label for="voitureAnnee">Année :</label>
-
                       <select class="form-control" id="voitureAnnee" name="annee" disabled>
-                        <option value="" disabled selected>Choisir...</option>
+                        <option value="" disabled selected>Choisir l'année</option>
                         <option value="2024">2024</option>
                         <option value="2023">2023</option>
                         <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
                       </select>
-
-
                       <div class="text-danger" id="voitureAnneeText"></div>
                     </div>
                     <div class="form-group">
@@ -50,36 +51,65 @@
                       <textarea class="form-control" id="productDescription" placeholder="Description de la voiture"
                         style="height: 7rem;" disabled></textarea>
                     </div>
-
                   </div>
                   <div class="col-md-6">
                     <div class="image-box">
                       <div class="form-group">
                         <label for="typeCarosserie">Type de carrosserie :</label>
-
-                        <input type="text" class="form-control" id="typeCarosserie" placeholder="Type de carrosserie"
-                          disabled>
+                        <select class="form-control" id="typeCarosserie" name="typeCarosserie" disabled>
+                          <option value="" selected disabled>Choisir le type de carrosserie</option>
+                          <option value="Sedan">Sedan</option>
+                          <option value="Hatchback">Hatchback</option>
+                          <option value="SUV">SUV</option>
+                          <option value="Coupé">Coupé</option>
+                          <option value="Convertible">Convertible</option>
+                          <option value="Wagon">Wagon</option>
+                          <option value="Van">Van</option>
+                        </select>
                       </div>
 
                       <div class="form-group">
                         <label for="typeGaz">Type de carburant :</label>
-                        <input type="text" class="form-control" id="typeGaz" placeholder="Type de gaz" disabled>
+                        <select class="form-control" id="typeGaz" name="typeGaz" disabled>
+                          <option value="" selected disabled>Choisir le type de carburant</option>
+                          <option value="Gaz">Gaz</option>
+                          <option value="Électrique">Électrique</option>
+                          <option value="Hybride">Hybride</option>
+                        </select>
                       </div>
-
                       <div class="form-group">
                         <label for="typeTraction">Type de traction :</label>
-                        <input type="text" class="form-control" id="typeTraction" placeholder="Type de traction"
-                          disabled>
+                        <select class="form-control" id="typeTraction" name="typeTraction" disabled>
+                          <option value="" selected disabled>Choisir le type de traction</option>
+                          <option value="AWD">AWD</option>
+                          <option value="FWD">FWD</option>
+                          <option value="RWD">RWD</option>
+                          <option value="2WD">2WD</option>
+                          <option value="4WD">4WD</option>
+                        </select>
+                      </div>
+                      <div class="form-group" style="display:block;">
+                        <label for="nombreCylindre">Nombre de cylindre :</label>
+                        <select class="form-control" id="nbrCylindre" name="nbrCylindre" disabled>
+                          <option value="" selected disabled>Choisir le nombre de cylindres</option>
+                          <option value="N/A">N/A</option>
+                          <option value="2 cylindres">2 cylindres</option>
+                          <option value="4 cylindres">4 cylindres</option>
+                          <option value="6 cylindres">6 cylindres</option>
+                          <option value="8 cylindres">8 cylindres</option>
+                          <option value="10 cylindres">10 cylindres</option>
+                          <option value="12 cylindres">12 cylindres</option>
+                        </select>
                       </div>
 
-                      <div class="form-group">
-                        <label for="nombreCylindre">Nombre de cylindre :</label>
-                        <input type="text" class="form-control" id="nbrCylindre" placeholder="Type de moteur" disabled>
-                      </div>
 
                       <div class="form-group">
                         <label for="typeConduit">Type de transmission :</label>
-                        <input type="text" class="form-control" id="typeConduit" placeholder="Type de conduit" disabled>
+                        <select class="form-control" id="typeConduit" name="typeConduit" disabled>
+                          <option value="" selected disabled>Choisir le type de transmission</option>
+                          <option value="Automatique">Automatique</option>
+                          <option value="Manuelle">Manuelle</option>
+                        </select>
                       </div>
                       <h3>Images</h3>
                       <div class="image-preview" id="imagePreview">
@@ -181,7 +211,6 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
-    console.log(productImages);
     let idExiste = await CheckSiIdExiste();
 
     if (VerificationChampsRemplis(idExiste)) {
@@ -411,11 +440,39 @@
       })
       .then(data => {
         console.log(data);
-        document.getElementById('typeCarosserie').value = data.corps;
-        document.getElementById('typeGaz').value = data.carburant;
+        const typeCarosserie = document.getElementById('typeCarosserie');
+        typeCarosserie.disabled = false;
+        typeCarosserie.value = data.corps;
+        if (!typeCarosserie.value) {
+          const newOption = document.createElement('option');
+          newOption.value = data.corps;
+          newOption.text = data.corps;
+          typeCarosserie.add(newOption, typeCarosserie[1]);
+          typeCarosserie.value = data.corps;
+        }
+        const typeGaz = document.getElementById('typeGaz');
+        typeGaz.disabled = false;
+        typeGaz.value = data.carburant;
+        if (!typeGaz.value) {
+          const newOption = document.createElement('option');
+          newOption.value = data.carburant;
+          newOption.text = data.carburant;
+          typeGaz.add(newOption, typeGaz[1]);
+          typeGaz.value = data.carburant;
+        }
+        const nbrCylindre = document.getElementById('nbrCylindre');
+        nbrCylindre.disabled = false;
+        nbrCylindre.value = data.moteur;
+        if (!nbrCylindre.value) {
+          const newOption = document.createElement('option');
+          newOption.value = data.moteur;
+          newOption.text = data.moteur;
+          nbrCylindre.add(newOption, nbrCylindre[1]);
+          nbrCylindre.value = data.moteur;
+        }
+
         document.getElementById('typeTraction').value = data.pneus_bougent;
         document.getElementById('productDescription').value = data.description;
-        document.getElementById('nbrCylindre').value = data.moteur;
         document.getElementById('typeConduit').value = data.transmission;
 
         document.getElementById('imagesExistante').value = data.images.join(',');
@@ -494,11 +551,11 @@
     document.getElementById('voitureAnnee').value = "";
     document.getElementById('voiturePrix').value = null;
     document.getElementById('productDescription').value = null;
-    document.getElementById('typeCarosserie').value = null;
-    document.getElementById('typeGaz').value = null;
-    document.getElementById('typeTraction').value = null;
-    document.getElementById('nbrCylindre').value = null;
-    document.getElementById('typeConduit').value = null;
+    document.getElementById('typeCarosserie').value = "";
+    document.getElementById('typeGaz').value = "";
+    document.getElementById('typeTraction').value = "";
+    document.getElementById('nbrCylindre').value = "";
+    document.getElementById('typeConduit').value = "";
     document.getElementById('productImage').value = null;
     document.getElementById('img').src = '';
     document.getElementById('img1').src = '';

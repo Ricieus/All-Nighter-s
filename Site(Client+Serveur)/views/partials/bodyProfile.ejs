@@ -139,6 +139,8 @@
                     <button class="btn btn-primary profile-button" type="submit">Enregistrer</button>
                 </div>
 
+                <div class="text-success" id="messageSucces"></div>
+
                 <input id="userId" type="hidden" class="form-control" placeholder="Entrez votre mot de passe"
                     name="userId1">
                 <p id="userFullName"></p>
@@ -269,6 +271,7 @@
                 document.getElementById('courrielError').style.display = 'block';
                 courriel.classList.add('error-border');
             } else {
+                CompteARebours(5, "Votre profil est en cours d'enregistrement, " + prenom + " " + nom + ".", document.getElementById('messageSucces'));
                 this.submit();
                 document.getElementById('userFullName').innerText = prenom + " " + nom;
                 // Après une connexion réussie
@@ -328,5 +331,19 @@
             motdepasse.disabled = true;
             showPasswordCheckbox.disabled = true;
         }
+    }
+
+    function CompteARebours(temps, message, place) {
+        let compteur = temps;
+
+        const intervalID = setInterval(function () {
+            place.innerText = message + " " + compteur + "..";
+            compteur--;
+            if (compteur < 0) {
+                clearInterval(intervalID);
+                place.innerText = "";
+                location.reload();
+            }
+        }, 1000);
     }
 </script>

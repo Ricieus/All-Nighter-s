@@ -77,8 +77,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="telephone">Numéro de téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" name="telephone"
-                        placeholder="Numéro de téléphone" required>
+                    <input type="text" class="form-control" name="telephone" autocomplete="off" id="telephone"
+                        onkeypress="return AllowOnlyNumbers(event);" placeholder="Numéro de téléphone" maxlength="10"
+                        required />
                 </div>
             </div>
         </div>
@@ -160,5 +161,15 @@
                 location.reload();
             }
         }, 1000);
+    }
+
+    function AllowOnlyNumbers(e) {
+        e = (e) ? e : window.event;
+
+        var clipboardData = e.clipboardData ? e.clipboardData : window.clipboardData;
+        var key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+        var str = (e.type && e.type == "paste") ? clipboardData.getData('Text') : String.fromCharCode(key);
+
+        return (/^\d+$/.test(str));
     }
 </script>
