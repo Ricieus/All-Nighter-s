@@ -12,9 +12,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="idProduit">Id :</label>
-                      <input type="text" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
+                      <input type="number" class="form-control" id="idProduit" placeholder="Id de la voiture" name="id"
                         disabled>
-                      <div class="text-danger" id="textIdVoiture"></div>
+                      <div class="text-danger" id="textDejaPris"></div>
                     </div>
                     <div class="form-group">
                       <label for="marqueProduit">Marque :</label>
@@ -28,13 +28,22 @@
                     </div>
                     <div class="form-group">
                       <label for="voitureAnnee">Année :</label>
-                      <input type="text" class="form-control" id="voitureAnnee" placeholder="Année de la voiture"
-                        name="annee" disabled>
+
+                      <select class="form-control" id="voitureAnnee" name="annee" disabled>
+                        <option value="" disabled selected>Choisir...</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                      </select>
+
+
+                      <div class="text-danger" id="voitureAnneeText"></div>
                     </div>
                     <div class="form-group">
                       <label for="voiturePrix">Prix :</label>
-                      <input type="text" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
+                      <input type="number" class="form-control" id="voiturePrix" placeholder="Prix de la voiture"
                         name="prix" disabled>
+                      <div class="text-danger" id="voiturePrixText"></div>
                     </div>
                     <div class="form-group">
                       <label for="productDescription">Description :</label>
@@ -106,11 +115,7 @@
                       onclick="Ajouter()">
                       Ajouter une voiture</button>
                   </div>
-
                 </div>
-
-
-
               </div>
             </div>
           </div>
@@ -153,6 +158,8 @@
               </table>
             </div>
           </div>
+          <input type="hidden" id="imagesExistante">
+
         </div>
     </div>
   </div>
@@ -174,14 +181,10 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
-
+    console.log(productImages);
     let idExiste = await CheckSiIdExiste();
 
-    if (idExiste) {
-      document.getElementById('textIdVoiture').innerText = "Le id est déjà pris.";
-    }
-
-    if (VerificationChampsRemplis() && !idExiste) {
+    if (VerificationChampsRemplis(idExiste)) {
       BloquerTousLesChamps();
       CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
@@ -218,8 +221,6 @@
           console.error('Erreur lors de l\'ajout du produit : ', error);
         });
     }
-
-
   }
 
   function CompteARebours(temps, message, place) {
@@ -236,7 +237,7 @@
     }, 1000);
   }
 
-  function VerificationChampsRemplis() {
+  function VerificationChampsRemplis(idExiste) {
     const id = document.getElementById("idProduit").value;
     const marque = document.getElementById("marqueProduit").value;
     const modele = document.getElementById("modeleProduit").value;
@@ -250,12 +251,16 @@
     const typeConduit = document.getElementById('typeConduit').value;
     const productImage = document.getElementById('productImage').value;
     let erreurSurvenue = document.getElementById('erreurSurvenue');
-    let textIdVoiture = document.getElementById('textIdVoiture');
+    let prixText = document.getElementById("voiturePrixText");
+    let anneeText = document.getElementById("voitureAnneeText");
+    let textDejaPris = document.getElementById('textDejaPris');
 
     let continuer = true;
     let message = "";
+    prixText.innerText = "";
+    anneeText.innerText = "";
+    textDejaPris.innerText = "";
     erreurSurvenue.innerText = message;
-    textIdVoiture.innerText = "";
     if (!id) {
       continuer = false;
       message += "le id, "
@@ -306,7 +311,20 @@
       message += "les quatre images, "
     }
 
-    if (continuer) {
+    if (isNaN(parseInt(prix))) {
+      prixText.innerText = "Le prix doit être un nombre.";
+      continuer = false;
+    }
+
+    if (isNaN(parseInt(annee))) {
+      anneeText.innerText = "L'année doit être un nombre.";
+      continuer = false;
+    }
+
+    if (continuer && idExiste) {
+      textDejaPris.innerText = "Le id est déjà pris.";
+      return false;
+    } else if (continuer) {
       return true;
     } else {
       message = message.trim().slice(0, -1);
@@ -353,7 +371,7 @@
     const imageInput = document.getElementById("productImage");
     const productImages = Array.from(imageInput.files).map(file => file.name);
 
-
+    CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
     // Envoi de la mise à jour à la base de données MySQL
     fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
       method: 'POST',
@@ -399,6 +417,9 @@
         document.getElementById('productDescription').value = data.description;
         document.getElementById('nbrCylindre').value = data.moteur;
         document.getElementById('typeConduit').value = data.transmission;
+
+        document.getElementById('imagesExistante').value = data.images.join(',');
+
         document.getElementById('img').src = "/images/" + data.images[0];
         document.getElementById('img1').src = "/images/" + data.images[1];
         document.getElementById('img2').src = "/images/" + data.images[2];
@@ -408,6 +429,7 @@
         console.error('Erreur lors de la récupération des détails de la voiture:', error);
       });
   }
+
   function UpdateProductMongo() {
     const id = document.getElementById("idProduit").value;
     const typeCarosserie = document.getElementById("typeCarosserie").value;
@@ -418,22 +440,28 @@
     const typeConduit = document.getElementById("typeConduit").value;
     const productImageInput = document.getElementById('productImage');
 
-    const productImages = Array.from(productImageInput.files).map(file => file.name);
+    const existingImages = document.getElementById("imagesExistante").value.split(',');
+
+    const newImages = Array.from(productImageInput.files).map(file => file.name);
+
+    const productImages = newImages.length > 0 ? newImages : existingImages;
+
+    const updateData = {
+      typeCarosserie,
+      typeGaz,
+      typeTraction,
+      productDescription,
+      nbrCylindre,
+      typeConduit,
+      productImages
+    };
 
     fetch('/updateVoitureMongo/' + id, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        typeCarosserie,
-        typeGaz,
-        typeTraction,
-        productDescription,
-        nbrCylindre,
-        typeConduit,
-        productImages
-      })
+      body: JSON.stringify(updateData)
     })
       .then(response => {
         if (!response.ok) {
@@ -449,16 +477,12 @@
       });
   }
 
-
-
-
-
-
   function Ajouter() {
+    document.documentElement.scrollTop = 0;
     document.getElementById('btn-ajouter').style.display = "none";
     document.getElementById("btn-modifier").style.display = "none";
     AfficherTousLesChamps();
-    ReinitialiserTousLesChamps()
+    ReinitialiserTousLesChamps();
     document.getElementById('btn-effectuerAjout').style.display = "block";
   }
 
@@ -467,7 +491,7 @@
     document.getElementById('idProduit').value = null;
     document.getElementById('marqueProduit').value = null;
     document.getElementById('modeleProduit').value = null;
-    document.getElementById('voitureAnnee').value = null;
+    document.getElementById('voitureAnnee').value = "";
     document.getElementById('voiturePrix').value = null;
     document.getElementById('productDescription').value = null;
     document.getElementById('typeCarosserie').value = null;
@@ -480,6 +504,10 @@
     document.getElementById('img1').src = '';
     document.getElementById('img2').src = '';
     document.getElementById('img3').src = '';
+    document.getElementById('erreurSurvenue').innerText = "";
+    document.getElementById('textDejaPris').innerText = "";
+    document.getElementById("voiturePrixText").innerText = "";
+    document.getElementById("voitureAnneeText").innerText = "";
   }
 
   function AfficherTousLesChamps() {
@@ -512,15 +540,7 @@
     document.getElementById('productImage').disabled = true;
   }
 
-  function AfficherSectionMain() {
-    var sectionMain = document.querySelector('.sectionMain');
-    var productForm = document.querySelector('.product-list-form');
-    var gestionClients = document.querySelector('.gestion-clients');
 
-    sectionMain.classList.add('active');
-    productForm.classList.remove('active');
-    gestionClients.classList.remove('active');
-  }
 
 
   function ActivationBoutonAjouter() {
@@ -568,13 +588,25 @@
     document.getElementById('idProduit').value = id;
     document.getElementById('marqueProduit').value = marque;
     document.getElementById('modeleProduit').value = modele;
-    document.getElementById('voitureAnnee').value = annee;
     document.getElementById('voiturePrix').value = prix;
+    const voitureAnneeDropdown = document.getElementById('voitureAnnee');
+    voitureAnneeDropdown.disabled = false;
+    voitureAnneeDropdown.value = annee;
+    if (!voitureAnneeDropdown.value) {
+      const newOption = document.createElement('option');
+      newOption.value = annee;
+      newOption.text = annee;
+      voitureAnneeDropdown.add(newOption, voitureAnneeDropdown[1]);
+      voitureAnneeDropdown.value = annee;
+    }
   }
+
 
 
   document.querySelectorAll('.modifier').forEach(function (button) {
     button.addEventListener('click', function (event) {
+      document.documentElement.scrollTop = 0;
+      ReinitialiserTousLesChamps();
       event.preventDefault();
       var row = this.closest('tr');
       var id = row.getAttribute('data-id');
