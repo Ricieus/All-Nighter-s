@@ -38,7 +38,7 @@
             <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="dropdownMenuButton">
                 <li style="text-align: center;"><span id="userFullName"></span></li>
                 <li>
-                    <hr class="dropdown-divider">
+                    <hr class="dropdown-divider" id="divider" style="display: none;">
                 </li>
                 <li><a class="dropdown-item" id="btnProfil" href="/pages/profile">Profil</a></li>
                 <li class="text-start"> <!-- Ajoute la classe text-start pour aligner à gauche -->
@@ -83,6 +83,7 @@
 
     function gestionDeconnexion() {
         const userFullName = sessionStorage.getItem('userFullName');
+        const userId = sessionStorage.getItem('userId');
         const btnDeconnexion = document.getElementById('deconnexionBtn');
         const connexionBtn = document.getElementById('connexionBtn');
         const btnProfil = document.getElementById('btnProfil');
@@ -90,11 +91,12 @@
 
         if (userFullName) {
             document.getElementById('userFullName').innerText = userFullName;
+            document.getElementById('divider').style.display = 'block';
             btnDeconnexion.style.display = 'block'; // Activer le bouton de déconnexion
             connexionBtn.style.display = 'none'; // Masquer le bouton de connexion
             btnProfil.style.display = 'block'; // Activer le bouton de profil
 
-            if (userFullName == "John Doe") {
+            if (userId == 1) {
                 btnAdmin.style.display = 'block';
             }
 
@@ -111,6 +113,7 @@
 
         document.getElementById('deconnexionBtn').addEventListener('click', function () {
             sessionStorage.removeItem('userFullName');
+            document.getElementById('divider').style.display = 'none';
             window.location.href = '/pages/connexion';
         });
 

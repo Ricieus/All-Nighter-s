@@ -58,7 +58,7 @@
 <br>
 <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="d-flex justify-content-center mt-3">
                 <img width="200px" src="../images/Concessionnaire_Rubious-removebg-preview.png" alt="Logo">
             </div>
@@ -263,6 +263,7 @@
             const emailExists = await checkEmailExists(courriel.value);
 
             console.log(emailExists);
+            console.log(courriel.value != sessionStorage.getItem('userCourriel'));
             if (emailExists && courriel.value != sessionStorage.getItem('userCourriel')) {
                 document.getElementById('courrielError').innerText = 'Cet email est déjà utilisé. Veuillez en choisir un autre.';
                 document.getElementById('courrielError').style.display = 'block';

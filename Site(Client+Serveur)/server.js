@@ -194,8 +194,8 @@ app.post('/checkEmailExists', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-
-        if (result) {
+        console.log("result : " + result);
+        if (result.length > 0) {
             return res.json({ exists: true });
         } else {
             return res.json({ exists: false });
@@ -635,11 +635,11 @@ app.post('/updateProduct/:id', async (req, res) => {
         let modele = req.query.modele;
         let prix = req.query.prix;
         let annee = req.query.annee;
+        let images = req.body.productImages;
         const idVoiture = req.params.id;
-        console.log(idVoiture);
 
-        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ? WHERE id_voiture = ?`;
-        con.query(query, [marque, modele, prix, annee, idVoiture], async (error, results) => {
+        const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ?, image = ? WHERE id_voiture = ?`;
+        con.query(query, [marque, modele, prix, annee, images[0], idVoiture], async (error, results) => {
             if (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
@@ -655,6 +655,15 @@ app.post('/updateProduct/:id', async (req, res) => {
     }
 });
 
+app.get('/getCarId/:id', (req, res) => {
+    const idVoiture = req.params.id;
+
+    con.query("SELECT * FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
+        if (err) throw err;
+        console.log("resultat : " + result);
+        res.json(result);
+    });
+})
 
 async function getCarDetailsFromMongo(id) {
 
@@ -698,7 +707,7 @@ app.post('/updateVoitureMongo/:id', async (req, res) => {
     let typeCarosserie = req.body.typeCarosserie;
     console.log(typeCarosserie);
     let typeGaz = req.body.typeGaz;
-    let typeMoteur = req.body.typeMoteur;
+    let typeTraction = req.body.typeTraction;
     let productDescription = req.body.productDescription;
     let nbrCylindre = req.body.nbrCylindre;
     let typeConduit = req.body.typeConduit;
@@ -709,7 +718,7 @@ app.post('/updateVoitureMongo/:id', async (req, res) => {
     try {
         const result = await collection.updateOne(
             { _id: parseInt(idVoiture) },
-            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeMoteur, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeConduit, images: productImage } }
+            { $set: { corps: typeCarosserie, carburant: typeGaz, transmission: typeConduit, description: productDescription, moteur: nbrCylindre, pneus_bougent: typeTraction, images: productImage } }
         );
 
         if (result.modifiedCount === 1) {
@@ -800,19 +809,48 @@ app.post('/getImageVoiture', async (req, res) => {
 });
 
 app.post('/ajoutVoiture', async (req, res) => {
-
+    let id = parseInt(req.body.id);
     let marque = req.body.marque;
     let modele = req.body.modele;
-    let annee = req.body.annee;
     let prix = req.body.prix;
-    let utilisateurs_id_utilisateurs = 1;
-    let image = req.body.image;
+    let annee = req.body.annee;
+    let productDescription = req.body.productDescription;
+    let typeCarosserie = req.body.typeCarosserie;
+    let typeGaz = req.body.typeGaz;
+    let typeTraction = req.body.typeTraction;
+    let nbrCylindre = req.body.nbrCylindre;
+    let typeConduit = req.body.typeConduit;
+    let images = req.body.images;
+
+    let collection = db.collection('voitureDetaille');
 
 
+    const ajoutInformation = {
+        _id: id,
+        nom: `${marque} ${modele} ${annee}`,
+        corps: typeCarosserie,
+        transmission: typeConduit,
+        moteur: nbrCylindre,
+        annee: annee,
+        carburant: typeGaz,
+        description: productDescription,
+        pneus_bougent: typeTraction,
+        images: images
+    };
 
+    try {
+        collection.insertOne(ajoutInformation, (err, result) => {
+            if (err) {
+                return res.status(500).send('Erreur insertion');
+            }
+        });
+
+    } catch (error) {
+        console.error("Error executing operations:", error);
+    }
 
     // Requête SQL d'insertion
-    var sql = "INSERT INTO voitures (marque, modele, annee, prix, utilisateurs_id_utilisateurs, image,) VALUES ('" + marque + "','" + modele + "','" + annee + "','" + prix + "'," + utilisateurs_id_utilisateurs + ",'" + image + "')";
+    var sql = "INSERT INTO voitures (id_voiture, marque, modele, annee, prix, image) VALUES ('" + id + "','" + marque + "','" + modele + "','" + annee + "','" + prix + "','" + images[0] + "')";
 
     // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
@@ -820,8 +858,8 @@ app.post('/ajoutVoiture', async (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur ajouter: Veuillez notifier Jad');
         }
-        console.log("Ajout effectuée");
-        res.redirect('/pages/adinistrateur');
+        console.log("complet");
+        res.redirect('/pages/administrateur');
     });
 
 });

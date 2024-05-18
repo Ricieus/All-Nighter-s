@@ -30,7 +30,7 @@ export async function executeOperations() {
         if (!mongoClient) {
             mongoClient = await connectToMongo(uri);
         }
-
+        
         const database = mongoClient.db('AllNighter');
         const collection = database.collection('voitureDetaille');
 
@@ -334,16 +334,7 @@ export async function executeOperations() {
         }
 
         // Insérer les nouveaux documents
-        const insertResults = await collection.insertMany(voitures);
-        console.log("Insertion results:", insertResults);
-        if (insertResults && insertResults.insertedCount > 0) {
-            console.log("IDs of inserted documents:", insertResults.insertedIds);
-            insertResults.insertedIds.forEach((insertedId, index) => {
-                console.log(`Nouvelle ${voitures[index].corps} insérée avec l'ID : ${insertedId}`);
-            });
-        } else {
-            console.error("Insertion failed or no documents were inserted.");
-        }
+        await collection.insertMany(voitures);
 
     } catch (error) {
         console.error("Error executing operations:", error);
