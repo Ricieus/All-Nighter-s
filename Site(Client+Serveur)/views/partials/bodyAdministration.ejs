@@ -209,48 +209,53 @@
     const typeTraction = document.getElementById('typeTraction').value;
     const nbrCylindre = document.getElementById('nbrCylindre').value;
     const typeConduit = document.getElementById('typeConduit').value;
-    const imageInput = document.getElementById("productImage");
-    const productImages = Array.from(imageInput.files).map(file => file.name);
+    const productImageInput = document.getElementById('productImage');
+
+    const existingImages = document.getElementById("imagesExistante").value.split(',');
+    const newImages = Array.from(productImageInput.files).map(file => file.name);
+    const productImages = newImages.length > 0 ? newImages : existingImages;
+    
+
     let idExiste = await CheckSiIdExiste();
 
     if (VerificationChampsRemplis(idExiste)) {
-      BloquerTousLesChamps();
-      CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
+        BloquerTousLesChamps();
+        CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
 
-      fetch('/ajoutVoiture', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          id: id,
-          marque: marque,
-          modele: modele,
-          prix: prix,
-          annee: annee,
-          productDescription: productDescription,
-          typeCarosserie: typeCarosserie,
-          typeGaz: typeGaz,
-          typeTraction: typeTraction,
-          nbrCylindre: nbrCylindre,
-          typeConduit: typeConduit,
-          images: productImages
+        fetch('/ajoutVoiture', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: id,
+                marque: marque,
+                modele: modele,
+                prix: prix,
+                annee: annee,
+                productDescription: productDescription,
+                typeCarosserie: typeCarosserie,
+                typeGaz: typeGaz,
+                typeTraction: typeTraction,
+                nbrCylindre: nbrCylindre,
+                typeConduit: typeConduit,
+                image: productImages  // Utiliser uniquement la première image
+            })
         })
-      })
         .then(response => {
-          if (!response.ok) {
-            throw new Error('Erreur lors de l\'ajout du produit');
-          }
-          return response.json();
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout du produit');
+            }
+            return response.json();
         })
         .then(data => {
-          document.getElementById("idProduit").value = data[0];
+            document.getElementById("idProduit").value = data[0];
         })
         .catch(error => {
-          console.error('Erreur lors de l\'ajout du produit : ', error);
+            console.error('Erreur lors de l\'ajout du produit : ', error);
         });
     }
-  }
+}
 
   function CompteARebours(temps, message, place) {
     let compteur = temps;
@@ -391,38 +396,44 @@
   }
 
 
-  function RedirectModifier() {
+  async function RedirectModifier() {
     const id = document.getElementById("idProduit").value;
     const marque = document.getElementById("marqueProduit").value;
     const modele = document.getElementById("modeleProduit").value;
     const prix = document.getElementById("voiturePrix").value;
     const annee = document.getElementById("voitureAnnee").value;
-    const imageInput = document.getElementById("productImage");
-    const productImages = Array.from(imageInput.files).map(file => file.name);
+    const productImageInput = document.getElementById('productImage');
+
+    const existingImages = document.getElementById("imagesExistante").value.split(',');
+
+    const newImages = Array.from(productImageInput.files).map(file => file.name);
+
+    const firstImage = newImages.length > 0 ? newImages[0] : existingImages[0];
 
     CompteARebours(3, "Enregistrement...", document.getElementById('succes'));
-    // Envoi de la mise à jour à la base de données MySQL
-    fetch('/updateProduct/' + id + '?marque=' + marque + '&modele=' + modele + '&prix=' + prix + '&annee=' + annee, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ marque, modele, prix, annee, productImages })
-    })
-      .then(response => {
+
+    try {
+        const response = await fetch(`/updateProduct/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ marque, modele, prix, annee, firstImage })
+        });
+
         if (!response.ok) {
-          throw new Error('Erreur lors de la mise à jour du produit');
+            throw new Error('Erreur lors de la mise à jour du produit');
         }
-        return response.json();
-      })
-      .then(data => {
+
+        const data = await response.json();
         console.log("Mise à jour effectuée avec succès dans MySQL");
         UpdateProductMongo();
-      })
-      .catch(error => {
+    } catch (error) {
         console.error('Erreur lors de la mise à jour du produit dans MySQL:', error);
-      });
-  }
+    }
+}
+
+
 
 
   function getCarDetailsFromMongo(id) {

@@ -619,29 +619,23 @@ app.get('/pages/administrateurMain', (req, res) => {
 
 app.post('/updateProduct/:id', async (req, res) => {
     try {
-        let marque = req.query.marque;
-        let modele = req.query.modele;
-        let prix = req.query.prix;
-        let annee = req.query.annee;
-        let images = req.body.productImages;
+        const { marque, modele, prix, annee, firstImage } = req.body;
         const idVoiture = req.params.id;
 
         const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ?, image = ? WHERE id_voiture = ?`;
-        con.query(query, [marque, modele, prix, annee, images[0], idVoiture], async (error, results) => {
+        con.query(query, [marque, modele, prix, annee, firstImage, idVoiture], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-
-            // Move the MongoDB query outside the MySQL callback
-
         });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).send('Internal server error');
     }
 });
+
 
 app.get('/getCarId/:id', (req, res) => {
     const idVoiture = req.params.id;
