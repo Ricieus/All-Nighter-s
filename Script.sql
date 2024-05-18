@@ -170,39 +170,8 @@ CREATE TABLE contact (
     prenom VARCHAR(100) NOT NULL,
     nom VARCHAR(100) NOT NULL,
     courriel VARCHAR(100) NOT NULL,
-    telephone VARCHAR(100) NOT NULL,
+    telephone BIGINT NOT NULL,
     dateRendezVous DATE NOT NULL,
     raisonRendezVous VARCHAR(100)
 );
 
-INSERT INTO contact (
-    prenom, 
-    nom, 
-    courriel, 
-    telephone, 
-    dateRendezVous, 
-    raisonRendezVous
-) VALUES (
-    'Alice',
-    'Smith',
-    'alice.smith@example.com',
-    '1234567891',
-    '2024-03-01',
-    'Je veux me plaindre'
-),
-(
-    'Bob',
-    'Johnson',
-    'bob.johnson@example.com',
-    '5149744492',
-    '2024-03-02',
-    'Je veux réserver un essai routier'
-),
-(
-    'Charlie',
-    'Brown',
-    'charlie.brown@example.com',
-    '4508901284',
-    '2024-03-03',
-    'Je veux laisser un commentaire'
-);
