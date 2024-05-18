@@ -194,7 +194,6 @@ app.post('/checkEmailExists', (req, res) => {
             console.log(err);
             return res.status(500).send('Erreur serveur lors de la vérification de l\'email');
         }
-        console.log("result : " + result);
         if (result.length > 0) {
             return res.json({ exists: true });
         } else {
@@ -215,8 +214,6 @@ app.post('/inscription/submit_inscription', async (req, res) => {
         // Chiffrez le mot de passe
         const hashedPassword = await bcrypt.hash(motdePasse, 10); // 10 est le coût du hachage
 
-        console.log(hashedPassword);
-
         // Vérifier si l'email existe déjà
         var checkEmailQuery = "SELECT * FROM utilisateurs WHERE email = ?";
         con.query(checkEmailQuery, [courriel], function (err, rows) {
@@ -235,7 +232,8 @@ app.post('/inscription/submit_inscription', async (req, res) => {
                     console.log(err);
                     return res.status(500).send('Erreur insertion: Veuillez notifier Marc');
                 }
-                setTimeout(function () { res.redirect('/'); }, 4000);
+                const userId = result.insertId; // Récupérer l'ID de l'utilisateur inséré automatiquement
+                res.status(201).json({ userId: userId });
             });
         });
     } catch (error) {
@@ -244,29 +242,23 @@ app.post('/inscription/submit_inscription', async (req, res) => {
     }
 });
 
-//INSERT pour la page de contact
 app.post('/contact/submit_contact', (req, res) => {
     let prenom = req.body.prenom;
     let nom = req.body.nomFamille;
     let courriel = req.body.courriel;
     let telephone = req.body.telephone;
     let raisonRendezVous = req.body.raison;
-    let utilisateurs_id_utilisateurs = 1;
 
-    // Date de rendez-vous
     let dateRendezVous = req.body.daterendezvous ? "'" + req.body.daterendezvous + "'" : 'NULL';
 
-    // Requête SQL d'insertion
-    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous, utilisateurs_id_utilisateurs) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "'," + dateRendezVous + ",'" + raisonRendezVous + "','" + utilisateurs_id_utilisateurs + "')";
+    var sql = "INSERT INTO contact (prenom, nom, courriel, telephone, dateRendezVous, raisonRendezVous) VALUES ('" + prenom + "','" + nom + "','" + courriel + "','" + telephone + "'," + dateRendezVous + ",'" + raisonRendezVous + "')";
 
-    // Exécuter la requête d'insertion
     con.query(sql, function (err, result) {
         if (err) {
             console.log(err);
             return res.status(500).send('Erreur insertion: Veuillez notifier Jad');
         }
         console.log("Insertion effectuée");
-        res.redirect('/pages/contact');
     });
 });
 
@@ -305,7 +297,7 @@ app.get('/pages/index', async (req, res) => {
         }
 
         const collection = db.collection('voitureDetaille');
-        const cursor = collection.find({});
+        const cursor = collection.find({}).sort({ _id: 1 });
         const result = await cursor.toArray();
 
 
@@ -361,8 +353,6 @@ app.post('/profile/submit_profil', async (req, res) => {
                 console.error('Erreur lors de la mise à jour du profil :', err);
                 return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
             }
-            // Redirection vers la page de profil après la mise à jour
-            res.redirect('/pages/profile');
         });
     } else {
         var sql = "UPDATE utilisateurs SET nom = ?, prenom = ?, email = ?, telephone = ?, adresse = ? WHERE id_utilisateurs = ?";
@@ -373,8 +363,6 @@ app.post('/profile/submit_profil', async (req, res) => {
                 console.error('Erreur lors de la mise à jour du profil :', err);
                 return res.status(500).send('Erreur serveur lors de la mise à jour du profil');
             }
-            // Redirection vers la page de profil après la mise à jour
-            res.redirect('/pages/profile');
         });
     }
 
@@ -631,23 +619,16 @@ app.get('/pages/administrateurMain', (req, res) => {
 
 app.post('/updateProduct/:id', async (req, res) => {
     try {
-        let marque = req.query.marque;
-        let modele = req.query.modele;
-        let prix = req.query.prix;
-        let annee = req.query.annee;
-        let images = req.body.productImages;
+        const { marque, modele, prix, annee, firstImage } = req.body;
         const idVoiture = req.params.id;
 
         const query = `UPDATE voitures SET marque = ?, modele = ?, prix = ?, annee = ?, image = ? WHERE id_voiture = ?`;
-        con.query(query, [marque, modele, prix, annee, images[0], idVoiture], async (error, results) => {
+        con.query(query, [marque, modele, prix, annee, firstImage, idVoiture], (error, results) => {
             if (error) {
                 console.error('Erreur lors de la mise à jour du produit:', error);
                 return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du produit' });
             }
             res.json({ success: true, message: 'Mise à jour du produit effectuée avec succès' });
-
-            // Move the MongoDB query outside the MySQL callback
-
         });
     } catch (err) {
         console.error('Error:', err);
@@ -655,12 +636,12 @@ app.post('/updateProduct/:id', async (req, res) => {
     }
 });
 
+
 app.get('/getCarId/:id', (req, res) => {
     const idVoiture = req.params.id;
 
     con.query("SELECT * FROM voitures WHERE id_voiture = ?", idVoiture, function (err, result) {
         if (err) throw err;
-        console.log("resultat : " + result);
         res.json(result);
     });
 })
@@ -820,8 +801,9 @@ app.post('/ajoutVoiture', async (req, res) => {
     let typeTraction = req.body.typeTraction;
     let nbrCylindre = req.body.nbrCylindre;
     let typeConduit = req.body.typeConduit;
-    let images = req.body.images;
+    let images = req.body.image;
 
+    console.log(images);
     let collection = db.collection('voitureDetaille');
 
 

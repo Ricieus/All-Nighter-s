@@ -77,8 +77,9 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="telephone">Numéro de téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" name="telephone"
-                        placeholder="Numéro de téléphone" required>
+                    <input type="text" class="form-control" name="telephone" autocomplete="off" id="telephone"
+                        onkeypress="return AllowOnlyNumbers(event);" placeholder="Numéro de téléphone" maxlength="10"
+                        required />
                 </div>
             </div>
         </div>
@@ -130,6 +131,8 @@
         </div>
         <input type="submit" class="btn btn-primary" value="Envoyer" />
     </form>
+    <div id="bonjourMessage" class="text-success" style=" margin-top: 2rem;"></div>
+
 </div>
 <script>
 
@@ -138,5 +141,36 @@
         const re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+    document.getElementById('contactForm').addEventListener('submit', function (event) {
+        const prenom = document.getElementById("prenom").value;
+        const nomFamille = document.getElementById("nomFamille").value;
+        const daterendezvous = document.getElementById("daterendezvous").value;
+        CompteARebours(10, "Bonjour " + prenom + " " + nomFamille + ", Merci d'avoir pris un rendez-vous!! Nous allons vous contacter sur votre numéro de téléphone le " + daterendezvous + "!", document.getElementById("bonjourMessage"));
 
+    });
+
+    function CompteARebours(temps, message, place) {
+        let compteur = temps;
+
+        const intervalID = setInterval(function () {
+            place.innerText = message;
+            compteur--;
+            if (compteur < 0) {
+                clearInterval(intervalID);
+                place.innerText = "";
+                location.reload();
+            }
+        }, 1000);
+    }
+
+    //source : https://stackoverflow.com/questions/13952686/how-to-make-html-input-tag-only-accept-numerical-values#:~:text=You%20can%20use%20an%20%3Cinput%20type%3D%22number%22%20%2F%3E.%20This,type%3D%22number%22%20tag%20is%20only%20supported%20in%20newer%20browsers
+    function AllowOnlyNumbers(e) {
+        e = (e) ? e : window.event;
+
+        var clipboardData = e.clipboardData ? e.clipboardData : window.clipboardData;
+        var key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+        var str = (e.type && e.type == "paste") ? clipboardData.getData('Text') : String.fromCharCode(key);
+
+        return (/^\d+$/.test(str));
+    }
 </script>

@@ -80,9 +80,10 @@
                     <div id="courrielError" class="error-message"></div>
                 </div>
                 <div class="groupe-formulaire">
-                    <label for="telephone">Téléphone</label>
-                    <input type="tel" class="form-control" id="telephone" placeholder="Téléphone" maxlength="10"
-                        name="telephone">
+                    <label for="telephone">Numéro de téléphone</label>
+                    <input type="text" class="form-control" name="telephone" autocomplete="off" id="telephone"
+                        onkeypress="return AllowOnlyNumbers(event);" placeholder="Numéro de téléphone" maxlength="10" />
+
                     <div id="telephoneError" class="error-message"></div>
                 </div>
                 <div class="groupe-formulaire">
@@ -204,17 +205,41 @@
                 document.getElementById('courrielError').style.display = 'block';
                 courriel.classList.add('error-border');
             } else {
-                this.submit();
-                document.getElementById('userFullName').innerText = prenom + " " + nom;
-                // Après une connexion réussie
-                sessionStorage.setItem('userFullName', prenom + " " + nom);
-                sessionStorage.setItem('userNom', nom);
-                sessionStorage.setItem('userPrenom', prenom);
-                sessionStorage.setItem('userCourriel', courriel.value);
-                sessionStorage.setItem('userTelephone', telephone.value);
-                sessionStorage.setItem('userAdresse', adresse.value);
-                sessionStorage.setItem('userMotDePasse', motdepasse.value);
-                gestionDeconnexion(); // Activer le bouton de déconnexion
+                const response = await fetch('/inscription/submit_inscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prenom: prenom,
+                        nom: nom,
+                        courriel: courriel.value,
+                        telephone: telephone.value,
+                        adresse: adresse.value,
+                        motdepasse: motdepasse.value,
+                        confirmerMotPasse: confirmerMotPasse.value
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'inscription');
+                } else {
+                    const data = await response.json();
+                    const userId = data.userId;
+
+                    document.getElementById('userFullName').innerText = prenom + " " + nom;
+                    // Après une connexion réussie
+                    sessionStorage.setItem('userId', userId);
+                    sessionStorage.setItem('userFullName', prenom + " " + nom);
+                    sessionStorage.setItem('userNom', nom);
+                    sessionStorage.setItem('userPrenom', prenom);
+                    sessionStorage.setItem('userCourriel', courriel.value);
+                    sessionStorage.setItem('userTelephone', telephone.value);
+                    sessionStorage.setItem('userAdresse', adresse.value);
+                    sessionStorage.setItem('userMotDePasse', motdepasse.value);
+                    gestionDeconnexion(); // Activer le bouton de déconnexion
+                    window.location.href = '/';
+                }
             }
         }
     });
@@ -246,4 +271,13 @@
         });
     }
 
+    function AllowOnlyNumbers(e) {
+        e = (e) ? e : window.event;
+
+        var clipboardData = e.clipboardData ? e.clipboardData : window.clipboardData;
+        var key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+        var str = (e.type && e.type == "paste") ? clipboardData.getData('Text') : String.fromCharCode(key);
+
+        return (/^\d+$/.test(str));
+    }
 </script>
