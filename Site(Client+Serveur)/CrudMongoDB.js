@@ -329,19 +329,20 @@ export async function executeOperations() {
 
         ];
 
-        for (const voiture of voitures) {
-            let result = await collection.deleteOne({ "_id": voiture._id });
+        for (let voiture of voitures) {
+            const existingVoiture = await collection.findOne({ _id: voiture._id });
+            if (!existingVoiture) {
+                await collection.insertOne(voiture);
+                console.log(`Inserted document with _id: ${voiture._id}`);
+            } else {
+                console.log(`Document with _id: ${voiture._id} already exists`);
+            }
         }
-
-        // Insérer les nouveaux documents
-        await collection.insertMany(voitures);
-
     } catch (error) {
-        console.error("Error executing operations:", error);
+        console.error("Failed to insert documents!", error);
     } finally {
         if (mongoClient) {
-            await mongoClient.close(); // Close the MongoDB client
-            console.log("MongoDB connection closed.");
+            await mongoClient.close();
         }
     }
 }
