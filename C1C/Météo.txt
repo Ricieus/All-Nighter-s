@@ -1,0 +1,16 @@
+﻿Statistiques Météo - Montréal
+(Moyennes des derniers 30 ans)
+
+Mois	TempMax	TempMin	TempMoy	Pluie (mm)	Neige (cm)
+Janvier	-5	-14	-9	21	48
+Février	-3	-13	-8	19	41
+Mars	2	-6	-1	34	31
+Avril	11	1	6	63	11
+Mai	19	7	13	67	2
+Juin	23	13	18	83	0
+Juillet	26	15	21	86	0
+Août	25	14	19	100	0
+Septembre	20	9	15	87	0
+Octobre	13	4	8	73	3
+Novembre	5	-1	2	70	24
+Décembre	-2	-10	-6	35	55
