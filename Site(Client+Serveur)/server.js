@@ -16,7 +16,7 @@ import { executeOperations } from "./CrudMongoDB.js";
 import { config } from "dotenv";
 import Stripe from 'stripe';
 
-const stripe = new Stripe('sk_test_51OvpKQLJ3MC705wbYkC35Roo1dXsfBv8sTmqoksLDx4HyKMxraCAoJ6qKWtjkflxWKgeh185r3svPLyqgS5SYS1g00FIknoY1p');
+const stripe = new Stripe('sk_test_51POgON02tERsK5q7eJg2UawBw8hKc0jfrBbhNlnVNfQmTo9ByA5PmwcQyArbv6a4AJ3Radt1eSko6vVjT1Jx0HBh00W5wliZl1');
 config();
 
 await executeOperations();
